@@ -39,12 +39,13 @@ class Model:
 
     def train_model(self, data: pd.DataFrame):
         start_time = time.time()
-        self.split_train_test(data.head(100))
+        self.split_train_test(data)
         self.build_formula()
-        self.gam_model = pygam.PoissonGAM(self.formula, max_iter=20)
+        self.gam_model = pygam.PoissonGAM(self.formula, max_iter=5)
         self.gam_model.fit(self.X_train, self.y_train)
         self.is_trained = True
         print(f"training {(type(self).__name__)} in {time.time() - start_time:2f} seconds")
+        self.gam_model.summary()
         # print(self.gam_model.statistics_)
 
     def build_formula(self):
@@ -87,9 +88,8 @@ class Model:
         self.formula = formula
         self.features = cols
 
-    def build_covariates_list(self):
-        pass
 
+    # TODO: implement DIC / WAIC to account for model's complexity
     def evaulate(self):
         assert self.is_trained
         self.score = self.gam_model.statistics_['loglikelihood']
@@ -103,6 +103,9 @@ class Model:
         pass
 
     def run_shuffles(self):
+        pass
+
+    def build_covariates_list(self):
         pass
 
 class AlloModel(Model):
