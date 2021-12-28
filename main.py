@@ -6,39 +6,29 @@ import data_loaders
 import preprocessing
 import models_lib
 import postprocessing # not sure ?
-import plotlib
+import plot_lib
 import store_results
-
-def get_best_model(sub_models: list[models_lib.Model], sub_data: list[pd.DataFrame]) -> models_lib.Model:
-	scores = []
-	for model, data in zip(sub_models, sub_data):
-		model.train_model(data)
-		model.evaulate()
-		scores.append((model.score, model))
-
-	# best model is the one with the lowest score
-	best_model = sorted(scores)[0][1]
-	return best_model
 
 def pipeline1(neuron_id: int):
 	# handles paths, supports raw data, simulated_data, csv, matlab...
-	data = data_loaders.Loader1(neuron_id)
+	data = data_loaders.Loader1()(neuron_id)
+	state.get_state().n_bats = preprocessing.get_number_of_bats(data)
 
-	# remove nans, scaling, feature-engineering split to sub_models, deduce number of bats
-	state.n_bats, data = preprocess.Preproccess1(data)
+	# remove nans, scaling, feature-engineering split to sub_models
+	data = preprocessing.Preprocess1()(data)
 
 	# setup models with some hyper-params
 	sub_models = [
-	models_lib.AlloModel1(),
-	models_lib.EgoModel1(),
-	models_lib.PairModel1()
+	models_lib.AlloModel(),
+	models_lib.EgoModel(),
+	# models_lib.PairModel()
 	]
 	best_model = models_lib.get_best_model(sub_models, data)
 
 	results = postprocessing.Results1()
 	results.models = sub_models
 	results.maps = preprocessing.maps(data)
-	results.shap = best_model.shapely(best_model)
+	results.shap = best_model.shapley()
 	results.models_maps = best_model.generate_maps()
 	results.shuffles = best_model.run_shuffles()
 
@@ -50,8 +40,9 @@ def pipeline1(neuron_id: int):
 # execute model over arguments
 # chooses one of the implemented pipelines to execute
 def main(args):
-	nid = int(args[1])
+	nid = int(args[0])
 	pipeline1(nid)
 
 if __name__ == "__main__":
-	main(sys.argv)
+	main([1000])
+	# main(sys.argv[1:])
