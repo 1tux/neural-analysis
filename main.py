@@ -19,8 +19,8 @@ def pipeline1(neuron_id: int):
 
     # setup models with some hyper-params
     sub_models = [
-    models_lib.AlloModel(),
-    models_lib.EgoModel(),
+    models_lib.AlloModel(covariates=['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y']),
+    # models_lib.EgoModel(),
     # models_lib.PairModel()
     ]
     best_model = models_lib.get_best_model(sub_models, data)
