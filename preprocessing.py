@@ -17,9 +17,10 @@ class Preprocess1(Preprocess):
         return add_pairwise_features(remove_nans(data))
 
 def remove_nans(data):
+    print("Removing NANS")
     no_nans = data.dropna()
     state.get_state().no_nans_indices = no_nans.index
-    return no_nans
+    return no_nans.reset_index(drop=True)
 
 # TODO: implement add_pairwise_features()
 def add_pairwise_features(data):

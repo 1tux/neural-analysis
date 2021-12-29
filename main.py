@@ -12,10 +12,18 @@ import store_results
 def pipeline1(neuron_id: int):
     # handles paths, supports raw data, simulated_data, csv, matlab...
     data = data_loaders.Loader1()(neuron_id)
+    print(data.neuron.mean())
+    print(data.shape)
+    print(data['neuron'].sum())
     state.get_state().n_bats = preprocessing.get_number_of_bats(data)
-
     # remove nans, scaling, feature-engineering split to sub_models
     data = preprocessing.Preprocess1()(data)
+
+    print(data.neuron.mean())
+    print(data.shape)
+    print(data['neuron'].sum())
+    results = postprocessing.Results1()
+    results.maps = preprocessing.maps(data)
 
     # setup models with some hyper-params
     sub_models = [
@@ -27,9 +35,7 @@ def pipeline1(neuron_id: int):
     best_model = models_lib.get_best_model(sub_models, data)
     print("Top model:", type(best_model).__name__)
 
-    results = postprocessing.Results1()
     results.models = sub_models
-    results.maps = preprocessing.maps(data)
     # results.shap = best_model.shapley()
     results.models_maps = best_model.generate_maps()
     results.shuffles = best_model.run_shuffles()

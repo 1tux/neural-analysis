@@ -3,3 +3,4 @@ sklearn
 pygam
 scipy
 matplotlib
+h5py
