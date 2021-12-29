@@ -19,17 +19,18 @@ def pipeline1(neuron_id: int):
 
     # setup models with some hyper-params
     sub_models = [
+    # models_lib.AlloModel(),
     models_lib.AlloModel(covariates=['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y']),
-    # models_lib.EgoModel(),
+    # models_lib.EgoModel(covariates=['BAT_1_F_A', 'BAT_1_F_D']),
     # models_lib.PairModel()
     ]
     best_model = models_lib.get_best_model(sub_models, data)
-    print(type(best_model).__name__)
+    print("Top model:", type(best_model).__name__)
 
     results = postprocessing.Results1()
     results.models = sub_models
     results.maps = preprocessing.maps(data)
-    results.shap = best_model.shapley()
+    # results.shap = best_model.shapley()
     results.models_maps = best_model.generate_maps()
     results.shuffles = best_model.run_shuffles()
 

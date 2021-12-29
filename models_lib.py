@@ -44,7 +44,7 @@ class Model:
         self.data = data
         self.split_train_test(data)
         self.features, self.formula = build_formula(self.covariates)
-        self.gam_model = pygam.PoissonGAM(self.formula, max_iter=15)
+        self.gam_model = pygam.PoissonGAM(self.formula, max_iter=25)
         self.gam_model.fit(self.X_train, self.y_train)
         self.is_trained = True
         print(f"training {(type(self).__name__)} in {time.time() - start_time:2f} seconds")
