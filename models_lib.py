@@ -6,7 +6,7 @@ import time
 import itertools
 import math
 
-import state
+from state import State
 
 class Model:
     def __init__(self, covariates = None, use_cache=True):
@@ -26,8 +26,8 @@ class Model:
 
         self.features = None # position is a single 2-d feature
         self.formula = None
-        self.train_test_ratio = state.get_state().train_test_ratio
-        self.n_bats = state.get_state().n_bats
+        self.train_test_ratio = State().train_test_ratio
+        self.n_bats = State().n_bats
         self.gam_model = None
         self.score = None
         self.use_cache = use_cache
@@ -86,7 +86,7 @@ class AlloModel(Model):
                 'BAT_4_F_X', 'BAT_4_F_Y'
         ]"""
         self.covariates = ["BAT_0_F_HD"]
-        for i in range(state.get_state().n_bats):
+        for i in range(State().n_bats):
             self.covariates.append(f"BAT_{i}_F_X")
             self.covariates.append(f"BAT_{i}_F_Y")
 
@@ -101,7 +101,7 @@ class EgoModel(Model):
                 'BAT_4_F_D', 'BAT_4_F_A'
         ]"""
         self.covariates = []
-        for i in range(1, state.get_state().n_bats):
+        for i in range(1, State().n_bats):
             self.covariates.append(f"BAT_{i}_F_A")
             self.covariates.append(f"BAT_{i}_F_D")
 

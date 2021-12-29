@@ -1,7 +1,7 @@
 import sys
 import pandas as pd
 
-import state
+from state import State
 import data_loaders
 import preprocessing
 import models_lib
@@ -11,17 +11,12 @@ import store_results
 
 def pipeline1(neuron_id: int):
     # handles paths, supports raw data, simulated_data, csv, matlab...
-    data = data_loaders.Loader1()(neuron_id)
-    print(data.neuron.mean())
-    print(data.shape)
-    print(data['neuron'].sum())
-    state.get_state().n_bats = preprocessing.get_number_of_bats(data)
-    # remove nans, scaling, feature-engineering split to sub_models
+    data = data_loaders.Loader2()(neuron_id)
+    State().n_bats = preprocessing.get_number_of_bats(data)
+
+    # remove nans, scaling, feature-engineering
     data = preprocessing.Preprocess1()(data)
 
-    print(data.neuron.mean())
-    print(data.shape)
-    print(data['neuron'].sum())
     results = postprocessing.Results1()
     results.maps = preprocessing.maps(data)
 
