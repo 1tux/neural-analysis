@@ -4,6 +4,7 @@ import scipy
 import matplotlib.pyplot as plt
 
 from state import State
+import plot_lib
 
 class Preprocess:
     def __call__(self, data: pd.DataFrame) -> pd.DataFrame:
@@ -14,6 +15,7 @@ class Preprocess1(Preprocess):
         pass
 
     def __call__(self, data: pd.DataFrame) -> pd.DataFrame:
+        State().n_bats = get_number_of_bats(data)
         return add_pairwise_features(remove_nans(data))
 
 def remove_nans(data):
@@ -27,7 +29,7 @@ def add_pairwise_features(data):
 
 # TODO: implement add_pairwise_features()
 def get_number_of_bats(data: pd.DataFrame) -> int:
-    return 5
+    return 3
 
 def spikes_to_firing_rate(spikes: np.array, filter_width=120) -> np.array:
     fr = (np.convolve(spikes, [1] * filter_width) / filter_width)[:len(spikes)]
@@ -40,18 +42,16 @@ def maps(data):
     # hd_axis = axis[2][0]
     # angle_axis = axis[2][1:5]
     # dis_axis = axis[3][1:5]
+
+    g = plot_lib.PlotGrid()
+    pos_axis = g.pos_axis
+    hd_axis = g.hd_axis
+    angle_axis = g.angle_axis
+    dis_axis = g.dis_axis
+
     n_bats = State().n_bats
-
-    fig = plt.figure()
-    grid = plt.GridSpec(4, n_bats, wspace=0.4, hspace=0.3)
-
-    fr_axis = fig.add_subplot(grid[0, :n_bats])
-    pos_axis = [fig.add_subplot(grid[1, i]) for i in range(n_bats)]
-    hd_axis = fig.add_subplot(grid[2, 0])
-    angle_axis = [fig.add_subplot(grid[2, i]) for i in range(1, n_bats)]
-    dis_axis = [fig.add_subplot(grid[3, i]) for i in range(1, n_bats)]
-
-    fr_axis.plot(State().no_nans_indices, State().FRAME_RATE * spikes_to_firing_rate(data['neuron']), '.', markersize=1, alpha=0.5, label='test-firing-rates')
+    firing_rate_map = plot_lib.FiringRate(data)
+    firing_rate_map.plot(g.fr_axis)
 
     for i in range(n_bats):
         rate_map_ = rate_map(data, data['neuron'], i)

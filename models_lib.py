@@ -5,16 +5,14 @@ import pygam
 import time
 import itertools
 import math
+import typing
 
 from state import State
 
 class Model:
-    def __init__(self, covariates = None, use_cache=True):
+    def __init__(self, covariates: typing.Optional[list[str]] = None, use_cache:bool =True):
         # position comprised of two covarietes: x,y
-        if covariates is None:
-            self.build_covariates_list()
-        else:
-            self.covariates = covariates
+        self.covariates = covariates or self.build_covariates_list()
 
         self.X = None
         self.y = None
@@ -33,11 +31,11 @@ class Model:
         self.use_cache = use_cache
 
     # TODO: change to time-series split
+    # TODO: this is unrelated to model
     def split_train_test(self, data):
         self.X = data[self.covariates]
         self.y = data['neuron']
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, test_size=0.5, random_state=1337)
-
 
     def train_model(self, data: pd.DataFrame):
         start_time = time.time()
@@ -60,7 +58,7 @@ class Model:
     # retrain sub-models over all the covariets
     # estimate shapley values
     def shapley(self):
-        results = train_submodels( self.__class__, self.features, self.data)
+        results = train_submodels(self.__class__, self.features, self.data)
         shapley = calc_shapley_values(results)
         print(results)
         print(shapley)
@@ -72,10 +70,12 @@ class Model:
         pass
 
     def build_covariates_list(self):
+        print("are you mad?!")
         pass
 
 class AlloModel(Model):
-    def build_covariates_list(self):
+    @staticmethod
+    def build_covariates_list():
         """
         example in case there are 5 bats
         [
@@ -85,13 +85,16 @@ class AlloModel(Model):
                 'BAT_3_F_X', 'BAT_3_F_Y',
                 'BAT_4_F_X', 'BAT_4_F_Y'
         ]"""
-        self.covariates = ["BAT_0_F_HD"]
+        covariates = ["BAT_0_F_HD"]
         for i in range(State().n_bats):
-            self.covariates.append(f"BAT_{i}_F_X")
-            self.covariates.append(f"BAT_{i}_F_Y")
+            covariates.append(f"BAT_{i}_F_X")
+            covariates.append(f"BAT_{i}_F_Y")
+
+        return covariates
 
 class EgoModel(Model):
-    def build_covariates_list(self):
+    @staticmethod
+    def build_covariates_list():
         """
         example in case there are 5 bats
         [
@@ -100,20 +103,19 @@ class EgoModel(Model):
                 'BAT_3_F_D', 'BAT_3_F_A',
                 'BAT_4_F_D', 'BAT_4_F_A'
         ]"""
-        self.covariates = []
+        covariates = []
         for i in range(1, State().n_bats):
-            self.covariates.append(f"BAT_{i}_F_A")
-            self.covariates.append(f"BAT_{i}_F_D")
+            covariates.append(f"BAT_{i}_F_A")
+            covariates.append(f"BAT_{i}_F_D")
+        return covariates
 
 def get_best_model(sub_models: list[models_lib.Model], data: pd.DataFrame) -> models_lib.Model:
-    scores = []
     for model in sub_models:
         model.train_model(data)
         model.evaulate()
-        scores.append((model.score, model))
 
     # best model is the one with the highest score
-    best_model = sorted(scores, key=lambda i:i[0])[-1][1]
+    best_model = sorted(sub_models, key=lambda i:i.score)[-1]
     return best_model
 
 def create_pos_smoother(x_idx, y_idx):
