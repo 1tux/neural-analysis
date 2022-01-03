@@ -1,0 +1,171 @@
+import numpy as np
+import scipy
+from data_manager import DataProp
+from typing import Tuple, List, Optional, Union
+from conf import Conf
+
+def fspecial_gauss(size, sigma):
+    """
+        Function to mimic the 'fspecial' gaussian MATLAB function
+    """
+    x, y = np.mgrid[-size // 2 + 1:size // 2 + 1, -size // 2 + 1:size // 2 + 1]
+    g = np.exp(-((x ** 2 + y ** 2) / (2.0 * sigma ** 2)))
+    return g / g.sum()
+
+def build_maps(dataprop):
+    maps = {}
+    one_d_features = dataprop.get_one_d_features()
+    two_d_features = dataprop.get_two_d_features()
+
+    for feature_name in one_d_features:
+        maps[feature_name] = RateMap1D(dataprop, feature_name)
+
+    for feature_name in two_d_features:
+        maps[feature_name] = RateMap2D(dataprop, feature_name)
+
+    return maps
+
+class RateMap:
+    '''
+        loads data
+        process data and create a map
+        plot map
+    '''
+    def __init__(self, dataprop, feature_name: Optional[Union[Tuple, str]] = None):
+        self.dataprop = dataprop
+        self.feature_name = feature_name
+        self.map = None
+        self.axis = None
+        self.frame_rate = Conf().FRAME_RATE
+        self.spikes_count = dataprop.spikes_count
+        self.process()
+
+    def process(self):
+        pass
+
+    def plot(self, ax):
+        pass
+
+class FiringRate(RateMap):
+    def process(self):
+        self.x = self.dataprop.no_nans_indices
+        self.y = self.frame_rate * self.dataprop.firing_rate
+
+    def plot(self, ax):
+        ax.plot(self.x, self.y, '.', markersize=1, alpha=0.5, label='test-firing-rates')
+
+class RateMap1D(RateMap):
+    def __init__(self, dataprop, feature_name: Optional[str]):
+        self.bin_size = Conf().ONE_D_PLOT_BIN_SIZE
+        self.time_spent_threshold = Conf().ONE_D_TIME_SPENT_THRESHOLD
+        self.feature_type = feature_name.split("_")[-1]
+        super().__init__(dataprop, feature_name)
+
+    def process(self):
+        feature_value = self.dataprop.data[self.feature_name]
+        self.map, self.axis = calculate_1d_ratemap(feature_value,\
+        self.spikes_count, self.frame_rate, self.bin_size, self.time_spent_threshold)
+        self.mean_fr = np.nanmean(self.map)
+        # print(self.mean_fr, np.nanmean(self.dataprop.spikes_count), np.nanmean(self.dataprop.orig_spikes_count))
+        return self.map
+
+    def plot(self, ax):
+        ax.plot(self.axis[:-1], self.map)
+        # ax.set_title(f"FR: MAX={np.nanmax(result):.2f} Hz Mean={np.nanmean(result):.2f} Hz")
+        ax.set_ylim(bottom=0)
+        if self.feature_type in ["A", "HD"]:
+            ax.set_xticks(np.arange(0, 360, 60))
+        return np.nanmean(self.map)
+
+class RateMap2D(RateMap):
+    def __init__(self, dataprop, feature_name: Tuple[str, str]):
+        self.bin_size = Conf().TWO_D_PLOT_BIN_SIZE
+        self.time_spent_threshold = Conf().TWO_D_TIME_SPENT_THRESHOLD
+        self.filter_size = Conf().GAUSSIAN_FILTER_SIZE
+        self.filter_sigma = Conf().GAUSSIAN_FILTER_SIGMA
+        self.cutoff = Conf().TWO_D_PRECENTILE_CUTOFF
+        self.feature_type = "POS"
+        super().__init__(dataprop, feature_name)
+
+    def process(self):
+        x_pos = self.dataprop.data[self.feature_name[0]]
+        y_pos = self.dataprop.data[self.feature_name[1]]
+        self.width, self.height = self.dataprop.net_dims
+
+        self.map = calculate_pos_ratemap(x_pos, y_pos, self.spikes_count,\
+        self.frame_rate, self.width, self.height, self.bin_size,\
+        self.time_spent_threshold, self.filter_size, self.filter_sigma)
+        self.mean_fr = np.nanmean(self.map)
+        # print(self.mean_fr, np.nanmean(self.dataprop.spikes_count), np.nanmean(self.dataprop.orig_spikes_count))
+        return self.map
+
+    def plot(self, ax):
+        min_ = 0
+        max_ = np.nanquantile(self.map, self.cutoff)
+        bin_size = self.bin_size
+
+        x_plot_range = np.linspace(0, self.width // bin_size - bin_size / 2 + 1, 3)
+        y_plot_range = np.linspace(0, self.height // bin_size - bin_size / 2 + 1, 3)
+
+        ax.set_xticks(x_plot_range)
+        ax.set_yticks(y_plot_range)
+
+        ax.set_xticklabels((x_plot_range * bin_size + bin_size / 2).round(1))
+        ax.set_yticklabels((y_plot_range * bin_size + bin_size / 2).round(1))
+
+        img = ax.imshow(self.map.T, cmap='jet', vmin=min_, vmax=max_)
+
+def calculate_pos_map_wrapper(data, x_pos, y_pos):
+    spikes_count = data.spikes_count
+    frame_rate = Conf().FRAME_RATE
+    width, height = data.net_dims
+    bin_size = Conf().TWO_D_PLOT_BIN_SIZE
+    time_spent_threshold = Conf().TWO_D_TIME_SPENT_THRESHOLD
+    filter_size = Conf().GAUSSIAN_FILTER_SIZE
+    filter_sigma = Conf().GAUSSIAN_FILTER_SIGMA
+    map_ = calculate_pos_ratemap(x_pos, y_pos, spikes_count, frame_rate, width, height, 
+    bin_size, time_spent_threshold, filter_size, filter_sigma)
+    return map_
+
+def calculate_oned_map_wrapper(data, feature_value):
+    spikes_count = data.spikes_count
+    frame_rate = Conf().FRAME_RATE
+    bin_size = Conf().ONE_D_PLOT_BIN_SIZE
+    time_spent_threshold = Conf().ONE_D_TIME_SPENT_THRESHOLD
+    map_ = calculate_1d_ratemap(feature_value, spikes_count, frame_rate, bin_size, time_spent_threshold)
+    return map_
+
+def calculate_1d_ratemap(feature_value, spike_count,\
+    frame_rate, bin_size, time_spent_threshold):
+    min_x_value = np.floor(np.min(feature_value))
+    max_x_value = np.ceil(np.max(feature_value))
+    x_axis = np.linspace(min_x_value, max_x_value, bin_size)
+
+    time_spent = np.histogram(feature_value, bins=x_axis)[0]
+
+    rate_map = np.histogram(feature_value, bins=x_axis, weights=spike_count)[0].astype('float') / time_spent
+    rate_map[time_spent < time_spent_threshold] = np.nan
+
+    return frame_rate * rate_map, x_axis
+
+def calculate_pos_ratemap(x_pos, y_pos, spike_counts, \
+    frame_rate, width, height, \
+    bin_size, time_spent_threshold, filter_size, filter_sigma):
+    time_spent = np.histogram2d(x_pos, y_pos, [width // bin_size, height // bin_size], range=[(0, width), (0, height)])[0]
+    time_spent = time_spent * (time_spent >= time_spent_threshold)
+
+    spikes = np.histogram2d(x_pos, y_pos, [width // bin_size, height // bin_size], weights=spike_counts, range=[(0, width), (0, height)])[0]
+    spikes2 = spikes * (time_spent >= time_spent_threshold)
+
+    gauss_filter = fspecial_gauss(filter_size, filter_sigma)
+
+    smooth_spikes = scipy.ndimage.correlate(spikes, gauss_filter, mode='constant')
+    smooth_time_spent = scipy.ndimage.correlate(time_spent, gauss_filter, mode='constant')
+
+    # the devision returns nans for 0/0 and inf for v/0 if v!=0. later on we replace the infs, and other places with nans
+    old_err_setting = np.seterr(divide='ignore', invalid='ignore')
+    smoothed_result = smooth_spikes / smooth_time_spent
+    np.seterr(**old_err_setting)
+    smoothed_result[time_spent < time_spent_threshold] = np.nan
+
+    return frame_rate * smoothed_result
