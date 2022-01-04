@@ -30,12 +30,13 @@ def pipeline1(neuron_id: int):
 
     results = Results1()
     results.dataprop = dataprop
+    # TODO: split firing-rate map, to a differnet function.
     results.rate_maps = rate_maps.build_maps(dataprop)
 
     # setup models with some hyper-params
     sub_models = [
-    # models.AlloModel(n_bats=dataprop.n_bats),
-    models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y']),
+    models.AlloModel(n_bats=dataprop.n_bats),
+    # models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y']),
     # models.EgoModel(n_bats=dataprop.n_bats),
     # models.EgoModel(covariates=['BAT_1_F_A', 'BAT_1_F_D']),
     # models.PairModel()

@@ -1,27 +1,25 @@
-import models
+
 import pandas as pd
 import numpy as np
+
+from conf import Conf
+import models
+import features_lib
 
 def build_maps(dataprop, model):
     maps = {}
     for term_id, term in enumerate(model.features):
-        print(term)
         maps[term] = build_model_map(dataprop, model, term, term_id)
+
+    maps["fr"] = ModelFiringRate(dataprop, model, "_fr", None)
+    maps["fr"].feature_type = "fr"
     return maps
 
 def build_model_map(dataprop, model, term, term_id):
-    if isinstance(term, str):
-        term_type = term.split("_")[-1]
-    else:
-        term_type = "POS"
-
-    if term_type == "POS":
-        return ModelMap2D(dataprop, model, term, term_id)
-    elif term_type in ["HD", "A", "D"]:
+    if term.dim() == 1:
         return ModelMap1D(dataprop, model, term, term_id)
-
-def scale_model_map(model_map, rate_map):
-    pass
+    elif term.dim() == 2:
+        return ModelMap2D(dataprop, model, term, term_id)
 
 class ModelMap:
     '''
@@ -32,14 +30,10 @@ class ModelMap:
         self.dataprop = dataprop
         self.model = model
         self.term_id = term_id
-        self.term = term
-        if isinstance(term, str):
-            self.feature_type = term.split("_")[-1]
-        else:
-            self.feature_type = "POS"
-        # self.feature_type = term.split("_")[-1]
+        self.feature = term
         self.XX = None
         self.map_ = None
+        self.feature_type = None
         self.process()
 
     def process(self):
@@ -67,3 +61,11 @@ class ModelMap2D(ModelMap):
     def plot(self, ax):
         ax.clear()
         ax.imshow(self.map_, cmap='jet')
+
+class ModelFiringRate(ModelMap):
+    def process(self):
+        self.x = self.dataprop.no_nans_indices
+        self.map_ = self.y = self.model.gam_model.predict(self.model.X) * Conf().FRAME_RATE
+
+    def plot(self, ax):
+        ax.plot(self.x, self.y, '.', markersize=1, alpha=0.5, label='test-firing-rates')

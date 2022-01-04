@@ -1,4 +1,8 @@
 from typing import List
+import functools
+import operator
+
+import features_lib
 import pygam
 
 def create_pos_smoother(x_idx, y_idx):
@@ -12,46 +16,20 @@ def create_angle_smoother(idx):
     return pygam.s(idx, n_splines=10)
     return pygam.s(idx, n_splines=10, constraints='circular')
 
-def build_formula(covariates):
-    features_subset_copy = covariates.copy()
-
-    formula = []
-    two_d_idx = []
-    one_d_idx = []
-    features = []
-    real_idx = 0
-    for idx, f in enumerate(covariates):
-        bat_id = f.split("_")[1]
-        suffix = f.split("_")[-1]
-        if f.endswith("X"):
-            y_idx = covariates.index(f[:-1]+"Y")
-            features_subset_copy.remove(f)
-            features_subset_copy.remove(f[:-1]+"Y")
-            formula.append(create_pos_smoother(idx, y_idx))
-            # features.append(f"BAT_{bat_id}_F_POS")
-            features.append((f"BAT_{bat_id}_F_X", f"BAT_{bat_id}_F_Y"))
-            two_d_idx.append(real_idx)
-            real_idx += 1
-        elif not f.endswith("Y"):
-            one_d_idx.append(real_idx)
-            real_idx += 1
-            if f.endswith("_D"):
-                formula.append(create_distance_smoother(idx))
-                features.append(f"BAT_{bat_id}_F_D")
-            if f.endswith("_A") or f.endswith("HD"):
-                formula.append(create_angle_smoother(idx))
-                features.append(f"BAT_{bat_id}_F_{suffix}")
-            if f.endswith("_Dp"):
-                formula.append(create_distance_smoother(idx))
-                features.append(f"PAIR_{bat_id}_F_Dp")
-
-    if len(formula) == 1:
-        formula = formula[0]
-    else:
-        formula = sum(formula[1:], formula[0]) # converts list of elements to sum
-    return features, formula
+def build_formula(features):
+    # features = features_lib.covariates_to_features(covariates)
+    feature_type_to_spline_map = {
+        features_lib.FeatureType.HD: create_angle_smoother,
+        features_lib.FeatureType.A: create_angle_smoother,
+        features_lib.FeatureType.D: create_distance_smoother,
+        features_lib.FeatureType.POS : create_pos_smoother,
+    }
+    feature_to_spline = lambda f: feature_type_to_spline_map[f.type_](*f.covariates_indices)
+    formula = functools.reduce(operator.add, map(feature_to_spline, features))
+    return formula
 
 def features_to_covarietes(features):
+    raise
     covariates = features[:]
     for i, f in enumerate(covariates):
         if "_POS" in f:

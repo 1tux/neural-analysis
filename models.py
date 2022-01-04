@@ -6,8 +6,9 @@ import time
 import itertools
 import math
 import typing
-import models_utils
 
+import models_utils
+import features_lib
 from conf import Conf
 
 class Model:
@@ -15,6 +16,7 @@ class Model:
         # position comprised of two covarietes: x,y
         self.n_bats = n_bats
         self.covariates = covariates or self.build_covariates_list()
+        self.features = features_lib.covariates_to_features(self.covariates)
 
         self.X = None
         self.y = None
@@ -24,7 +26,6 @@ class Model:
         self.y_test = None
         self.is_trained = False
 
-        self.features = None # position is a single 2-d feature
         self.formula = None
         self.train_test_ratio = Conf().TRAIN_TEST_RATIO
         self.gam_model = None
@@ -42,7 +43,7 @@ class Model:
         start_time = time.time()
         self.data = data
         self.split_train_test(data)
-        self.features, self.formula = models_utils.build_formula(self.covariates)
+        self.formula = models_utils.build_formula(self.features)
         self.gam_model = pygam.PoissonGAM(self.formula, max_iter=25)
         self.gam_model.fit(self.X_train, self.y_train)
         self.is_trained = True

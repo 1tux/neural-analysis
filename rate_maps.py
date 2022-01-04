@@ -3,6 +3,7 @@ import scipy
 from data_manager import DataProp
 from typing import Tuple, List, Optional, Union
 from conf import Conf
+import features_lib
 
 def fspecial_gauss(size, sigma):
     """
@@ -14,15 +15,13 @@ def fspecial_gauss(size, sigma):
 
 def build_maps(dataprop):
     maps = {}
-    one_d_features = dataprop.get_one_d_features()
-    two_d_features = dataprop.get_two_d_features()
+    for f in dataprop.features:
+        if f.dim() == 1:
+            maps[f] = RateMap1D(dataprop, f)
+        if f.dim() == 2:
+            maps[f] = RateMap2D(dataprop, f)
 
-    for feature_name in one_d_features:
-        maps[feature_name] = RateMap1D(dataprop, feature_name)
-
-    for feature_name in two_d_features:
-        maps[feature_name] = RateMap2D(dataprop, feature_name)
-
+    maps["fr"] = FiringRate(dataprop)
     return maps
 
 class RateMap:
@@ -31,9 +30,10 @@ class RateMap:
         process data and create a map
         plot map
     '''
-    def __init__(self, dataprop, feature_name: Optional[Union[Tuple, str]] = None):
+    def __init__(self, dataprop, feature: Optional[features_lib.Feature] = None):
         self.dataprop = dataprop
-        self.feature_name = feature_name
+        self.feature = feature
+        self.feature_type = None
         self.map_ = None
         self.axis = None
         self.frame_rate = Conf().FRAME_RATE
@@ -47,22 +47,25 @@ class RateMap:
         pass
 
 class FiringRate(RateMap):
+    def __init__(self, dataprop):
+        super().__init__(dataprop)
+        self.feature_type = "fr"
+
     def process(self):
         self.x = self.dataprop.no_nans_indices
-        self.y = self.frame_rate * self.dataprop.firing_rate
+        self.map_ = self.y = self.frame_rate * self.dataprop.firing_rate
 
     def plot(self, ax):
         ax.plot(self.x, self.y, '.', markersize=1, alpha=0.5, label='test-firing-rates')
 
 class RateMap1D(RateMap):
-    def __init__(self, dataprop, feature_name: Optional[str]):
+    def __init__(self, dataprop, feature: features_lib.Feature):
         self.bin_size = Conf().ONE_D_PLOT_BIN_SIZE
         self.time_spent_threshold = Conf().ONE_D_TIME_SPENT_THRESHOLD
-        self.feature_type = feature_name.split("_")[-1]
-        super().__init__(dataprop, feature_name)
+        super().__init__(dataprop, feature)
 
     def process(self):
-        feature_value = self.dataprop.data[self.feature_name]
+        feature_value = self.dataprop.data[self.feature.covariates[0]]
         self.map_, self.axis = calculate_1d_ratemap(feature_value,\
         self.spikes_count, self.frame_rate, self.bin_size, self.time_spent_threshold)
         self.mean_fr = np.nanmean(self.map_)
@@ -78,18 +81,17 @@ class RateMap1D(RateMap):
         return np.nanmean(self.map_)
 
 class RateMap2D(RateMap):
-    def __init__(self, dataprop, feature_name: Tuple[str, str]):
+    def __init__(self, dataprop, feature: features_lib.Feature):
         self.bin_size = Conf().TWO_D_PLOT_BIN_SIZE
         self.time_spent_threshold = Conf().TWO_D_TIME_SPENT_THRESHOLD
         self.filter_size = Conf().GAUSSIAN_FILTER_SIZE
         self.filter_sigma = Conf().GAUSSIAN_FILTER_SIGMA
         self.cutoff = Conf().TWO_D_PRECENTILE_CUTOFF
-        self.feature_type = "POS"
-        super().__init__(dataprop, feature_name)
+        super().__init__(dataprop, feature)
 
     def process(self):
-        x_pos = self.dataprop.data[self.feature_name[0]]
-        y_pos = self.dataprop.data[self.feature_name[1]]
+        x_pos = self.dataprop.data[self.feature.covariates[0]]
+        y_pos = self.dataprop.data[self.feature.covariates[1]]
         self.width, self.height = self.dataprop.net_dims
 
         self.map_ = calculate_pos_ratemap(x_pos, y_pos, self.spikes_count,\
