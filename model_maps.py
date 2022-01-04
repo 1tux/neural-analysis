@@ -5,26 +5,39 @@ import numpy as np
 def build_maps(dataprop, model):
     maps = {}
     for term_id, term in enumerate(model.features):
-        maps[term] = build_model_map(model, term, term_id)
+        print(term)
+        maps[term] = build_model_map(dataprop, model, term, term_id)
     return maps
 
-def build_model_map(model, term, term_id):
-    term_type = term.split("_")[-1]
+def build_model_map(dataprop, model, term, term_id):
+    if isinstance(term, str):
+        term_type = term.split("_")[-1]
+    else:
+        term_type = "POS"
+
     if term_type == "POS":
-        return ModelMap2D(model, term, term_id)
-    if term_type in ["HD", "A", "D"]:
-        return ModelMap1D(model, term, term_id)
+        return ModelMap2D(dataprop, model, term, term_id)
+    elif term_type in ["HD", "A", "D"]:
+        return ModelMap1D(dataprop, model, term, term_id)
+
+def scale_model_map(model_map, rate_map):
+    pass
 
 class ModelMap:
     '''
         gets a model and feature name
         generate pos, angular, distance maps
     '''
-    def __init__(self, model, term, term_id):
+    def __init__(self, dataprop, model, term, term_id):
+        self.dataprop = dataprop
         self.model = model
         self.term_id = term_id
         self.term = term
-        self.feature_type = term.split("_")[-1]
+        if isinstance(term, str):
+            self.feature_type = term.split("_")[-1]
+        else:
+            self.feature_type = "POS"
+        # self.feature_type = term.split("_")[-1]
         self.XX = None
         self.map_ = None
         self.process()
@@ -47,7 +60,10 @@ class ModelMap1D(ModelMap):
 
 class ModelMap2D(ModelMap):
     def process(self):
-        pass 
+        Xs = [np.linspace(0, 96, num=33).astype('int'), np.linspace(0, 45, num=16).astype('int')]
+        self.XX = tuple(np.meshgrid(*Xs, indexing='ij'))
+        self.map_ = np.exp(self.model.gam_model.partial_dependence(term=self.term_id, X=self.XX, meshgrid=True)).T
 
     def plot(self, ax):
-        pass
+        ax.clear()
+        ax.imshow(self.map_, cmap='jet')

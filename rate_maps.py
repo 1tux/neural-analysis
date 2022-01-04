@@ -34,7 +34,7 @@ class RateMap:
     def __init__(self, dataprop, feature_name: Optional[Union[Tuple, str]] = None):
         self.dataprop = dataprop
         self.feature_name = feature_name
-        self.map = None
+        self.map_ = None
         self.axis = None
         self.frame_rate = Conf().FRAME_RATE
         self.spikes_count = dataprop.spikes_count
@@ -63,19 +63,19 @@ class RateMap1D(RateMap):
 
     def process(self):
         feature_value = self.dataprop.data[self.feature_name]
-        self.map, self.axis = calculate_1d_ratemap(feature_value,\
+        self.map_, self.axis = calculate_1d_ratemap(feature_value,\
         self.spikes_count, self.frame_rate, self.bin_size, self.time_spent_threshold)
-        self.mean_fr = np.nanmean(self.map)
+        self.mean_fr = np.nanmean(self.map_)
         # print(self.mean_fr, np.nanmean(self.dataprop.spikes_count), np.nanmean(self.dataprop.orig_spikes_count))
-        return self.map
+        return self.map_
 
     def plot(self, ax):
-        ax.plot(self.axis[:-1], self.map)
+        ax.plot(self.axis[:-1], self.map_)
         # ax.set_title(f"FR: MAX={np.nanmax(result):.2f} Hz Mean={np.nanmean(result):.2f} Hz")
         ax.set_ylim(bottom=0)
         if self.feature_type in ["A", "HD"]:
             ax.set_xticks(np.arange(0, 360, 60))
-        return np.nanmean(self.map)
+        return np.nanmean(self.map_)
 
 class RateMap2D(RateMap):
     def __init__(self, dataprop, feature_name: Tuple[str, str]):
@@ -92,16 +92,16 @@ class RateMap2D(RateMap):
         y_pos = self.dataprop.data[self.feature_name[1]]
         self.width, self.height = self.dataprop.net_dims
 
-        self.map = calculate_pos_ratemap(x_pos, y_pos, self.spikes_count,\
+        self.map_ = calculate_pos_ratemap(x_pos, y_pos, self.spikes_count,\
         self.frame_rate, self.width, self.height, self.bin_size,\
         self.time_spent_threshold, self.filter_size, self.filter_sigma)
-        self.mean_fr = np.nanmean(self.map)
+        self.mean_fr = np.nanmean(self.map_)
         # print(self.mean_fr, np.nanmean(self.dataprop.spikes_count), np.nanmean(self.dataprop.orig_spikes_count))
-        return self.map
+        return self.map_
 
     def plot(self, ax):
         min_ = 0
-        max_ = np.nanquantile(self.map, self.cutoff)
+        max_ = np.nanquantile(self.map_, self.cutoff)
         bin_size = self.bin_size
 
         x_plot_range = np.linspace(0, self.width // bin_size - bin_size / 2 + 1, 3)
@@ -113,7 +113,7 @@ class RateMap2D(RateMap):
         ax.set_xticklabels((x_plot_range * bin_size + bin_size / 2).round(1))
         ax.set_yticklabels((y_plot_range * bin_size + bin_size / 2).round(1))
 
-        img = ax.imshow(self.map.T, cmap='jet', vmin=min_, vmax=max_)
+        img = ax.imshow(self.map_.T, cmap='jet', vmin=min_, vmax=max_)
 
 def calculate_pos_map_wrapper(data, x_pos, y_pos):
     spikes_count = data.spikes_count

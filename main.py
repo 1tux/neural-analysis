@@ -34,9 +34,10 @@ def pipeline1(neuron_id: int):
 
     # setup models with some hyper-params
     sub_models = [
-    models.AlloModel(n_bats=dataprop.n_bats),
-    # models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y']),
-    #models.EgoModel(covariates=['BAT_1_F_A', 'BAT_1_F_D']),
+    # models.AlloModel(n_bats=dataprop.n_bats),
+    models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y']),
+    # models.EgoModel(n_bats=dataprop.n_bats),
+    # models.EgoModel(covariates=['BAT_1_F_A', 'BAT_1_F_D']),
     # models.PairModel()
     ]
     best_model = get_best_model(sub_models, dataprop.data)
@@ -47,6 +48,7 @@ def pipeline1(neuron_id: int):
     results.models_maps = model_maps.build_maps(dataprop, best_model)
     results.shuffles = best_model.run_shuffles()
 
+    results.process()
     results.plot()
     results.store()
 

@@ -28,7 +28,8 @@ def build_formula(covariates):
             features_subset_copy.remove(f)
             features_subset_copy.remove(f[:-1]+"Y")
             formula.append(create_pos_smoother(idx, y_idx))
-            features.append(f"BAT_{bat_id}_F_POS")
+            # features.append(f"BAT_{bat_id}_F_POS")
+            features.append((f"BAT_{bat_id}_F_X", f"BAT_{bat_id}_F_Y"))
             two_d_idx.append(real_idx)
             real_idx += 1
         elif not f.endswith("Y"):

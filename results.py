@@ -15,6 +15,23 @@ class Results1(Results):
     def __init__(self):
         self.g = None
 
+    def process(self):
+        self.scale_maps()
+
+    def scale_maps(self):
+        print("Scaling models maps...")
+        print(self.rate_maps.keys())
+        print(self.models_maps.keys())
+        for feature_name in self.models_maps:
+            rate_map = self.rate_maps[feature_name]
+            model_map = self.models_maps[feature_name]
+            self.models_maps[feature_name].map_ = self.scale_map(model_map, rate_map)
+
+    def scale_map(self, model_map, rate_map):
+        rate_map_mean = np.nanmean(rate_map.map_)
+        model_map_mean = np.nanmean(model_map.map_)
+        return model_map.map_ / model_map_mean * rate_map_mean # forces the means to be equal
+
     def plot(self):
         self.g = plot_lib.PlotGrid(self.dataprop.n_bats)
         self.plot1(self.rate_maps)
