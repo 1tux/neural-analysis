@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import h5py
 import typing
-# from typing import Optional, List
+from scipy.ndimage import gaussian_filter1d
 from dataclasses import dataclass
 
 from conf import Conf
@@ -16,13 +16,28 @@ class DataProp:
     def __init__(self):
         pass
 
+    def calc_firing_rate(self, filter_width=120) -> np.array:
+        self.firing_rate = np.convolve(self.spikes_count, [1] * filter_width, mode='same') / filter_width
+        # self.firing_rate = gaussian_filter1d(self.spikes_count, 30)
+        return self.firing_rate    
+
+    def remove_nans(self):
+        no_nans = self.data.dropna()
+        self.no_nans_indices = no_nans.index
+        self.data = no_nans.reset_index(drop=True)
+
+    # TODO: implement add_pairwise_features()
+    def add_pairwise_features(self):
+        pass
+
+
 class DataProp1(DataProp):
     def __init__(self, data, net="net1"):
         # handle dataset
         
         # orig_data will remain, data will be changed
         self.orig_data = self.data = data
-        self.bats_names = self.extract_bats_names()
+        self.bats_names = features_lib.extract_bats_names(self.data)
         self.n_bats = len(self.bats_names)
         self.net_name = net
         self.net_dims = Conf().DIMS_PER_NET[net]
@@ -35,50 +50,10 @@ class DataProp1(DataProp):
 
         self.covariates = self.data.drop(columns=[features_lib.get_label_name()]).columns.to_list()
         self.features = features_lib.covariates_to_features(self.covariates)
-        # handle features
-        # self.one_d_features = self.get_one_d_features()
-        # self.two_d_features = self.get_two_d_features()
 
     def prepcocess(self):
         self.remove_nans()
         self.add_pairwise_features()
-        
-    def remove_nans(self):
-        no_nans = self.data.dropna()
-        self.no_nans_indices = no_nans.index
-        self.data = no_nans.reset_index(drop=True)
-
-    # TODO: implement add_pairwise_features()
-    def add_pairwise_features(self):
-        pass
-
-    def calc_firing_rate(self, filter_width=120) -> np.array:
-        self.firing_rate = np.convolve(self.spikes_count, [1] * filter_width, mode='same') / filter_width
-        return self.firing_rate    
-
-    def get_one_d_features(self):
-        raise
-        features = [self.get_feature_name(0, "HD")]
-        for bat_name in range(1, self.n_bats):
-            features.append(self.get_feature_name(bat_name, "A"))
-            features.append(self.get_feature_name(bat_name, "D"))
-        return features
-
-    def get_two_d_features(self) -> typing.List[str]:
-        raise
-        features = []
-        for bat_name in range(self.n_bats):
-            two_d_feature = (self.get_feature_name(bat_name, "X"), self.get_feature_name(bat_name, "Y"))
-            features.append(two_d_feature)
-        return features
-
-    def get_feature_name(self, bat_name, feature_name):
-        assert str(bat_name) in self.bats_names
-        return f"BAT_{bat_name}_F_{feature_name}"
-
-    def extract_bats_names(self) -> typing.List[str]:
-        bats_names = pd.Series(self.data.columns.str.extract('BAT_(\d)_*', expand=False).unique()).dropna().values
-        return bats_names
 
 class DataLoader:
     '''

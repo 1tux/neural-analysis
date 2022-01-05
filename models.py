@@ -12,12 +12,13 @@ import features_lib
 from conf import Conf
 
 class Model:
-    def __init__(self, covariates: typing.Optional[list[str]] = None, use_cache:bool=True, n_bats = typing.Optional[int]):
+    def __init__(self, covariates: typing.Optional[list[str]] = None, use_cache:bool=True, n_bats = typing.Optional[int], **kwargs):
         # position comprised of two covarietes: x,y
         self.n_bats = n_bats
         self.covariates = covariates or self.build_covariates_list()
         self.features = features_lib.covariates_to_features(self.covariates)
 
+        # TODO: this is unrelated to model
         self.X = None
         self.y = None
         self.X_train = None
@@ -31,6 +32,7 @@ class Model:
         self.gam_model = None
         self.score = None
         self.use_cache = use_cache
+        self.kwargs = kwargs
 
     # TODO: change to time-series split
     # TODO: this is unrelated to model
@@ -39,12 +41,15 @@ class Model:
         self.y = data['neuron']
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, test_size=0.5, random_state=1337)
 
+    # should get X_train, y_train
+    # deduce features list based on X_train columns (or get as argument)
     def train_model(self, data: pd.DataFrame):
+        # try loading from cache before traning...
         start_time = time.time()
         self.data = data
         self.split_train_test(data)
         self.formula = models_utils.build_formula(self.features)
-        self.gam_model = pygam.PoissonGAM(self.formula, max_iter=25)
+        self.gam_model = pygam.PoissonGAM(self.formula, **self.kwargs)
         self.gam_model.fit(self.X_train, self.y_train)
         self.is_trained = True
         print(f"training {(type(self).__name__)} in {time.time() - start_time:2f} seconds")
@@ -62,9 +67,6 @@ class Model:
     def shapley(self):
         results = train_submodels(self.__class__, self.features, self.data)
         shapley = calc_shapley_values(results)
-        print(results)
-        print(shapley)
-
     def generate_maps(self):
         pass
 

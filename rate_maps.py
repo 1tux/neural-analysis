@@ -21,7 +21,6 @@ def build_maps(dataprop):
         if f.dim() == 2:
             maps[f] = RateMap2D(dataprop, f)
 
-    maps["fr"] = FiringRate(dataprop)
     return maps
 
 class RateMap:
@@ -73,6 +72,7 @@ class RateMap1D(RateMap):
         return self.map_
 
     def plot(self, ax):
+        if ax is None: return
         ax.plot(self.axis[:-1], self.map_)
         # ax.set_title(f"FR: MAX={np.nanmax(result):.2f} Hz Mean={np.nanmean(result):.2f} Hz")
         ax.set_ylim(bottom=0)
@@ -94,7 +94,7 @@ class RateMap2D(RateMap):
         y_pos = self.dataprop.data[self.feature.covariates[1]]
         self.width, self.height = self.dataprop.net_dims
 
-        self.map_ = calculate_pos_ratemap(x_pos, y_pos, self.spikes_count,\
+        self.map_, self.not_enough_time_spent = calculate_pos_ratemap(x_pos, y_pos, self.spikes_count,\
         self.frame_rate, self.width, self.height, self.bin_size,\
         self.time_spent_threshold, self.filter_size, self.filter_sigma)
         self.mean_fr = np.nanmean(self.map_)
@@ -102,6 +102,7 @@ class RateMap2D(RateMap):
         return self.map_
 
     def plot(self, ax):
+        if ax is None: return
         min_ = 0
         max_ = np.nanquantile(self.map_, self.cutoff)
         bin_size = self.bin_size
@@ -117,25 +118,6 @@ class RateMap2D(RateMap):
 
         img = ax.imshow(self.map_.T, cmap='jet', vmin=min_, vmax=max_)
 
-def calculate_pos_map_wrapper(data, x_pos, y_pos):
-    spikes_count = data.spikes_count
-    frame_rate = Conf().FRAME_RATE
-    width, height = data.net_dims
-    bin_size = Conf().TWO_D_PLOT_BIN_SIZE
-    time_spent_threshold = Conf().TWO_D_TIME_SPENT_THRESHOLD
-    filter_size = Conf().GAUSSIAN_FILTER_SIZE
-    filter_sigma = Conf().GAUSSIAN_FILTER_SIGMA
-    map_ = calculate_pos_ratemap(x_pos, y_pos, spikes_count, frame_rate, width, height, 
-    bin_size, time_spent_threshold, filter_size, filter_sigma)
-    return map_
-
-def calculate_oned_map_wrapper(data, feature_value):
-    spikes_count = data.spikes_count
-    frame_rate = Conf().FRAME_RATE
-    bin_size = Conf().ONE_D_PLOT_BIN_SIZE
-    time_spent_threshold = Conf().ONE_D_TIME_SPENT_THRESHOLD
-    map_ = calculate_1d_ratemap(feature_value, spikes_count, frame_rate, bin_size, time_spent_threshold)
-    return map_
 
 def calculate_1d_ratemap(feature_value, spike_count,\
     frame_rate, bin_size, time_spent_threshold):
@@ -168,6 +150,9 @@ def calculate_pos_ratemap(x_pos, y_pos, spike_counts, \
     old_err_setting = np.seterr(divide='ignore', invalid='ignore')
     smoothed_result = smooth_spikes / smooth_time_spent
     np.seterr(**old_err_setting)
-    smoothed_result[time_spent < time_spent_threshold] = np.nan
 
-    return frame_rate * smoothed_result
+    not_enought_time_spent = time_spent < time_spent_threshold
+    smoothed_result[not_enought_time_spent] = np.nan
+
+
+    return frame_rate * smoothed_result, not_enought_time_spent

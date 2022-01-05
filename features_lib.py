@@ -1,9 +1,14 @@
+import pandas as pd
 from dataclasses import dataclass
 from enum import Enum
 import typing
 
 def get_feature_name(bat_name, feature_name):
     return f"BAT_{bat_name}_F_{feature_name}"
+
+def extract_bats_names(df: pd.DataFrame) -> typing.List[str]:
+    bats_names = pd.Series(df.columns.str.extract("BAT_(\d)_*", expand=False).unique()).dropna().values
+    return bats_names
 
 get_label_name = lambda: "neuron"
 

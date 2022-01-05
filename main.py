@@ -1,7 +1,7 @@
 import sys
 import pandas as pd
 from typing import List
-
+from sklearn.metrics import r2_score
 from conf import Conf
 from results import Results1
 
@@ -17,11 +17,21 @@ def get_best_model(sub_models: List[models.Model], data: pd.DataFrame) -> models
         model.train_model(data)
         model.evaulate()
 
-    # best model is the one with the highest score
-    best_model = sorted(sub_models, key=lambda i:i.score)[-1]
+    best_model = max(sub_models, key=lambda i:i.score)
     return best_model
 
+def memoize(f):
+    memory = {}
+    def inner(num):
+        if num not in memory:         
+            memory[num] = f(num)
+        return memory[num]
+  
+    return inner
+
+@memoize
 def pipeline1(neuron_id: int):
+    # cache_CACHE_FOLDER + "nid.pkl"
     # handles paths, supports raw data, simulated_data, csv, matlab...
     data = data_manager.Loader2()(neuron_id)
 
@@ -31,13 +41,14 @@ def pipeline1(neuron_id: int):
     results = Results1()
     results.dataprop = dataprop
     # TODO: split firing-rate map, to a differnet function.
-    results.rate_maps = rate_maps.build_maps(dataprop)
+    results.data_maps = rate_maps.build_maps(dataprop)
+    results.fr_map = rate_maps.FiringRate(dataprop)
 
     # setup models with some hyper-params
     sub_models = [
-    models.AlloModel(n_bats=dataprop.n_bats),
+    # models.AlloModel(n_bats=dataprop.n_bats, max_iter=30, fit_intercept=False),
     # models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y']),
-    # models.EgoModel(n_bats=dataprop.n_bats),
+    models.EgoModel(n_bats=dataprop.n_bats),
     # models.EgoModel(covariates=['BAT_1_F_A', 'BAT_1_F_D']),
     # models.PairModel()
     ]
@@ -45,13 +56,21 @@ def pipeline1(neuron_id: int):
     print("Top model:", type(best_model).__name__)
 
     results.models = sub_models
+    results.best_model = best_model
     # results.shap = best_model.shapley()
-    results.models_maps = model_maps.build_maps(dataprop, best_model)
+    results.models_maps = model_maps.build_maps(best_model, results.data_maps)
+    results.model_fr_map = model_maps.ModelFiringRate(dataprop, best_model)
     results.shuffles = best_model.run_shuffles()
 
-    results.process()
+    results.r2 = r2_score(results.fr_map.map_, results.model_fr_map.y)
+    print(results.r2)
+
     results.plot()
+
+    dataprop.store()
+    best_model.store()
     results.store()
+    return results
 
 # handle args
 # overwrite state
