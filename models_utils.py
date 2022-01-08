@@ -1,6 +1,8 @@
 from typing import List
 import functools
 import operator
+import itertools
+import math
 
 import features_lib
 import pygam
@@ -28,15 +30,6 @@ def build_formula(features):
     formula = functools.reduce(operator.add, map(feature_to_spline, features))
     return formula
 
-def features_to_covarietes(features):
-    raise
-    covariates = features[:]
-    for i, f in enumerate(covariates):
-        if "_POS" in f:
-            covariates[i] = covariates[i].replace("_POS", "_Y")
-            covariates.insert(i, covariates[i].replace("_Y", "_X"))
-    return covariates
-
 def powerset(iterable):
     "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
     s = list(iterable)
@@ -45,13 +38,15 @@ def powerset(iterable):
 def comb(n, k):
     return math.factorial(n) / math.factorial(k) / math.factorial(n - k)
 
-def train_submodels(model, features, data):
+def train_submodels(model, features, data, kwargs):
     subsets = powerset(features)
     d = {}
     for subset in subsets:
         if subset != ():
-            covariates = features_to_covarietes(list(subset))
-            new_gam = model(covariates)
+            covariates = features_lib.features_to_covariates(subset)
+            new_gam = model(covariates, **kwargs)
+            # TODO: copy hyperparameters from old model!
+
             new_gam.train_model(data)
             new_gam.evaulate()
             d[subset] = new_gam.gam_model.statistics_['pseudo_r2']['explained_deviance'] # new_gam.score
@@ -62,6 +57,7 @@ def calc_shapley_values(results):
     # the dictionary should contain the results of ALL subsets
 
     # output: a dictionary of shapley value per feature, scaled to 1.
+    # print(results)
 
     results[()] = 0  # not sure?
     features = sorted(list(results.keys())[::-1], key=lambda x: len(x))[-1]

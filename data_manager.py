@@ -55,6 +55,9 @@ class DataProp1(DataProp):
         self.remove_nans()
         self.add_pairwise_features()
 
+    def store(self):
+        pass
+
 class DataLoader:
     '''
         Handles paths and different file formats
@@ -69,6 +72,15 @@ class Loader1(DataLoader):
         return df
 
 class Loader2(DataLoader):
+    def __call__(self, nid: int) -> pd.DataFrame:
+        df = pd.read_csv(r"C:\Users\root34\Documents\university\MSc\Bat Lab\git\neural-analysis\inputs\b2305_d191220_simplified_behaviour.csv").drop(columns=['Unnamed: 0'])
+        neuron_path = r"C:\Users\root34\Documents\university\MSc\Bat Lab\git\neural-analysis\inputs\72_b2305_d191220_cell_analysis.mat"
+        d = h5py.File(neuron_path, "r")
+        spikes = np.array(d['cell_analysis']['spikes_per_frame']).T[0]
+        df['neuron'] = spikes
+        return df
+
+class Loader3(DataLoader):
     def __call__(self, nid: int) -> pd.DataFrame:
         df = pd.read_csv(r"C:\Users\itayy\Documents\Bat-Lab\data\behavioral_data\parsed\b2305_d191220_simplified_behaviour.csv").drop(columns=['Unnamed: 0'])
         neuron_path = r"Z:\for_Itay\20210506 - neurons\72_b2305_d191220_cell_analysis.mat"

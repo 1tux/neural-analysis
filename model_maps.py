@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 from conf import Conf
-import models
+from models import Model
 import features_lib
 import rate_maps
 
@@ -80,12 +80,12 @@ class ModelFiringRate:
         self.process()
 
     def process(self):
-        self.y = self.map_ = self.model.gam_model.predict(self.model.X) * Conf().FRAME_RATE
+        self.y = self.map_ = self.model.y_pred * Conf().FRAME_RATE
 
     def plot(self, ax):
         ax.plot(self.x, self.y, '.', markersize=1, alpha=0.5, label='test-firing-rates')
 
-def build_maps(model: models.Model, data_maps: rate_maps.RateMap) -> typing.List[ModelMap]:
+def build_maps(model: Model, data_maps: rate_maps.RateMap) -> typing.List[ModelMap]:
     maps = {}
     for feature_id, feature in enumerate(model.features):
         if feature.dim() == 1:

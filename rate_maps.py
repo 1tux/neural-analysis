@@ -32,7 +32,6 @@ class RateMap:
     def __init__(self, dataprop, feature: Optional[features_lib.Feature] = None):
         self.dataprop = dataprop
         self.feature = feature
-        self.feature_type = None
         self.map_ = None
         self.axis = None
         self.frame_rate = Conf().FRAME_RATE
@@ -48,8 +47,7 @@ class RateMap:
 class FiringRate(RateMap):
     def __init__(self, dataprop):
         super().__init__(dataprop)
-        self.feature_type = "fr"
-
+        
     def process(self):
         self.x = self.dataprop.no_nans_indices
         self.map_ = self.y = self.frame_rate * self.dataprop.firing_rate
@@ -76,8 +74,10 @@ class RateMap1D(RateMap):
         ax.plot(self.axis[:-1], self.map_)
         # ax.set_title(f"FR: MAX={np.nanmax(result):.2f} Hz Mean={np.nanmean(result):.2f} Hz")
         ax.set_ylim(bottom=0)
-        if self.feature_type in ["A", "HD"]:
+        if self.feature.type_ in [features_lib.FeatureType.A, features_lib.FeatureType.HD]:
             ax.set_xticks(np.arange(0, 360, 60))
+        peak_fr = np.nanmax(self.map_)
+        ax.set_title(f"{self.feature.name} - peak_fr {peak_fr:.3f} Hz")
         return np.nanmean(self.map_)
 
 class RateMap2D(RateMap):
@@ -117,7 +117,7 @@ class RateMap2D(RateMap):
         ax.set_yticklabels((y_plot_range * bin_size + bin_size / 2).round(1))
 
         img = ax.imshow(self.map_.T, cmap='jet', vmin=min_, vmax=max_)
-
+        ax.set_title(self.feature.name)
 
 def calculate_1d_ratemap(feature_value, spike_count,\
     frame_rate, bin_size, time_spent_threshold):

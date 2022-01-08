@@ -60,3 +60,8 @@ def covariates_to_features(covariates):
         f.type_ = FeatureType[f.name.split("_")[-1]]
         features.append(f)
     return features
+
+def features_to_covariates(features):
+    covarites = list(map(lambda f: list(f.covariates), features))
+    flat_covarites = [item for sublist in covarites for item in sublist]
+    return flat_covarites

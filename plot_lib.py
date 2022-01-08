@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 
 from conf import Conf
 import models
+
 class PlotGrid:
     def __init__(self, n_bats, model_type: models.Model):
         fig = plt.figure()
