@@ -1,9 +1,10 @@
 from __future__ import annotations
 import sys
+import numpy as np
 import pandas as pd
 from typing import List
 from sklearn.metrics import r2_score
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GroupKFold
 import functools
 
 from conf import Conf
@@ -21,7 +22,19 @@ def get_best_model(sub_models: List[models.Model], data: pd.DataFrame) -> models
     for model in sub_models:
         X = data[model.covariates]
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1337)
+
+        print("Splitting...")
+        groups = list(np.array(range(0, len(y))) // 250)
+        gen_groups = GroupKFold(n_splits=2).split(X, y, groups)
+        for g in gen_groups:
+            train_index, test_index = g
+            X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+            y_train, y_test = y[train_index], y[test_index]
+        print("Splitted!")
+
+        print("Training...")
         model.train_model(X_train, y_train)
+        print("Predicting...")
         model.y_pred = model.gam_model.predict(X)
         model.evaulate()
 
@@ -39,7 +52,9 @@ def plot_models(dataprop, data_maps, fr_map, sub_models: List[models.Model]):
 def pipeline1(neuron_id: int):
     # cache_CACHE_FOLDER + "nid.pkl"
     # handles paths, supports raw data, simulated_data, csv, matlab...
+    print("Loading Data...")
     data = data_manager.Loader2()(neuron_id)
+    print("Loaded!")
 
     # remove nans, scaling, feature-engineering
     dataprop = data_manager.DataProp1(data)
@@ -47,9 +62,10 @@ def pipeline1(neuron_id: int):
     results = Results1()
     results.dataprop = dataprop
     # TODO: split firing-rate map, to a differnet function.
+    print("Building Data Maps...")
     results.data_maps = rate_maps.build_maps(dataprop)
     results.fr_map = rate_maps.FiringRate(dataprop)
-
+    print("Data Maps Built!")
     # setup models with some hyper-params
     sub_models = [
     models.AlloModel(n_bats=dataprop.n_bats, max_iter=20, fit_intercept=False),
@@ -58,6 +74,7 @@ def pipeline1(neuron_id: int):
     models.EgoModel(covariates=['BAT_2_F_A', 'BAT_2_F_D'], max_iter=20),
     # models.PairModel()
     ]
+    print("Training and comparing Models....")
     best_model = get_best_model(sub_models, dataprop.data)
     print("Top model:", type(best_model).__name__)
 
