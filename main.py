@@ -4,11 +4,11 @@ import numpy as np
 import pandas as pd
 from typing import List
 from sklearn.metrics import r2_score
-from sklearn.model_selection import train_test_split, GroupKFold
+from sklearn.model_selection import train_test_split, GroupKFold, TimeSeriesSplit
 import functools
 
 from conf import Conf
-from results import Results1
+from results import Results
 import data_manager
 import models
 import plot_lib
@@ -19,13 +19,14 @@ import features_lib
 
 def get_best_model(sub_models: List[models.Model], data: pd.DataFrame) -> models.Model:
     y = data[features_lib.get_label_name()]
+    groups = list(np.array(range(0, len(y))) // Conf().TIME_BASED_GROUP_SPLIT)
     for model in sub_models:
         X = data[model.covariates]
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1337)
 
         print("Splitting...")
-        groups = list(np.array(range(0, len(y))) // 250)
         gen_groups = GroupKFold(n_splits=2).split(X, y, groups)
+        gen_groups = TimeSeriesSplit(gap=250, max_train_size=None, n_splits=2, test_size=None).split(X, y, groups)
         for g in gen_groups:
             train_index, test_index = g
             X_train, X_test = X.iloc[train_index], X.iloc[test_index]
@@ -59,7 +60,7 @@ def pipeline1(neuron_id: int):
     # remove nans, scaling, feature-engineering
     dataprop = data_manager.DataProp1(data)
 
-    results = Results1()
+    results = Results()
     results.dataprop = dataprop
     # TODO: split firing-rate map, to a differnet function.
     print("Building Data Maps...")
@@ -68,8 +69,8 @@ def pipeline1(neuron_id: int):
     print("Data Maps Built!")
     # setup models with some hyper-params
     sub_models = [
-    models.AlloModel(n_bats=dataprop.n_bats, max_iter=20, fit_intercept=False),
-    # models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_1_F_X', 'BAT_1_F_Y'], max_iter=30),
+    # models.AlloModel(n_bats=dataprop.n_bats, max_iter=20, fit_intercept=False),
+    models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_1_F_X', 'BAT_1_F_Y'], max_iter=20),
     # models.EgoModel(n_bats=dataprop.n_bats, max_iter=30),
     models.EgoModel(covariates=['BAT_2_F_A', 'BAT_2_F_D'], max_iter=20),
     # models.PairModel()

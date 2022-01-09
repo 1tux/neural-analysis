@@ -55,6 +55,7 @@ class DataProp1(DataProp):
         self.remove_nans()
         self.add_pairwise_features()
 
+
     def store(self):
         pass
 

@@ -16,11 +16,12 @@ Conf().DIMS_PER_NET = {
     "net3" : (50, 50)
 }
 Conf().ONE_D_PLOT_BIN_SIZE = 12
-Conf().ONE_D_TIME_SPENT_THRESHOLD = 13  # 0.520 second
+Conf().ONE_D_TIME_SPENT_THRESHOLD = 1 #13 # 0.520 second
 Conf().TWO_D_PLOT_BIN_SIZE = 3
-Conf().TWO_D_TIME_SPENT_THRESHOLD = 5
+Conf().TWO_D_TIME_SPENT_THRESHOLD = 1 # 5
 Conf().GAUSSIAN_FILTER_SIGMA = 2.5
 Conf().GAUSSIAN_FILTER_SIZE = 5 * (round(Conf().GAUSSIAN_FILTER_SIGMA) + 1)  # 3cm
 Conf().FRAME_RATE = 25
 Conf().TWO_D_PRECENTILE_CUTOFF = 0.975
 Conf().CACHE_FOLDER = "cache/"
+Conf().TIME_BASED_GROUP_SPLIT = Conf().FRAME_RATE * 25 # 25 seconds seems to be the correct time window to avoid autocorrelation

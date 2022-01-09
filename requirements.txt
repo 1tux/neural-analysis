@@ -4,3 +4,4 @@ pygam
 scipy
 matplotlib
 h5py
+statsmodels

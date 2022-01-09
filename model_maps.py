@@ -1,9 +1,9 @@
+from __future__ import annotations
 import typing
 import pandas as pd
 import numpy as np
 
 from conf import Conf
-from models import Model
 import features_lib
 import rate_maps
 
@@ -85,7 +85,7 @@ class ModelFiringRate:
     def plot(self, ax):
         ax.plot(self.x, self.y, '.', markersize=1, alpha=0.5, label='test-firing-rates')
 
-def build_maps(model: Model, data_maps: rate_maps.RateMap) -> typing.List[ModelMap]:
+def build_maps(model, data_maps: rate_maps.RateMap) -> typing.List[ModelMap]:
     maps = {}
     for feature_id, feature in enumerate(model.features):
         if feature.dim() == 1:

@@ -13,9 +13,7 @@ def create_pos_smoother(x_idx, y_idx):
 def create_distance_smoother(idx):
     return pygam.s(idx, n_splines=10)
 
-# TODO: fix pygam library to support circular constraints!
 def create_angle_smoother(idx):
-    return pygam.s(idx, n_splines=10)
     return pygam.s(idx, n_splines=10, constraints='circular')
 
 def build_formula(features):
@@ -34,9 +32,6 @@ def powerset(iterable):
     "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
     s = list(iterable)
     return list(itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(len(s)+1)))
-
-def comb(n, k):
-    return math.factorial(n) / math.factorial(k) / math.factorial(n - k)
 
 def train_submodels(model, features, data, kwargs):
     subsets = powerset(features)
@@ -68,7 +63,7 @@ def calc_shapley_values(results):
             if f not in k: continue
             with_f = k
             without_f = k[:k.index(f)] + k[k.index(f) + 1:]
-            scaling = comb(len(features) - 1, len(without_f))
+            scaling = math.comb(len(features) - 1, len(without_f))
             v += 1. / scaling * (results[with_f] - results[without_f])
         shapley[f] = v / len(features)
 
