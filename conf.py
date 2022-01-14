@@ -24,4 +24,4 @@ Conf().GAUSSIAN_FILTER_SIZE = 5 * (round(Conf().GAUSSIAN_FILTER_SIGMA) + 1)  # 3
 Conf().FRAME_RATE = 25
 Conf().TWO_D_PRECENTILE_CUTOFF = 0.975
 Conf().CACHE_FOLDER = "cache/"
-Conf().TIME_BASED_GROUP_SPLIT = Conf().FRAME_RATE * 25 # 25 seconds seems to be the correct time window to avoid autocorrelation
+Conf().TIME_BASED_GROUP_SPLIT = Conf().FRAME_RATE * 5 # 25 seconds seems to be the correct time window to avoid autocorrelation

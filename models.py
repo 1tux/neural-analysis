@@ -36,7 +36,6 @@ class Model:
     def plot(self, **kwargs):
         pass
 
-
     def train_model(self, X_train, y_train):
         # TODO: try loading from cache before traning...
         start_time = time.time()
@@ -68,7 +67,6 @@ class Model:
         pass
 
     def build_covariates_list(self):
-        print("are you mad?!")
         pass
 
 class AlloModel(Model):
