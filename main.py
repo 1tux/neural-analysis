@@ -49,6 +49,7 @@ def plot_models(dataprop, data_maps, fr_map, sub_models: List[models.Model]):
         model.plot(dataprop.n_bats, fr_map, model_fr_map, data_maps, my_model_maps)
         r2 = r2_score(fr_map.map_, model_fr_map.y)
         print("R^2 of the model:", r2)
+        model.gam_model.summary()
 
 def pipeline1(neuron_id: int):
     # cache_CACHE_FOLDER + "nid.pkl"
@@ -107,5 +108,5 @@ def main(args):
     pipeline1(nid)
 
 if __name__ == "__main__":
-    main([72])
+    main([61])
     # main(sys.argv[1:])
