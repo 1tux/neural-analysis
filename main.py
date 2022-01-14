@@ -8,9 +8,9 @@ from sklearn.model_selection import train_test_split, GroupKFold, TimeSeriesSpli
 import functools
 import shelve
 import copy
+import dataclasses
 
 from conf import Conf
-from results import Results
 import data_manager
 import models
 import store_results
@@ -18,17 +18,32 @@ import rate_maps
 import model_maps
 import features_lib
 
-def get_key_per_model(model, shuffle_index):
+@dataclasses.dataclass
+class Results:
+    def store(self):
+        pass
+
+# TODO: pass neuron_id instead of using global.
+def get_key_per_model(model: models.Model, shuffle_index: int) -> str:
+    '''
+        gets a model and deduce unique key for it to be extract and stored in cache.
+    '''
     model_type_str = model.__class__.__name__
     covariates_str = str(sorted(model.covariates))
     nid_str = str(nid)
     shuffle_index_str = str(shuffle_index)
     return "|".join([model_type_str, covariates_str, nid_str, shuffle_index_str])
 
-def train_model(model, data, shuffle_index=0):
+def train_model(model: models.Model, data: df.DataFrame, shuffle_index: int = 0):
+    '''
+        splits data using TimeSeriesSplit, chunks are based on autocorrealtion analysis -> to train/test.
+        shuffles if neccessary.
+        train a model and evalulate.
+        uses cache to save up time.
+
+    '''
     y = data[features_lib.get_label_name()]
-    if shuffle_index:
-        y = np.roll(y, shuffle_index)
+    y = np.roll(y, shuffle_index)
     groups = list(np.array(range(0, len(y))) // Conf().TIME_BASED_GROUP_SPLIT)
     X = data[model.covariates]
     d = shelve.open(Conf().CACHE_FOLDER + "models")
@@ -54,7 +69,7 @@ def train_model(model, data, shuffle_index=0):
         d[key] = model
     return d[key]
 
-def plot_models(dataprop, data_maps, fr_map, sub_models: List[models.Model]):
+def plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateMap], fr_map: rate_maps.FiringRate, sub_models: List[models.Model]):
     for model in sub_models:
         model_fr_map = model_maps.ModelFiringRate(dataprop, model)
         my_model_maps = model_maps.build_maps(model, data_maps)
@@ -93,13 +108,13 @@ def pipeline1(neuron_id: int):
     best_model = max(sub_models, key=lambda i:i.score)
     print("Top model:", type(best_model).__name__)
 
+    # run shuffles
     sub_models.append(train_model(copy.deepcopy(sub_models[1]), dataprop.data, 10000))
 
     results.models = sub_models
     # results.shap = best_model.shapley()
     # results.models_maps = model_maps.build_maps(best_model, results.data_maps)
     # results.model_fr_map = model_maps.ModelFiringRate(dataprop, best_model)
-    results.shuffles = best_model.run_shuffles()
 
     plot_models(dataprop, results.data_maps, results.fr_map, sub_models)
 

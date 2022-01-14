@@ -36,7 +36,7 @@ class Model:
     def plot(self, **kwargs):
         pass
 
-    def train_model(self, X_train, y_train):
+    def train_model(self, X_train: pd.DataFrame, y_train: pd.DataFrame):
         # TODO: try loading from cache before traning...
         start_time = time.time()
         self.formula = models_utils.build_formula(self.features)
@@ -60,12 +60,6 @@ class Model:
         shapley = models_utils.calc_shapley_values(results)
         return shapley
 
-    def generate_maps(self):
-        pass
-
-    def run_shuffles(self):
-        pass
-
     def build_covariates_list(self):
         pass
 
@@ -87,7 +81,7 @@ class AlloModel(Model):
 
         return covariates
 
-    def plot(self, n_bats, data_fr_map: rate_maps.FiringRate, model_fr_map: model_maps.ModelFiringRate,\
+    def plot(self, n_bats: int, data_fr_map: rate_maps.FiringRate, model_fr_map: model_maps.ModelFiringRate,\
     data_maps: typing.List[data_manager.DataMap], model_maps: typing.List[model_maps.ModelMap]):
 
         fig = plt.figure()
@@ -136,7 +130,7 @@ class EgoModel(Model):
             covariates.append(features_lib.get_feature_name(i, "D"))
         return covariates
 
-    def plot(self, n_bats, data_fr_map: rate_maps.FiringRate, model_fr_map: model_maps.ModelFiringRate,\
+    def plot(self, n_bats: int, data_fr_map: rate_maps.FiringRate, model_fr_map: model_maps.ModelFiringRate,\
     data_maps: typing.List[data_manager.DataMap], model_maps: typing.List[model_maps.ModelMap]):
 
         fig = plt.figure()

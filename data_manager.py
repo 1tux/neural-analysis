@@ -4,6 +4,7 @@ import h5py
 import typing
 from scipy.ndimage import gaussian_filter1d
 from dataclasses import dataclass
+import os.path
 
 from conf import Conf
 import features_lib
@@ -119,8 +120,8 @@ class Loader4(DataLoader):
 class Loader5(DataLoader):
     def __call__(self, nid: int) -> pd.DataFrame:
         day = neuron_id_to_day(nid)
-        df = pd.read_csv(fr"inputs\b2305_{day}_simplified_behaviour.csv").drop(columns=['Unnamed: 0'])
-        neuron_path = fr"inputs\{nid}_b2305_{day}_cell_analysis.mat"
+        df = pd.read_csv(os.path.join(Conf().INPUT_FOLDER, fr"b2305_{day}_simplified_behaviour.csv")).drop(columns=['Unnamed: 0'])
+        neuron_path = os.path.join(Conf().INPUT_FOLDER, fr"{nid}_b2305_{day}_cell_analysis.mat")
         d = h5py.File(neuron_path, "r")
         spikes = np.array(d['cell_analysis']['spikes_per_frame']).T[0]
         df['neuron'] = spikes

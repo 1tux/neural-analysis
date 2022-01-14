@@ -24,13 +24,13 @@ class ModelMap:
         self.scaled_map = None
         self.feature_type = None
         self.process()
-        self.scale_map()
+        # self.scale_map()
 
     def scale_map(self):
         rate_map_mean = np.nanmean(self.rate_map.map_)
         model_map_mean = np.nanmean(self.map_)
-        print("OLD>", self.feature.name, 1 / model_map_mean * rate_map_mean)
-        self.scaled_map = self.map_ # / model_map_mean * rate_map_mean # forces the means to be equal
+        # print("OLD>", self.feature.name, 1 / model_map_mean * rate_map_mean)
+        self.scaled_map = self.map_ / model_map_mean * rate_map_mean # forces the means to be equal
         return self.scaled_map
 
     def process(self):
@@ -88,7 +88,7 @@ class ModelFiringRate:
     def plot(self, ax):
         ax.plot(self.x, self.y, '.', markersize=1, alpha=0.5, label='test-firing-rates')
 
-def build_maps(model, data_maps: rate_maps.RateMap) -> typing.List[ModelMap]:
+def build_maps(model: models.Model, data_maps: rate_maps.RateMap) -> typing.List[ModelMap]:
     maps = {}
     for feature_id, feature in enumerate(model.features):
         if feature.dim() == 1:
@@ -96,20 +96,18 @@ def build_maps(model, data_maps: rate_maps.RateMap) -> typing.List[ModelMap]:
         elif feature.dim() == 2:
             maps[feature] = ModelMap2D(model, feature_id, feature, data_maps[feature])
 
-    # scaling: use all OTHER maps to scale each one.
     scale_maps(maps)
     return maps
 
-def scale_maps(maps):
+def scale_maps(maps: Dict[ModelMap]):
     keys = list(maps.keys())
     for key in keys:
         m = maps.pop(key)
         scale_map(m, maps)
         maps[key] = m
 
-def scale_map(my_map, other_maps):
+def scale_map(my_map: ModelMap, other_maps: Dict[ModelMap]):
     maps_means = list(map(lambda k: np.nanmean(other_maps[k].map_), other_maps))
     others_mean = functools.reduce(operator.mul, maps_means)
     my_map.scaled_map = my_map.map_ * others_mean * Conf().FRAME_RATE
-    print(my_map.feature.name, others_mean * Conf().FRAME_RATE)
-    return my_map.scaled_map
+    # print(my_map.feature.name, others_mean * Conf().FRAME_RATE)
