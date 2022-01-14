@@ -55,7 +55,7 @@ def pipeline1(neuron_id: int):
     # cache_CACHE_FOLDER + "nid.pkl"
     # handles paths, supports raw data, simulated_data, csv, matlab...
     print("Loading Data...")
-    data = data_manager.Loader2()(neuron_id)
+    data = data_manager.Loader4(neuron_id)
     print("Loaded!")
 
     # remove nans, scaling, feature-engineering
@@ -70,8 +70,8 @@ def pipeline1(neuron_id: int):
     print("Data Maps Built!")
     # setup models with some hyper-params
     sub_models = [
-    # models.AlloModel(n_bats=dataprop.n_bats, max_iter=20, fit_intercept=False),
-    models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_1_F_X', 'BAT_1_F_Y'], max_iter=20),
+    models.AlloModel(n_bats=dataprop.n_bats, max_iter=20, fit_intercept=False),
+    # models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_1_F_X', 'BAT_1_F_Y'], max_iter=20),
     # models.EgoModel(n_bats=dataprop.n_bats, max_iter=30),
     models.EgoModel(covariates=['BAT_2_F_A', 'BAT_2_F_D'], max_iter=20),
     # models.PairModel()
@@ -108,5 +108,6 @@ def main(args):
     pipeline1(nid)
 
 if __name__ == "__main__":
-    main([61])
-    # main(sys.argv[1:])
+    # main([72])
+    if len(sys.argv) == 1: sys.argv.append(72)
+    main(sys.argv[1:])

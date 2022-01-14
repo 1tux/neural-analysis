@@ -81,13 +81,13 @@ class DataLoader:
         pass
 
 class Loader1(DataLoader):
-    def __call__(self, nid: int) -> pd.DataFrame:
+    def __init__(self, nid: int) -> pd.DataFrame:
         df = pd.read_csv(r"C:\Users\root34\Documents\university\MSc\Bat Lab\git\neural-analysis\inputs\b2305_d191220_simplified_behaviour.csv").drop(columns=['Unnamed: 0'])
         df['neuron'] = pd.read_csv(r"C:\Users\root34\Documents\university\MSc\Bat Lab\git\neural-analysis\inputs\72_b2305_d191220.csv")['0']
         return df
 
 class Loader2(DataLoader):
-    def __call__(self, nid: int) -> pd.DataFrame:
+    def __init__(self, nid: int) -> pd.DataFrame:
         day = neuron_id_to_day(nid)
         df = pd.read_csv(fr"C:\Users\root34\Documents\university\MSc\Bat Lab\git\neural-analysis\inputs\b2305_{day}_simplified_behaviour.csv").drop(columns=['Unnamed: 0'])
         # neuron_path = fr"C:\Users\root34\Documents\university\MSc\Bat Lab\git\neural-analysis\inputs\{nid}_b2305_{day}_cell_analysis.mat"
@@ -98,9 +98,19 @@ class Loader2(DataLoader):
         return df
 
 class Loader3(DataLoader):
-    def __call__(self, nid: int) -> pd.DataFrame:
+    def __init__(self, nid: int) -> pd.DataFrame:
         df = pd.read_csv(r"C:\Users\itayy\Documents\Bat-Lab\data\behavioral_data\parsed\b2305_d191220_simplified_behaviour.csv").drop(columns=['Unnamed: 0'])
         neuron_path = r"Z:\for_Itay\20210506 - neurons\72_b2305_d191220_cell_analysis.mat"
+        d = h5py.File(neuron_path, "r")
+        spikes = np.array(d['cell_analysis']['spikes_per_frame']).T[0]
+        df['neuron'] = spikes
+        return df
+
+class Loader4(DataLoader):
+    def __init__(self, nid: int) -> pd.DataFrame:
+        day = neuron_id_to_day(nid)
+        df = pd.read_csv(fr"C:\Users\itayy.WISMAIN\data\MSc\behavioral\b2305_{day}_simplified_behaviour.csv").drop(columns=['Unnamed: 0'])
+        neuron_path = fr"C:\Users\itayy.WISMAIN\data\MSc\neural\{nid}_b2305_{day}_cell_analysis.mat"
         d = h5py.File(neuron_path, "r")
         spikes = np.array(d['cell_analysis']['spikes_per_frame']).T[0]
         df['neuron'] = spikes

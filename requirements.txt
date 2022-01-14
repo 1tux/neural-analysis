@@ -5,3 +5,5 @@ scipy
 matplotlib
 h5py
 statsmodels
+jupyter
+jupyterlab
