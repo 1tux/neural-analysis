@@ -73,7 +73,7 @@ class RateMap1D(RateMap):
         if ax is None: return
         ax.plot(self.axis[:-1], self.map_)
         # ax.set_title(f"FR: MAX={np.nanmax(result):.2f} Hz Mean={np.nanmean(result):.2f} Hz")
-        ax.set_ylim(bottom=0)
+        # ax.set_ylim(bottom=0)
         if self.feature.type_ in [features_lib.FeatureType.A, features_lib.FeatureType.HD]:
             ax.set_xticks(np.arange(0, 360, 60))
         peak_fr = np.nanmax(self.map_)

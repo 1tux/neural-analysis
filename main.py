@@ -13,7 +13,6 @@ from conf import Conf
 from results import Results
 import data_manager
 import models
-import plot_lib
 import store_results
 import rate_maps
 import model_maps
@@ -62,7 +61,7 @@ def plot_models(dataprop, data_maps, fr_map, sub_models: List[models.Model]):
         model.plot(dataprop.n_bats, fr_map, model_fr_map, data_maps, my_model_maps)
         r2 = r2_score(fr_map.map_, model_fr_map.y)
         print("R^2 of the model:", r2)
-        model.gam_model.summary()
+        # model.gam_model.summary()
 
 def pipeline1(neuron_id: int):
     # cache_CACHE_FOLDER + "nid.pkl"
@@ -86,7 +85,7 @@ def pipeline1(neuron_id: int):
     models.AlloModel(n_bats=dataprop.n_bats, max_iter=25, fit_intercept=False),
     # models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_1_F_X', 'BAT_1_F_Y'], max_iter=20),
     # models.EgoModel(n_bats=dataprop.n_bats, max_iter=30),
-    models.EgoModel(covariates=['BAT_2_F_A', 'BAT_2_F_D'], max_iter=25),
+    models.EgoModel(covariates=['BAT_2_F_A', 'BAT_2_F_D'], max_iter=25, fit_intercept=False),
     # models.PairModel()
     ]
     print("Training and comparing Models....")
