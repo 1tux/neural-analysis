@@ -87,7 +87,11 @@ class Loader1(DataLoader):
         return df
 
 class Loader2(DataLoader):
+<<<<<<< HEAD
     def __init__(self, nid: int) -> pd.DataFrame:
+=======
+    def __call__(self, nid: int) -> pd.DataFrame:
+>>>>>>> f3449dbcf045548f0b4b692a224fb3f021089b05
         day = neuron_id_to_day(nid)
         df = pd.read_csv(fr"C:\Users\root34\Documents\university\MSc\Bat Lab\git\neural-analysis\inputs\b2305_{day}_simplified_behaviour.csv").drop(columns=['Unnamed: 0'])
         # neuron_path = fr"C:\Users\root34\Documents\university\MSc\Bat Lab\git\neural-analysis\inputs\{nid}_b2305_{day}_cell_analysis.mat"

@@ -108,6 +108,11 @@ def main(args):
     pipeline1(nid)
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     # main([72])
     if len(sys.argv) == 1: sys.argv.append(72)
     main(sys.argv[1:])
+=======
+    main([61])
+    # main(sys.argv[1:])
+>>>>>>> f3449dbcf045548f0b4b692a224fb3f021089b05
