@@ -16,6 +16,7 @@ def create_distance_smoother(idx):
 def create_angle_smoother(idx):
     return pygam.s(idx, n_splines=10, constraints='circular')
 
+
 def build_formula(features):
     # features = features_lib.covariates_to_features(covariates)
     feature_type_to_spline_map = {

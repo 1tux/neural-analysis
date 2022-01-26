@@ -43,11 +43,15 @@ def train_model(model: models.Model, data: df.DataFrame, shuffle_index: int = 0)
         uses cache to save up time.
 
     '''
+    model.shuffle_index = shuffle_index
     y = data[features_lib.get_label_name()]
     y = np.roll(y, shuffle_index)
     groups = list(np.array(range(0, len(y))) // Conf().TIME_BASED_GROUP_SPLIT)
     X = data[model.covariates]
-    d = shelve.open(Conf().CACHE_FOLDER + "models")
+    if Conf().USE_CACHE:
+        d = shelve.open(Conf().CACHE_FOLDER + "models")
+    else:
+        d = {}
     key = get_key_per_model(model, shuffle_index)
     if key not in d:
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1337)
@@ -59,7 +63,6 @@ def train_model(model: models.Model, data: df.DataFrame, shuffle_index: int = 0)
             train_index, test_index = g
             X_train, X_test = X.iloc[train_index], X.iloc[test_index]
             y_train, y_test = y[train_index], y[test_index]
-            # break
         print("Splitted!")
 
         print("Training...")
@@ -110,6 +113,7 @@ def pipeline1(neuron_id: int):
     print("Top model:", type(best_model).__name__)
 
     # run shuffles
+    # TODO: recalculate data-firing-rate-map with shuffles!
     sub_models.append(train_model(copy.deepcopy(sub_models[-1]), dataprop.data, 10000))
 
     results.models = sub_models
@@ -141,4 +145,6 @@ def main(args):
 
 if __name__ == "__main__":
     if len(sys.argv) == 1: sys.argv.append(72)
+    if sys.argv[2] == "no-cache": Conf().USE_CACHE = False
+    print(sys.argv)
     main(sys.argv[1:])

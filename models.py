@@ -22,7 +22,8 @@ class Model:
         # self.y_test = None
         self.y_pred = None
         self.is_trained = False
-
+        self.shuffle_index = 0
+        
         self.formula = None
         self.train_test_ratio = Conf().TRAIN_TEST_RATIO
         self.gam_model = None
