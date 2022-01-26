@@ -97,18 +97,23 @@ def build_maps(model: models.Model, data_maps: rate_maps.RateMap) -> typing.List
         elif feature.dim() == 2:
             maps[feature] = ModelMap2D(model, feature_id, feature, data_maps[feature])
 
-    scale_maps(maps)
+    if model.gam_model.fit_intercept:
+        intercept = model.gam_model.link.mu(model.gam_model.coef_[-1], dist=None)
+    else:
+        intercept = 1
+
+    scale_maps(maps, intercept)
     return maps
 
-def scale_maps(maps: Dict[ModelMap]):
+def scale_maps(maps: Dict[ModelMap], intercept=1):
     keys = list(maps.keys())
     for key in keys:
         m = maps.pop(key)
-        scale_map(m, maps)
+        scale_map(m, maps, intercept)
         maps[key] = m
 
-def scale_map(my_map: ModelMap, other_maps: Dict[ModelMap]):
-    maps_means = list(map(lambda k: np.nanmean(other_maps[k].map_), other_maps))
+def scale_map(my_map: ModelMap, other_maps: Dict[ModelMap], intercept=1):
+    maps_means = list(map(lambda k: np.nanmean(other_maps[k].map_), other_maps)) + [intercept]
     others_mean = functools.reduce(operator.mul, maps_means)
     my_map.scaled_map = my_map.map_ * others_mean * Conf().FRAME_RATE
     # print(my_map.feature.name, others_mean * Conf().FRAME_RATE)

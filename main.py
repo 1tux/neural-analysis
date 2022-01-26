@@ -100,8 +100,8 @@ def pipeline1(neuron_id: int):
     sub_models = [
     models.AlloModel(n_bats=dataprop.n_bats, max_iter=25, fit_intercept=True),
     # models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_1_F_X', 'BAT_1_F_Y'], max_iter=20),
-    models.EgoModel(n_bats=dataprop.n_bats, max_iter=30, fit_intercept=True),
-    # models.EgoModel(covariates=['BAT_2_F_A', 'BAT_2_F_D'], max_iter=25, fit_intercept=False),
+    # models.EgoModel(n_bats=dataprop.n_bats, max_iter=30, fit_intercept=False),
+    models.EgoModel(covariates=['BAT_2_F_A', 'BAT_2_F_D'], max_iter=25, fit_intercept=True),
     # models.PairModel()
     ]
     print("Training and comparing Models....")
@@ -110,7 +110,7 @@ def pipeline1(neuron_id: int):
     print("Top model:", type(best_model).__name__)
 
     # run shuffles
-    sub_models.append(train_model(copy.deepcopy(sub_models[1]), dataprop.data, 10000))
+    sub_models.append(train_model(copy.deepcopy(sub_models[-1]), dataprop.data, 10000))
 
     results.models = sub_models
     # results.shap = best_model.shapley()

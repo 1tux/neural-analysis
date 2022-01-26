@@ -5,5 +5,6 @@ cache/*
 imgs/*
 inputs/*
 
+!cache/
 !inputs/72_b2305_d191220.csv
 !inputs/b2305_d191220_simplified_behaviour.csv
