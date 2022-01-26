@@ -45,12 +45,18 @@ class RateMap:
         pass
 
 class FiringRate(RateMap):
-    def __init__(self, dataprop):
-        super().__init__(dataprop)
-        
+    def __init__(self, spikes_count, no_nans_indices):
+        # super().__init__(dataprop)
+        self.spikes_count = spikes_count
+        self.x = no_nans_indices
+        self.frame_rate = Conf().FRAME_RATE
+    
+    @staticmethod
+    def calc_firing_rate(spikes_count, filter_width) -> np.array:
+        return np.convolve(spikes_count, [1] * filter_width, mode='same') / filter_width  
+
     def process(self):
-        self.x = self.dataprop.no_nans_indices
-        self.map_ = self.y = self.frame_rate * self.dataprop.firing_rate
+        self.map_ = self.y = self.frame_rate * FiringRate.calc_firing_rate(self.spikes_count, Conf().TIME_BASED_GROUP_SPLIT)
 
     def plot(self, ax):
         ax.plot(self.x, self.y, '.', markersize=1, alpha=0.5, label='test-firing-rates')

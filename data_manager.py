@@ -29,12 +29,7 @@ class DataProp:
         For example, the number of bats, or the relevant net we studying.
     '''
     def __call__(self):
-        pass
-
-    def calc_firing_rate(self, filter_width) -> np.array:
-        self.firing_rate = np.convolve(self.spikes_count, [1] * filter_width, mode='same') / filter_width
-        # self.firing_rate = gaussian_filter1d(self.spikes_count, 30)
-        return self.firing_rate    
+        pass  
 
     def remove_nans(self):
         no_nans = self.data.dropna()
@@ -61,7 +56,7 @@ class DataProp1(DataProp):
         # handle label
         self.spikes_count = self.data[features_lib.get_label_name()]
         self.orig_spikes_count = self.orig_data[features_lib.get_label_name()]
-        self.calc_firing_rate(Conf().TIME_BASED_GROUP_SPLIT)
+        # self.firing_rate = calc_firing_rate(self.spikes_count, Conf().TIME_BASED_GROUP_SPLIT)
 
         self.covariates = self.data.drop(columns=[features_lib.get_label_name()]).columns.to_list()
         self.features = features_lib.covariates_to_features(self.covariates)

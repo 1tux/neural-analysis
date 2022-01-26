@@ -73,10 +73,12 @@ def train_model(model: models.Model, data: df.DataFrame, shuffle_index: int = 0)
         d[key] = model
     return d[key]
 
-def plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateMap], fr_map: rate_maps.FiringRate, sub_models: List[models.Model]):
+def plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateMap], sub_models: List[models.Model]):
     for model in sub_models:
         model_fr_map = model_maps.ModelFiringRate(dataprop, model)
         my_model_maps = model_maps.build_maps(model, data_maps)
+        fr_map = rate_maps.FiringRate(np.roll(dataprop.spikes_count, model.shuffle_index), dataprop.no_nans_indices)
+        fr_map.process()
         model.plot(dataprop.n_bats, fr_map, model_fr_map, data_maps, my_model_maps)
         r2 = r2_score(fr_map.map_, model_fr_map.y)
         print("R^2 of the model:", r2)
@@ -97,7 +99,7 @@ def pipeline1(neuron_id: int):
     # TODO: split firing-rate map, to a differnet function.
     print("Building Data Maps...")
     results.data_maps = rate_maps.build_maps(dataprop)
-    results.fr_map = rate_maps.FiringRate(dataprop)
+    results.fr_map = rate_maps.FiringRate(dataprop.spikes_count, dataprop.no_nans_indices)
     print("Data Maps Built!")
     # setup models with some hyper-params
     sub_models = [
@@ -121,7 +123,7 @@ def pipeline1(neuron_id: int):
     # results.models_maps = model_maps.build_maps(best_model, results.data_maps)
     # results.model_fr_map = model_maps.ModelFiringRate(dataprop, best_model)
 
-    plot_models(dataprop, results.data_maps, results.fr_map, sub_models)
+    plot_models(dataprop, results.data_maps, sub_models)
 
     if 'shap' in dir(results):
         print("SHAP for best model:")
@@ -145,6 +147,6 @@ def main(args):
 
 if __name__ == "__main__":
     if len(sys.argv) == 1: sys.argv.append(72)
-    if sys.argv[2] == "no-cache": Conf().USE_CACHE = False
+    if len(sys.argv) == 3 and sys.argv[2] == "no-cache": Conf().USE_CACHE = False
     print(sys.argv)
     main(sys.argv[1:])
