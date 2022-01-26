@@ -28,6 +28,7 @@ def get_key_per_model(model: models.Model, shuffle_index: int) -> str:
     '''
         gets a model and deduce unique key for it to be extract and stored in cache.
     '''
+    global nid
     model_type_str = model.__class__.__name__
     covariates_str = str(sorted(model.covariates))
     nid_str = str(nid)
@@ -97,10 +98,10 @@ def pipeline1(neuron_id: int):
     print("Data Maps Built!")
     # setup models with some hyper-params
     sub_models = [
-    models.AlloModel(n_bats=dataprop.n_bats, max_iter=25, fit_intercept=False),
+    models.AlloModel(n_bats=dataprop.n_bats, max_iter=25, fit_intercept=True),
     # models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_1_F_X', 'BAT_1_F_Y'], max_iter=20),
-    # models.EgoModel(n_bats=dataprop.n_bats, max_iter=30),
-    models.EgoModel(covariates=['BAT_2_F_A', 'BAT_2_F_D'], max_iter=25, fit_intercept=False),
+    models.EgoModel(n_bats=dataprop.n_bats, max_iter=30, fit_intercept=True),
+    # models.EgoModel(covariates=['BAT_2_F_A', 'BAT_2_F_D'], max_iter=25, fit_intercept=False),
     # models.PairModel()
     ]
     print("Training and comparing Models....")

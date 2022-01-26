@@ -26,6 +26,7 @@ class ModelMap:
         self.process()
         # self.scale_map()
 
+    # deprecated, remove!
     def scale_map(self):
         rate_map_mean = np.nanmean(self.rate_map.map_)
         model_map_mean = np.nanmean(self.map_)
