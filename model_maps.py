@@ -76,6 +76,8 @@ class ModelMap2D(ModelMap):
     def plot(self, ax):
         ax.clear()
         ax.imshow(self.scaled_map.T, cmap='jet')
+        peak_fr = np.nanmax(self.scaled_map)
+        ax.set_title(f"peak_fr {peak_fr:.3f} Hz")
 
 class ModelFiringRate:
     def __init__(self, dataprop, model):

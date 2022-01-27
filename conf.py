@@ -27,3 +27,4 @@ Conf().CACHE_FOLDER = "cache/"
 Conf().TIME_BASED_GROUP_SPLIT = Conf().FRAME_RATE * 5 # 25 seconds seems to be the correct time window to avoid autocorrelation
 Conf().INPUT_FOLDER = "inputs/"
 Conf().USE_CACHE = True
+Conf().TO_PLOT = True

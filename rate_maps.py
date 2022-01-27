@@ -123,7 +123,9 @@ class RateMap2D(RateMap):
         ax.set_yticklabels((y_plot_range * bin_size + bin_size / 2).round(1))
 
         img = ax.imshow(self.map_.T, cmap='jet', vmin=min_, vmax=max_)
-        ax.set_title(self.feature.name)
+        # ax.set_title(self.feature.name)
+        peak_fr = np.nanmax(self.map_)
+        ax.set_title(f"{self.feature.name}\npeak_fr {peak_fr:.3f} Hz")
 
 def calculate_1d_ratemap(feature_value, spike_count,\
     frame_rate, bin_size, time_spent_threshold):

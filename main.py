@@ -17,25 +17,14 @@ import store_results
 import rate_maps
 import model_maps
 import features_lib
+import models_utils
 
 @dataclasses.dataclass
 class Results:
     def store(self):
         pass
 
-# TODO: pass neuron_id instead of using global.
-def get_key_per_model(model: models.Model, shuffle_index: int) -> str:
-    '''
-        gets a model and deduce unique key for it to be extract and stored in cache.
-    '''
-    global nid
-    model_type_str = model.__class__.__name__
-    covariates_str = str(sorted(model.covariates))
-    nid_str = str(nid)
-    shuffle_index_str = str(shuffle_index)
-    return "|".join([model_type_str, covariates_str, nid_str, shuffle_index_str])
-
-def train_model(model: models.Model, data: df.DataFrame, shuffle_index: int = 0):
+def train_model(neuron_id: int, model: models.Model, data: df.DataFrame, shuffle_index: int = 0):
     '''
         splits data using TimeSeriesSplit, chunks are based on autocorrealtion analysis -> to train/test.
         shuffles if neccessary.
@@ -44,16 +33,18 @@ def train_model(model: models.Model, data: df.DataFrame, shuffle_index: int = 0)
 
     '''
     model.shuffle_index = shuffle_index
+    model.neuron_id = neuron_id
+
     y = data[features_lib.get_label_name()]
     y = np.roll(y, shuffle_index)
     groups = list(np.array(range(0, len(y))) // Conf().TIME_BASED_GROUP_SPLIT)
     X = data[model.covariates]
     if Conf().USE_CACHE:
-        d = shelve.open(Conf().CACHE_FOLDER + "models")
+        cache = shelve.open(Conf().CACHE_FOLDER + "models")
     else:
-        d = {}
-    key = get_key_per_model(model, shuffle_index)
-    if key not in d:
+        cache = {}
+    cache_key = models_utils.get_key_per_model(model)
+    if cache_key not in cache:
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1337)
 
         print("Splitting...")
@@ -69,26 +60,34 @@ def train_model(model: models.Model, data: df.DataFrame, shuffle_index: int = 0)
         model.train_model(X_train, y_train)
         print("Predicting...")
         model.y_pred = model.gam_model.predict(X)
-        model.evaulate()
-        d[key] = model
-    return d[key]
+        model.evaulate(X, y)
+        cache[cache_key] = model
+    cache[cache_key].evaulate(X, y)
+    return cache[cache_key]
 
 def plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateMap], sub_models: List[models.Model]):
     for model in sub_models:
         model_fr_map = model_maps.ModelFiringRate(dataprop, model)
         my_model_maps = model_maps.build_maps(model, data_maps)
+
         fr_map = rate_maps.FiringRate(np.roll(dataprop.spikes_count, model.shuffle_index), dataprop.no_nans_indices)
         fr_map.process()
+
         model.plot(dataprop.n_bats, fr_map, model_fr_map, data_maps, my_model_maps)
         r2 = r2_score(fr_map.map_, model_fr_map.y)
         print("R^2 of the model:", r2)
         # model.gam_model.summary()
 
+def print_models_stats(sub_models: List[models.Model]):
+    for model in sub_models:
+        for c in ["loglikelihood", "edof", "AIC", "AICc", "UBRE"]:
+            print(f"{c}: {model.gam_model.statistics_[c]}")
+        print(f"pR^2: {model.gam_model.statistics_['pseudo_r2']['explained_deviance']}")
+
 def pipeline1(neuron_id: int):
-    # cache_CACHE_FOLDER + "nid.pkl"
     # handles paths, supports raw data, simulated_data, csv, matlab...
     print("Loading Data...")
-    data = data_manager.Loader5()(neuron_id)
+    data = data_manager.Loader4()(neuron_id)
     print("Loaded!")
 
     # remove nans, scaling, feature-engineering
@@ -110,20 +109,22 @@ def pipeline1(neuron_id: int):
     # models.PairModel()
     ]
     print("Training and comparing Models....")
-    sub_models = [train_model(model, dataprop.data) for model in sub_models]
+    sub_models = [train_model(neuron_id, model, dataprop.data) for model in sub_models]
     best_model = max(sub_models, key=lambda i:i.score)
     print("Top model:", type(best_model).__name__)
 
     # run shuffles
     # TODO: recalculate data-firing-rate-map with shuffles!
-    sub_models.append(train_model(copy.deepcopy(sub_models[-1]), dataprop.data, 10000))
+    sub_models.append(train_model(neuron_id, copy.deepcopy(sub_models[-1]), dataprop.data, 10000))
 
     results.models = sub_models
     # results.shap = best_model.shapley()
     # results.models_maps = model_maps.build_maps(best_model, results.data_maps)
     # results.model_fr_map = model_maps.ModelFiringRate(dataprop, best_model)
 
-    plot_models(dataprop, results.data_maps, sub_models)
+    if Conf().TO_PLOT:
+        plot_models(dataprop, results.data_maps, sub_models)
+    print_models_stats(sub_models)
 
     if 'shap' in dir(results):
         print("SHAP for best model:")
@@ -141,12 +142,14 @@ def pipeline1(neuron_id: int):
 # execute model over arguments
 # chooses one of the implemented pipelines to execute
 def main(args):
-    global nid
-    nid = int(args[0])
-    pipeline1(nid)
+    Conf().nid = int(args[0])
+    if "no-cache" in args:
+        Conf().USE_CACHE = False
+    if "no-plot" in args:
+        Conf().TO_PLOT = False
+    Conf().nid = int(args[0])
+    pipeline1(Conf().nid)
 
 if __name__ == "__main__":
     if len(sys.argv) == 1: sys.argv.append(72)
-    if len(sys.argv) == 3 and sys.argv[2] == "no-cache": Conf().USE_CACHE = False
-    print(sys.argv)
     main(sys.argv[1:])

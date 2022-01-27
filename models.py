@@ -23,7 +23,8 @@ class Model:
         self.y_pred = None
         self.is_trained = False
         self.shuffle_index = 0
-        
+        self.neuron_id = None
+
         self.formula = None
         self.train_test_ratio = Conf().TRAIN_TEST_RATIO
         self.gam_model = None
@@ -50,9 +51,11 @@ class Model:
         # print(self.gam_model.statistics_)
 
     # TODO: implement DIC / WAIC to account for model's complexity
-    def evaulate(self):
+    def evaulate(self, X, y):
         assert self.is_trained
         self.score = self.gam_model.statistics_['loglikelihood']
+        cache = models_utils.get_key_per_model(self)
+        
 
     # retrain sub-models over all the covariets
     # estimate shapley values
