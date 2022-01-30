@@ -5,6 +5,7 @@ import pygam
 import time
 import typing
 import matplotlib.pyplot as plt
+import shelve 
 
 import models_utils
 import features_lib
@@ -54,8 +55,17 @@ class Model:
     def evaulate(self, X, y):
         assert self.is_trained
         self.score = self.gam_model.statistics_['loglikelihood']
-        cache = models_utils.get_key_per_model(self)
-        
+        cache_key = models_utils.get_key_per_model(self)
+        if Conf().USE_CACHE:
+            cache = shelve.open(Conf().CACHE_FOLDER + "samples")
+        else:
+            cache = {}
+        if cache_key not in cache:
+            cache[cache_key] = None
+        samples = cache[cache_key]
+
+        # estimate DIC score
+
 
     # retrain sub-models over all the covariets
     # estimate shapley values

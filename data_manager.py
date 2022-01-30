@@ -121,3 +121,20 @@ class Loader5(DataLoader):
         spikes = np.array(d['cell_analysis']['spikes_per_frame']).T[0]
         df['neuron'] = spikes
         return df
+
+class Loader6(DataLoader):
+    def __call__(self, nid: int) -> pd.DataFrame:
+        if nid < 1000:
+            return Loader4()(nid)
+
+        day = f"d1912{20 + (nid // 1000 - 1)}"
+        simulated_list = ['A_place_cell.csv', 'HD_place_cell.csv', 'pairwise_distance1,2_cell.csv', 'pairwise_distance1,3_cell.csv', 'pairwise_distance1,4_cell.csv', 'pairwise_distance2,3_cell.csv', 'pairwise_distance2,4_cell.csv', 'pairwise_distance3,4_cell.csv', 'place_distance1_cell.csv', 'place_distance2_cell.csv', 'place_distance3_cell.csv', 'place_distance4_cell.csv', 'randomly_firing_cell.csv']
+        file_name = simulated_list[nid % len(simulated_list)]
+        print(day, file_name)
+        behavioral_path = os.path.join(Conf().INPUT_FOLDER, fr"b2305_{day}_simplified_behaviour.csv")
+        neuron_path = fr"C:\Users\itayy.WISMAIN\data\MSc\neural\simulated\simulated_neural_data - {day}\{file_name}"
+
+        df = pd.read_csv(behavioral_path).drop(columns=['Unnamed: 0']) 
+        spikes = pd.read_csv(neuron_path)['0']
+        df['neuron'] = spikes
+        return df
