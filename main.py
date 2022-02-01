@@ -3,7 +3,7 @@ import sys
 import numpy as np
 import pandas as pd
 from typing import List
-from sklearn.metrics import r2_score
+from sklearn.metrics import mean_poisson_deviance, d2_tweedie_score
 from sklearn.model_selection import train_test_split, GroupKFold, TimeSeriesSplit
 import functools
 import shelve
@@ -47,14 +47,14 @@ def train_model(neuron_id: int, model: models.Model, data: df.DataFrame, shuffle
     if cache_key not in cache:
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1337)
 
-        print("Splitting...")
-        gen_groups = GroupKFold(n_splits=2).split(X, y, groups)
-        gen_groups = TimeSeriesSplit(gap=Conf().TIME_BASED_GROUP_SPLIT, max_train_size=None, n_splits=2, test_size=None).split(X, y, groups)
-        for g in gen_groups:
-            train_index, test_index = g
-            X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-            y_train, y_test = y[train_index], y[test_index]
-        print("Splitted!")
+        # print("Splitting...")
+        # gen_groups = GroupKFold(n_splits=2).split(X, y, groups)
+        # gen_groups = TimeSeriesSplit(gap=Conf().TIME_BASED_GROUP_SPLIT, max_train_size=None, n_splits=2, test_size=None).split(X, y, groups)
+        # for g in gen_groups:
+        #    train_index, test_index = g
+        #    X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+        #    y_train, y_test = y[train_index], y[test_index]
+        # print("Splitted!")
 
         print("Training...")
         model.train_model(X_train, y_train)
@@ -65,6 +65,22 @@ def train_model(neuron_id: int, model: models.Model, data: df.DataFrame, shuffle
     cache[cache_key].evaulate(X, y)
     return cache[cache_key]
 
+def calc_maps_and_plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateMap], sub_models: List[models.Model]):
+    for model in sub_models:
+        model_fr_map = model_maps.ModelFiringRate(dataprop, model)
+        my_model_maps = model_maps.build_maps(model, data_maps)
+
+        fr_map = rate_maps.FiringRate(np.roll(dataprop.spikes_count, model.shuffle_index), dataprop.no_nans_indices)
+        fr_map.process()
+        mpd = mean_poisson_deviance(fr_map.map_, model_fr_map.y)
+        dev = d2_tweedie_score(fr_map.map_, model_fr_map.y)
+        print("Mean Poisson Deviance of the model:", mpd)
+        print("deviance score", dev)
+        if Conf().TO_PLOT:
+            model.plot(dataprop.n_bats, fr_map, model_fr_map, data_maps, my_model_maps)
+            print(model.gam_model.summary())
+            print(model.gam_model.logs_['deviance'])
+
 def plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateMap], sub_models: List[models.Model]):
     for model in sub_models:
         model_fr_map = model_maps.ModelFiringRate(dataprop, model)
@@ -74,8 +90,8 @@ def plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateM
         fr_map.process()
 
         model.plot(dataprop.n_bats, fr_map, model_fr_map, data_maps, my_model_maps)
-        r2 = r2_score(fr_map.map_, model_fr_map.y)
-        print("R^2 of the model:", r2)
+        # r2 = r2_score(fr_map.map_, model_fr_map.y)
+        # print("R^2 of the model:", r2)
         # model.gam_model.summary()
 
 def print_models_stats(sub_models: List[models.Model]):
@@ -86,8 +102,13 @@ def print_models_stats(sub_models: List[models.Model]):
 
 def pipeline1(neuron_id: int):
     # handles paths, supports raw data, simulated_data, csv, matlab...
-    print("Loading Data...")
-    data = data_manager.Loader6()(neuron_id)
+    print(f"Loading Data [{neuron_id}]...")
+    try:
+        data = data_manager.Loader6()(neuron_id)
+    except FileNotFoundError:
+        print("File not found")
+        return
+
     print("Loaded!")
 
     # remove nans, scaling, feature-engineering
@@ -102,9 +123,9 @@ def pipeline1(neuron_id: int):
     print("Data Maps Built!")
     # setup models with some hyper-params
     sub_models = [
-    models.AlloModel(n_bats=dataprop.n_bats, max_iter=25, fit_intercept=True),
+    models.AlloModel(n_bats=dataprop.n_bats, max_iter=25, fit_intercept=True, lam=1),
     # models.AlloModel(covariates=['BAT_0_F_HD', 'BAT_1_F_X', 'BAT_1_F_Y'], max_iter=20),
-    models.EgoModel(n_bats=dataprop.n_bats, max_iter=25, fit_intercept=True),
+    models.EgoModel(n_bats=dataprop.n_bats, max_iter=25, fit_intercept=True, lam=1),
     # models.EgoModel(covariates=['BAT_2_F_A', 'BAT_2_F_D'], max_iter=25, fit_intercept=True),
     # models.PairModel()
     ]
@@ -121,8 +142,7 @@ def pipeline1(neuron_id: int):
     # results.models_maps = model_maps.build_maps(best_model, results.data_maps)
     # results.model_fr_map = model_maps.ModelFiringRate(dataprop, best_model)
 
-    if Conf().TO_PLOT:
-        plot_models(dataprop, results.data_maps, sub_models)
+    calc_maps_and_plot_models(dataprop, results.data_maps, sub_models)
     print_models_stats(sub_models)
 
     if 'shap' in dir(results):
