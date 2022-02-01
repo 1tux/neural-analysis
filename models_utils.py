@@ -3,19 +3,10 @@ import functools
 import operator
 import itertools
 import math
+import dataclasses
 
 import features_lib
 import pygam
-
-def get_key_per_model(model) -> str:
-    '''
-        gets a model and deduce unique key for it to be extract and stored in cache.
-    '''
-    model_type_str = model.__class__.__name__
-    covariates_str = str(sorted(model.covariates))
-    nid_str = str(model.neuron_id)
-    shuffle_index_str = str(model.shuffle_index)
-    return "|".join([model_type_str, covariates_str, nid_str, shuffle_index_str])
 
 def create_pos_smoother(x_idx, y_idx):
     return pygam.te(x_idx, y_idx, n_splines=[10, 5], constraints='concave')

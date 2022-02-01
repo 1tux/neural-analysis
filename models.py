@@ -1,4 +1,4 @@
-from __future__ import annotations
+import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import pygam
@@ -6,12 +6,14 @@ import time
 import typing
 import matplotlib.pyplot as plt
 import shelve 
+import dataclasses
 
 import models_utils
 import features_lib
 from conf import Conf
 import model_maps
 import rate_maps
+
 
 class Model:
     def __init__(self, covariates: typing.Optional[list[str]] = None, use_cache:bool=True, n_bats = typing.Optional[int], **kwargs):
@@ -23,8 +25,8 @@ class Model:
         # self.y_test = None
         self.y_pred = None
         self.is_trained = False
-        self.shuffle_index = 0
-        self.neuron_id = None
+        # self.shuffle_index = 0
+        # self.neuron_id = None
 
         self.formula = None
         self.train_test_ratio = Conf().TRAIN_TEST_RATIO
@@ -55,14 +57,14 @@ class Model:
     def evaulate(self, X, y):
         assert self.is_trained
         self.score = self.gam_model.statistics_['loglikelihood']
-        cache_key = models_utils.get_key_per_model(self)
-        if Conf().USE_CACHE:
-            cache = shelve.open(Conf().CACHE_FOLDER + "samples")
-        else:
-            cache = {}
-        if cache_key not in cache:
-            cache[cache_key] = None
-        samples = cache[cache_key]
+        # cache_key = models_utils.get_key_per_model(self)
+        # if Conf().USE_CACHE:
+        #     cache = shelve.open(Conf().CACHE_FOLDER + "samples")
+        # else:
+        #     cache = {}
+        # if cache_key not in cache:
+        #     cache[cache_key] = None
+        # samples = cache[cache_key]
 
         # estimate DIC score
 
@@ -76,6 +78,23 @@ class Model:
 
     def build_covariates_list(self):
         pass
+
+@dataclasses.dataclass
+class ModelledNeuron:
+    model: Model
+    neuron_id: int
+    shuffle_index: int
+
+    def get_key(self):
+        '''
+            gets a model and deduce unique key for it to be extract and stored in cache.
+        '''
+        model_type_str = self.model.__class__.__name__
+        covariates_str = str(sorted(self.model.covariates))
+        nid_str = str(self.neuron_id)
+        shuffle_index_str = str(self.shuffle_index)
+        return "|".join([model_type_str, covariates_str, nid_str, shuffle_index_str])
+
 
 class AlloModel(Model):
     def build_covariates_list(self):
@@ -96,7 +115,7 @@ class AlloModel(Model):
         return covariates
 
     def plot(self, n_bats: int, data_fr_map: rate_maps.FiringRate, model_fr_map: model_maps.ModelFiringRate,\
-    data_maps: typing.List[data_manager.DataMap], model_maps: typing.List[model_maps.ModelMap]):
+    data_maps: typing.List[rate_maps.RateMap], model_maps: typing.List[model_maps.ModelMap]):
 
         fig = plt.figure()
         grid = plt.GridSpec(4, n_bats, wspace=0.4, hspace=0.3)
@@ -126,6 +145,14 @@ class AlloModel(Model):
         fr_axis = fig.add_subplot(grid[0, :n_bats])
         data_fr_map.plot(fr_axis)
         model_fr_map.plot(fr_axis)
+
+        x_ticks = fr_axis.get_xticks().tolist()[:-1]
+        x_tickslabels = (np.array(x_ticks) / Conf().FRAME_RATE // 60).astype('int')
+        fr_axis.set_xticks(x_ticks) # to ignore some weird warning
+        fr_axis.set_xticklabels(x_tickslabels)
+        fr_axis.set_xlabel("Minutes")
+        fr_axis.set_ylabel("Spikes/second")
+
         plt.show()
 
 class EgoModel(Model):
@@ -145,7 +172,7 @@ class EgoModel(Model):
         return covariates
 
     def plot(self, n_bats: int, data_fr_map: rate_maps.FiringRate, model_fr_map: model_maps.ModelFiringRate,\
-    data_maps: typing.List[data_manager.DataMap], model_maps: typing.List[model_maps.ModelMap]):
+    data_maps: typing.List[rate_maps.RateMap], model_maps: typing.List[model_maps.ModelMap]):
 
         fig = plt.figure()
         grid = plt.GridSpec(3, n_bats-1, wspace=0.4, hspace=0.3)
@@ -173,4 +200,14 @@ class EgoModel(Model):
         fr_axis = fig.add_subplot(grid[0, :n_bats])
         data_fr_map.plot(fr_axis)
         model_fr_map.plot(fr_axis)
+
+        x_ticks = fr_axis.get_xticks().tolist()[:-1]
+        # x_ticks = data_fr_map.x[::len(data_fr_map.x) // 10]
+        x_tickslabels = (np.array(x_ticks) // Conf().FRAME_RATE // 60).astype('int') # every 25 minutes?
+        fr_axis.set_xticks(x_ticks) # to ignore some weird warning
+        fr_axis.set_xticklabels(x_tickslabels)
+        fr_axis.set_xlabel("Minutes")
+        fr_axis.set_ylabel("Spikes/second")
+
+
         plt.show()
