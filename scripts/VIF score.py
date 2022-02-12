@@ -26,7 +26,7 @@ def calc_gam_general_VIF(dataset, feature_name):
         y2 = dataset[c2]
         
         var1 = np.cov([y1, y2])
-        factor = 1 / np.sqrt(np.linalg.det(var1))
+        factor = 1 / np.saqrt(np.linalg.det(var1))
         res1 = VIF_inline(dataset, c1, factor)
         res2 = VIF_inline(dataset, c2, factor) 
         var2 = np.cov([res1, res2])
