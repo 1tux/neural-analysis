@@ -9,6 +9,7 @@ import functools
 import shelve
 import copy
 import dataclasses
+from scipy.stats import pearsonr
 
 from conf import Conf
 import data_manager
@@ -18,6 +19,7 @@ import rate_maps
 import model_maps
 import features_lib
 import models_utils
+
 
 @dataclasses.dataclass
 class Results:
@@ -77,25 +79,15 @@ def calc_maps_and_plot_models(dataprop: data_manager.DataProp, data_maps: List[r
         fr_map.process()
         mpd = mean_poisson_deviance(fr_map.map_, model_fr_map.y)
         dev = d2_tweedie_score(fr_map.map_, model_fr_map.y)
+        pearson_correlation = pearsonr(fr_map.map_, model_fr_map.y)[0]
+
         print("Mean Poisson Deviance of the model:", mpd)
         print("deviance score", dev)
+        print("R", pearson_correlation)
         if Conf().TO_PLOT:
             m.model.plot(dataprop.n_bats, fr_map, model_fr_map, data_maps, my_model_maps)
             # print(model.gam_model.summary())
             # print(m.model.gam_model.logs_['deviance'])
-
-def plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateMap], sub_models: List[models.ModelledNeuron]):
-    for m in sub_models:
-        model_fr_map = model_maps.ModelFiringRate(dataprop, m.model)
-        my_model_maps = model_maps.build_maps(m.model, data_maps)
-
-        fr_map = rate_maps.FiringRate(np.roll(dataprop.spikes_count, m.shuffle_index), dataprop.no_nans_indices)
-        fr_map.process()
-
-        model.plot(dataprop.n_bats, fr_map, model_fr_map, data_maps, my_model_maps)
-        # r2 = r2_score(fr_map.map_, model_fr_map.y)
-        # print("R^2 of the model:", r2)
-        # model.gam_model.summary()
 
 def print_models_stats(sub_models: List[models.ModelledNeuron]):
     for m in sub_models:
