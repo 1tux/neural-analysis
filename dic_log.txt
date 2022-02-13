@@ -1,0 +1,3502 @@
+1 <class 'models.AlloModel'> (None, None)
+1 <class 'models.EgoModel'> (None, None)
+2 <class 'models.AlloModel'> (None, None)
+2 <class 'models.EgoModel'> (None, None)
+3 <class 'models.AlloModel'> (20.960755727295236, 4111.28312838329)
+3 <class 'models.EgoModel'> (25.293049621360296, 4117.262195610321)
+4 <class 'models.AlloModel'> (13.153479188589472, 519.5696744783065)
+4 <class 'models.EgoModel'> (17.980745045693368, 524.1153365113692)
+5 <class 'models.AlloModel'> (193.685400385614, 408.1561802790093)
+5 <class 'models.EgoModel'> (7284609.851505704, 14569239.587767323)
+6 <class 'models.AlloModel'> (14.189408726704784, 163.21856217661033)
+6 <class 'models.EgoModel'> (14.742582961810342, 158.66522591627154)
+7 <class 'models.AlloModel'> (None, None)
+7 <class 'models.EgoModel'> (None, None)
+8 <class 'models.AlloModel'> (None, None)
+8 <class 'models.EgoModel'> (None, None)
+9 <class 'models.AlloModel'> (None, None)
+9 <class 'models.EgoModel'> (None, None)
+10 <class 'models.AlloModel'> (None, None)
+10 <class 'models.EgoModel'> (None, None)
+0 <class 'models.AlloModel'> (None, None)
+0 <class 'models.EgoModel'> (None, None)
+0 <class 'models.AlloModel'> (None, None)
+0 <class 'models.EgoModel'> (None, None)
+0 <class 'models.AlloModel'> (None, None)
+0 <class 'models.EgoModel'> (None, None)
+0 <class 'models.AlloModel'> (None, None)
+0 <class 'models.EgoModel'> (None, None)
+0 <class 'models.AlloModel'> (None, None)
+0 <class 'models.EgoModel'> (None, None)
+0 <class 'models.AlloModel'> (None, None)
+0 <class 'models.EgoModel'> (None, None)
+0 <class 'models.AlloModel'> (None, None)
+0 <class 'models.EgoModel'> (None, None)
+0 <class 'models.AlloModel'> (None, None)
+0 <class 'models.EgoModel'> (None, None)
+0 <class 'models.AlloModel'> (None, None)
+0 <class 'models.EgoModel'> (None, None)
+1000 12 d191220 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1000 <class 'models.AlloModel'> (31.196077859436627, 101014.99103033275)
+1000 12 d191220 A_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1000 <class 'models.EgoModel'> (43.20287837757496, 102764.85873543196)
+1001 13 d191220 ego_cell1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1001 <class 'models.AlloModel'> (19.64955631874909, 3708.5118702423893)
+1001 13 d191220 ego_cell1.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1001 <class 'models.EgoModel'> (16.131005248225847, 2030.5815953038814)
+1002 <class 'models.AlloModel'> (12.917731238204397, 2599.060171275118)
+1002 <class 'models.EgoModel'> (16.45101244975376, 1563.8981637958364)
+1003 <class 'models.AlloModel'> (20.222815256268404, 3017.2359877298577)
+1003 <class 'models.EgoModel'> (21.883649906645815, 1466.5735405907715)
+1004 16 d191220 ego_cell4.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1004 <class 'models.AlloModel'> (15.330979060135405, 1778.3485235935423)
+1004 16 d191220 ego_cell4.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1004 <class 'models.EgoModel'> (14.760623739131688, 1086.6579456006523)
+1005 17 d191220 ego_cell_1_2.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1005 <class 'models.AlloModel'> (16.298592072143947, 2507.7530418993492)
+1005 17 d191220 ego_cell_1_2.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1005 <class 'models.EgoModel'> (16.003003370135957, 1499.73840929442)
+1006 18 d191220 HD_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1006 <class 'models.AlloModel'> (25.266193873627344, 53813.99709133404)
+1006 18 d191220 HD_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1006 <class 'models.EgoModel'> (36.50048022088595, 57286.14505569951)
+1007 0 d191220 HD_place_cell_pos1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1007 <class 'models.AlloModel'> (24.298555927802227, 83809.06720462821)
+1007 0 d191220 HD_place_cell_pos1.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1007 <class 'models.EgoModel'> (41.41645473513927, 89513.24211579618)
+1008 1 d191220 pairwise_distance1,2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1008 <class 'models.AlloModel'> (26.70425604279444, 41315.754150340945)
+1008 1 d191220 pairwise_distance1,2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1008 <class 'models.EgoModel'> (38.23989778997202, 41793.68477594938)
+1009 2 d191220 pairwise_distance1,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1009 <class 'models.AlloModel'> (29.004532940904028, 73499.62069332994)
+1009 2 d191220 pairwise_distance1,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1009 <class 'models.EgoModel'> (43.78567379117885, 81606.18541159308)
+1010 3 d191220 pairwise_distance1,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1010 <class 'models.AlloModel'> (23.585221604182152, 44686.866998171565)
+1010 3 d191220 pairwise_distance1,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1010 <class 'models.EgoModel'> (41.367428583725996, 49915.82638531046)
+1011 4 d191220 pairwise_distance2,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1011 <class 'models.AlloModel'> (22.461127384071006, 34950.71357281103)
+1011 4 d191220 pairwise_distance2,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1011 <class 'models.EgoModel'> (40.9700017649302, 39807.71446106227)
+1012 5 d191220 pairwise_distance2,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1012 <class 'models.AlloModel'> (20.80501096250009, 26751.65133371437)
+1012 5 d191220 pairwise_distance2,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1012 <class 'models.EgoModel'> (38.382517554106016, 27135.079335953673)
+1013 6 d191220 pairwise_distance3,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1013 <class 'models.AlloModel'> (21.989884583381354, 28131.264347825523)
+1013 6 d191220 pairwise_distance3,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1013 <class 'models.EgoModel'> (40.00195185996199, 32489.071712788395)
+1014 7 d191220 place_distance1_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1014 <class 'models.AlloModel'> (21.128571926914447, 21470.494352304268)
+1014 7 d191220 place_distance1_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1014 <class 'models.EgoModel'> (31.408934264080017, 16837.81526547643)
+1015 8 d191220 place_distance2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1015 <class 'models.AlloModel'> (17.745101893513493, 9054.541705028563)
+1015 8 d191220 place_distance2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1015 <class 'models.EgoModel'> (26.618059857652042, 5987.121162683968)
+1016 9 d191220 place_distance3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1016 <class 'models.AlloModel'> (17.14938351379533, 12319.501769983266)
+1016 9 d191220 place_distance3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1016 <class 'models.EgoModel'> (25.030805976259217, 9297.47628817133)
+1017 10 d191220 place_distance4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1017 <class 'models.AlloModel'> (14.538633559138361, 4189.917948552034)
+1017 10 d191220 place_distance4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1017 <class 'models.EgoModel'> (17.907050138625436, 2959.643887940535)
+1018 11 d191220 randomly_firing_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1018 <class 'models.AlloModel'> (26.810050469168345, 124160.16406777038)
+1018 11 d191220 randomly_firing_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1018 <class 'models.EgoModel'> (46.56337584396533, 124174.38511782)
+1019 12 d191220 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+1019 <class 'models.AlloModel'> (27.633054587975494, 101009.10685365193)
+1019 12 d191220 A_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+1019 <class 'models.EgoModel'> (48.132863580525736, 102776.28951768215)
+1000 <class 'models.AlloModel'> (31.196077859436627, 101014.99103033275)
+1000 <class 'models.EgoModel'> (43.20287837757496, 102764.85873543196)
+1001 <class 'models.AlloModel'> (19.64955631874909, 3708.5118702423893)
+1001 <class 'models.EgoModel'> (16.131005248225847, 2030.5815953038814)
+1002 <class 'models.AlloModel'> (12.917731238204397, 2599.060171275118)
+1002 <class 'models.EgoModel'> (16.45101244975376, 1563.8981637958364)
+1003 <class 'models.AlloModel'> (20.222815256268404, 3017.2359877298577)
+1003 <class 'models.EgoModel'> (21.883649906645815, 1466.5735405907715)
+1004 <class 'models.AlloModel'> (15.330979060135405, 1778.3485235935423)
+1004 <class 'models.EgoModel'> (14.760623739131688, 1086.6579456006523)
+1005 <class 'models.AlloModel'> (16.298592072143947, 2507.7530418993492)
+1005 <class 'models.EgoModel'> (16.003003370135957, 1499.73840929442)
+1006 <class 'models.AlloModel'> (25.266193873627344, 53813.99709133404)
+1006 <class 'models.EgoModel'> (36.50048022088595, 57286.14505569951)
+1007 <class 'models.AlloModel'> (24.298555927802227, 83809.06720462821)
+1007 <class 'models.EgoModel'> (41.41645473513927, 89513.24211579618)
+1008 <class 'models.AlloModel'> (26.70425604279444, 41315.754150340945)
+1008 <class 'models.EgoModel'> (38.23989778997202, 41793.68477594938)
+1009 <class 'models.AlloModel'> (29.004532940904028, 73499.62069332994)
+1009 <class 'models.EgoModel'> (43.78567379117885, 81606.18541159308)
+1010 <class 'models.AlloModel'> (23.585221604182152, 44686.866998171565)
+1010 <class 'models.EgoModel'> (41.367428583725996, 49915.82638531046)
+1011 <class 'models.AlloModel'> (22.461127384071006, 34950.71357281103)
+1011 <class 'models.EgoModel'> (40.9700017649302, 39807.71446106227)
+1012 <class 'models.AlloModel'> (20.80501096250009, 26751.65133371437)
+1012 <class 'models.EgoModel'> (38.382517554106016, 27135.079335953673)
+1013 <class 'models.AlloModel'> (21.989884583381354, 28131.264347825523)
+1013 <class 'models.EgoModel'> (40.00195185996199, 32489.071712788395)
+1014 <class 'models.AlloModel'> (21.128571926914447, 21470.494352304268)
+1014 <class 'models.EgoModel'> (31.408934264080017, 16837.81526547643)
+1015 <class 'models.AlloModel'> (17.745101893513493, 9054.541705028563)
+1015 <class 'models.EgoModel'> (26.618059857652042, 5987.121162683968)
+9000 <class 'models.AlloModel'> (None, None)
+9000 <class 'models.EgoModel'> (None, None)
+9000 <class 'models.AlloModel'> (None, None)
+9000 <class 'models.EgoModel'> (None, None)
+9001 <class 'models.AlloModel'> (None, None)
+9001 <class 'models.EgoModel'> (None, None)
+9002 <class 'models.AlloModel'> (None, None)
+9002 <class 'models.EgoModel'> (None, None)
+9003 <class 'models.AlloModel'> (None, None)
+9003 <class 'models.EgoModel'> (None, None)
+9000 <class 'models.AlloModel'> (None, None)
+9000 <class 'models.EgoModel'> (None, None)
+9001 <class 'models.AlloModel'> (None, None)
+9001 <class 'models.EgoModel'> (None, None)
+9002 <class 'models.AlloModel'> (None, None)
+9002 <class 'models.EgoModel'> (None, None)
+9000 <class 'models.AlloModel'> (None, None)
+9000 <class 'models.EgoModel'> (None, None)
+9001 <class 'models.AlloModel'> (None, None)
+9001 <class 'models.EgoModel'> (None, None)
+9002 <class 'models.AlloModel'> (None, None)
+9002 <class 'models.EgoModel'> (None, None)
+9003 <class 'models.AlloModel'> (None, None)
+9003 <class 'models.EgoModel'> (None, None)
+9000 <class 'models.AlloModel'> (None, None)
+9000 <class 'models.EgoModel'> (None, None)
+9001 <class 'models.AlloModel'> (None, None)
+9001 <class 'models.EgoModel'> (None, None)
+9002 <class 'models.AlloModel'> (None, None)
+9002 <class 'models.EgoModel'> (None, None)
+9003 <class 'models.AlloModel'> (None, None)
+9003 <class 'models.EgoModel'> (None, None)
+9004 <class 'models.AlloModel'> (None, None)
+9004 <class 'models.EgoModel'> (None, None)
+9005 <class 'models.AlloModel'> (None, None)
+9005 <class 'models.EgoModel'> (None, None)
+9006 <class 'models.AlloModel'> (None, None)
+9006 <class 'models.EgoModel'> (None, None)
+9007 <class 'models.AlloModel'> (None, None)
+9007 <class 'models.EgoModel'> (None, None)
+9008 <class 'models.AlloModel'> (None, None)
+9008 <class 'models.EgoModel'> (None, None)
+9009 <class 'models.AlloModel'> (None, None)
+9009 <class 'models.EgoModel'> (None, None)
+1000 <class 'models.AlloModel'> (31.196077859436627, 101014.99103033275)
+1000 <class 'models.EgoModel'> (43.20287837757496, 102764.85873543196)
+1001 <class 'models.AlloModel'> (19.64955631874909, 3708.5118702423893)
+1001 <class 'models.EgoModel'> (16.131005248225847, 2030.5815953038814)
+1002 <class 'models.AlloModel'> (12.917731238204397, 2599.060171275118)
+1002 <class 'models.EgoModel'> (16.45101244975376, 1563.8981637958364)
+1003 <class 'models.AlloModel'> (20.222815256268404, 3017.2359877298577)
+1003 <class 'models.EgoModel'> (21.883649906645815, 1466.5735405907715)
+1004 <class 'models.AlloModel'> (15.330979060135405, 1778.3485235935423)
+1004 <class 'models.EgoModel'> (14.760623739131688, 1086.6579456006523)
+1005 <class 'models.AlloModel'> (16.298592072143947, 2507.7530418993492)
+1005 <class 'models.EgoModel'> (16.003003370135957, 1499.73840929442)
+1006 <class 'models.AlloModel'> (25.266193873627344, 53813.99709133404)
+1006 <class 'models.EgoModel'> (36.50048022088595, 57286.14505569951)
+1007 <class 'models.AlloModel'> (24.298555927802227, 83809.06720462821)
+1007 <class 'models.EgoModel'> (41.41645473513927, 89513.24211579618)
+1008 <class 'models.AlloModel'> (26.70425604279444, 41315.754150340945)
+1008 <class 'models.EgoModel'> (38.23989778997202, 41793.68477594938)
+1009 <class 'models.AlloModel'> (29.004532940904028, 73499.62069332994)
+1009 <class 'models.EgoModel'> (43.78567379117885, 81606.18541159308)
+1010 <class 'models.AlloModel'> (23.585221604182152, 44686.866998171565)
+1010 <class 'models.EgoModel'> (41.367428583725996, 49915.82638531046)
+1011 <class 'models.AlloModel'> (22.461127384071006, 34950.71357281103)
+1011 <class 'models.EgoModel'> (40.9700017649302, 39807.71446106227)
+1012 <class 'models.AlloModel'> (20.80501096250009, 26751.65133371437)
+1012 <class 'models.EgoModel'> (38.382517554106016, 27135.079335953673)
+1013 <class 'models.AlloModel'> (21.989884583381354, 28131.264347825523)
+1013 <class 'models.EgoModel'> (40.00195185996199, 32489.071712788395)
+1014 <class 'models.AlloModel'> (21.128571926914447, 21470.494352304268)
+1014 <class 'models.EgoModel'> (31.408934264080017, 16837.81526547643)
+1015 <class 'models.AlloModel'> (17.745101893513493, 9054.541705028563)
+1015 <class 'models.EgoModel'> (26.618059857652042, 5987.121162683968)
+1016 <class 'models.AlloModel'> (17.14938351379533, 12319.501769983266)
+1016 <class 'models.EgoModel'> (25.030805976259217, 9297.47628817133)
+1017 <class 'models.AlloModel'> (14.538633559138361, 4189.917948552034)
+1017 <class 'models.EgoModel'> (17.907050138625436, 2959.643887940535)
+1018 <class 'models.AlloModel'> (26.810050469168345, 124160.16406777038)
+1018 <class 'models.EgoModel'> (46.56337584396533, 124174.38511782)
+1019 <class 'models.AlloModel'> (27.633054587975494, 101009.10685365193)
+1019 <class 'models.EgoModel'> (48.132863580525736, 102776.28951768215)
+2000 5 d191221 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2000 <class 'models.AlloModel'> (23.52274172223406, 128597.27072284347)
+2000 5 d191221 A_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2000 <class 'models.EgoModel'> (47.95792894277838, 131779.7752022701)
+2001 6 d191221 ego_cell1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2001 <class 'models.AlloModel'> (17.440881526387557, 1814.272632105434)
+2001 6 d191221 ego_cell1.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2001 <class 'models.EgoModel'> (15.520476524623064, 1156.8254869505954)
+2002 7 d191221 ego_cell2.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2002 <class 'models.AlloModel'> (14.586475830946256, 4302.147849873771)
+2002 7 d191221 ego_cell2.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2002 <class 'models.EgoModel'> (19.551264575912683, 2661.6859674798284)
+2003 8 d191221 ego_cell3.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2003 <class 'models.AlloModel'> (15.66330037465923, 11058.487296337977)
+2003 8 d191221 ego_cell3.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2003 <class 'models.EgoModel'> (16.790530185216994, 8777.673095153414)
+2004 9 d191221 ego_cell4.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2004 <class 'models.AlloModel'> (16.55821755467514, 3419.176942191652)
+2004 9 d191221 ego_cell4.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2004 <class 'models.EgoModel'> (15.408614739237692, 2245.081475364588)
+2005 10 d191221 ego_cell_1_2.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2005 <class 'models.AlloModel'> (17.894923463713894, 4235.404672155185)
+2005 10 d191221 ego_cell_1_2.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2005 <class 'models.EgoModel'> (18.913822035195153, 2668.4750059185512)
+2006 11 d191221 HD_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2006 <class 'models.AlloModel'> (25.644822739239316, 73620.12228034076)
+2006 11 d191221 HD_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2006 <class 'models.EgoModel'> (36.085888386689476, 78354.17193782702)
+2007 12 d191221 HD_place_cell_pos1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2007 <class 'models.AlloModel'> (31.396249966230243, 119671.368528376)
+2007 12 d191221 HD_place_cell_pos1.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2007 <class 'models.EgoModel'> (43.976838463393506, 125431.54284427542)
+2008 13 d191221 pairwise_distance1,2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2008 <class 'models.AlloModel'> (25.227660782489693, 66404.77048734529)
+2008 13 d191221 pairwise_distance1,2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2008 <class 'models.EgoModel'> (40.06985171667475, 67638.052731394)
+2009 14 d191221 pairwise_distance1,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2009 <class 'models.AlloModel'> (24.910433311917586, 59606.30587826966)
+2009 14 d191221 pairwise_distance1,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2009 <class 'models.EgoModel'> (41.17876162059838, 67302.17093425058)
+2010 15 d191221 pairwise_distance1,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2010 <class 'models.AlloModel'> (22.400789016210183, 62895.09928579641)
+2010 15 d191221 pairwise_distance1,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2010 <class 'models.EgoModel'> (45.790380818303674, 66301.6177150699)
+2011 16 d191221 pairwise_distance2,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2011 <class 'models.AlloModel'> (23.71487667375186, 70369.13475863366)
+2011 16 d191221 pairwise_distance2,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2011 <class 'models.EgoModel'> (42.90806566987885, 77001.95588102876)
+2012 17 d191221 pairwise_distance2,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2012 <class 'models.AlloModel'> (21.950591585562506, 61022.92785196424)
+2012 17 d191221 pairwise_distance2,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2012 <class 'models.EgoModel'> (46.001968232842046, 68795.37473264881)
+2013 18 d191221 pairwise_distance3,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2013 <class 'models.AlloModel'> (23.380835782889335, 35223.180212574414)
+2013 18 d191221 pairwise_distance3,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2013 <class 'models.EgoModel'> (39.15593427128624, 38057.888592883806)
+2014 0 d191221 place_distance1_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2014 <class 'models.AlloModel'> (25.993772377074492, 13436.844654794579)
+2014 0 d191221 place_distance1_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2014 <class 'models.EgoModel'> (29.865381919367792, 10067.979050109638)
+2015 1 d191221 place_distance2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2015 <class 'models.AlloModel'> (20.20650433791161, 11124.627156805454)
+2015 1 d191221 place_distance2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2015 <class 'models.EgoModel'> (25.08285026698377, 6848.250109030515)
+2016 2 d191221 place_distance3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2016 <class 'models.AlloModel'> (22.406333853135948, 11483.911104028606)
+2016 2 d191221 place_distance3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2016 <class 'models.EgoModel'> (25.004299660455217, 8682.456195318015)
+2017 3 d191221 place_distance4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2017 <class 'models.AlloModel'> (16.206899487201554, 6303.627626583475)
+2017 3 d191221 place_distance4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2017 <class 'models.EgoModel'> (25.772201644304005, 4289.86743204305)
+2018 4 d191221 randomly_firing_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2018 <class 'models.AlloModel'> (28.62026314760442, 161775.12306987675)
+2018 4 d191221 randomly_firing_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2018 <class 'models.EgoModel'> (44.57127684331499, 161777.00906792056)
+2019 5 d191221 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+2019 <class 'models.AlloModel'> (29.041841769503662, 128604.77981460113)
+2019 5 d191221 A_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+2019 <class 'models.EgoModel'> (41.17302782274783, 131760.50031128834)
+3000 17 d191222 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3000 <class 'models.AlloModel'> (30.82131466336432, 89969.03814294838)
+3000 17 d191222 A_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3000 <class 'models.EgoModel'> (39.22780309134396, 93324.62866977922)
+3001 18 d191222 ego_cell1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3001 <class 'models.AlloModel'> (16.797541046955303, 2139.897973576774)
+3001 18 d191222 ego_cell1.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3001 <class 'models.EgoModel'> (16.370206823617764, 1306.7860420789234)
+3002 0 d191222 ego_cell2.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3002 <class 'models.AlloModel'> (15.607483495793531, 3061.041831482791)
+3002 0 d191222 ego_cell2.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3002 <class 'models.EgoModel'> (17.935130837887982, 1619.5274980265956)
+3003 1 d191222 ego_cell3.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3003 <class 'models.AlloModel'> (15.028854968762971, 2037.63522300253)
+3003 1 d191222 ego_cell3.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3003 <class 'models.EgoModel'> (17.191394823069686, 1291.2268133292935)
+3004 2 d191222 ego_cell4.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3004 <class 'models.AlloModel'> (22.13854976249695, 3930.3338365479153)
+3004 2 d191222 ego_cell4.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3004 <class 'models.EgoModel'> (14.930997673218826, 2409.8430562177446)
+3005 3 d191222 ego_cell_1_2.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3005 <class 'models.AlloModel'> (16.432050198024626, 3018.345150265492)
+3005 3 d191222 ego_cell_1_2.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3005 <class 'models.EgoModel'> (17.801107174437448, 1616.3017570317656)
+3006 4 d191222 HD_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3006 <class 'models.AlloModel'> (24.275846966680547, 48712.063105679)
+3006 4 d191222 HD_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3006 <class 'models.EgoModel'> (36.642870142335596, 51428.01260538994)
+3007 5 d191222 HD_place_cell_pos1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3007 <class 'models.AlloModel'> (25.87950329115847, 35986.37707485207)
+3007 5 d191222 HD_place_cell_pos1.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3007 <class 'models.EgoModel'> (42.441493645230366, 39660.24552837275)
+3008 6 d191222 pairwise_distance1,2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3008 <class 'models.AlloModel'> (19.679895791749004, 35111.44012524178)
+3008 6 d191222 pairwise_distance1,2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3008 <class 'models.EgoModel'> (40.08352305991866, 37030.1907471617)
+3009 7 d191222 pairwise_distance1,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3009 <class 'models.AlloModel'> (29.592372351835365, 32899.994059449644)
+3009 7 d191222 pairwise_distance1,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3009 <class 'models.EgoModel'> (38.908043350958906, 39168.39194515079)
+3010 8 d191222 pairwise_distance1,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3010 <class 'models.AlloModel'> (19.834356546365598, 26812.55106149644)
+3010 8 d191222 pairwise_distance1,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3010 <class 'models.EgoModel'> (38.36627850446166, 29099.492885113108)
+3011 9 d191222 pairwise_distance2,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3011 <class 'models.AlloModel'> (19.787423836023663, 40575.08274188697)
+3011 9 d191222 pairwise_distance2,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3011 <class 'models.EgoModel'> (34.62750832854363, 43934.46433201693)
+3012 10 d191222 pairwise_distance2,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3012 <class 'models.AlloModel'> (23.320678277235857, 25557.36764540369)
+3012 10 d191222 pairwise_distance2,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3012 <class 'models.EgoModel'> (36.6064347747415, 26914.25180912988)
+3013 11 d191222 pairwise_distance3,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3013 <class 'models.AlloModel'> (22.65935073872606, 28776.537238529752)
+3013 11 d191222 pairwise_distance3,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3013 <class 'models.EgoModel'> (36.89119411590582, 31488.625588218405)
+3014 12 d191222 place_distance1_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3014 <class 'models.AlloModel'> (16.35099422175699, 10360.246939047012)
+3014 12 d191222 place_distance1_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3014 <class 'models.EgoModel'> (28.58947780140079, 8661.888334443647)
+3015 13 d191222 place_distance2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3015 <class 'models.AlloModel'> (23.558201688323607, 6803.920313917348)
+3015 13 d191222 place_distance2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3015 <class 'models.EgoModel'> (24.725392419235504, 5060.787490969291)
+3016 14 d191222 place_distance3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3016 <class 'models.AlloModel'> (17.796252710223598, 6329.380363671441)
+3016 14 d191222 place_distance3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3016 <class 'models.EgoModel'> (25.922012667513627, 4546.342949160396)
+3017 15 d191222 place_distance4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3017 <class 'models.AlloModel'> (20.54178607090944, 5421.488649775318)
+3017 15 d191222 place_distance4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3017 <class 'models.EgoModel'> (20.29394942330873, 4000.983851504841)
+3018 16 d191222 randomly_firing_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3018 <class 'models.AlloModel'> (22.996783530936227, 121094.7491237662)
+3018 16 d191222 randomly_firing_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3018 <class 'models.EgoModel'> (48.30558885123173, 121124.3542385556)
+3019 17 d191222 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3019 <class 'models.AlloModel'> (27.981435215464444, 89966.25855439459)
+3019 17 d191222 A_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+3019 <class 'models.EgoModel'> (38.36084044937161, 93322.50810002322)
+4000 10 d191223 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4000 <class 'models.AlloModel'> (26.166358595204656, 83599.02121565738)
+4000 10 d191223 A_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4000 <class 'models.EgoModel'> (43.571299546340015, 88695.83214431598)
+4001 11 d191223 ego_cell1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4001 <class 'models.AlloModel'> (16.898470898741834, 1456.4433283957205)
+4001 11 d191223 ego_cell1.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4001 <class 'models.EgoModel'> (11.383381805464182, 872.258946765422)
+4002 12 d191223 ego_cell2.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4002 <class 'models.AlloModel'> (13.251141292045759, 1144.46229845898)
+4002 12 d191223 ego_cell2.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4002 <class 'models.EgoModel'> (16.96738981443434, 743.3415709456674)
+4003 13 d191223 ego_cell3.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4003 <class 'models.AlloModel'> (17.576301083526687, 1543.1629314220363)
+4003 13 d191223 ego_cell3.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4003 <class 'models.EgoModel'> (13.800882711979625, 1037.5534351875008)
+4004 14 d191223 ego_cell4.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4004 <class 'models.AlloModel'> (15.588816418311353, 748.8179506739066)
+4004 14 d191223 ego_cell4.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4004 <class 'models.EgoModel'> (11.84754262799811, 534.6430239569222)
+4005 15 d191223 ego_cell_1_2.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4005 <class 'models.AlloModel'> (16.235788330575815, 1385.7745337825197)
+4005 15 d191223 ego_cell_1_2.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4005 <class 'models.EgoModel'> (13.793128047045343, 878.1923914882823)
+4006 16 d191223 HD_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4006 <class 'models.AlloModel'> (25.745121760795882, 46960.7876414678)
+4006 16 d191223 HD_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4006 <class 'models.EgoModel'> (36.5235600425367, 49802.50784063937)
+4007 17 d191223 HD_place_cell_pos1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4007 <class 'models.AlloModel'> (20.44110419784556, 67542.36622748681)
+4007 17 d191223 HD_place_cell_pos1.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4007 <class 'models.EgoModel'> (39.72143641041475, 72755.50951177203)
+4008 18 d191223 pairwise_distance1,2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4008 <class 'models.AlloModel'> (29.412768427726405, 33963.42138101988)
+4008 18 d191223 pairwise_distance1,2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4008 <class 'models.EgoModel'> (39.08343688485911, 39024.91039860456)
+4009 0 d191223 pairwise_distance1,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4009 <class 'models.AlloModel'> (25.803711912361905, 35946.085246503215)
+4009 0 d191223 pairwise_distance1,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4009 <class 'models.EgoModel'> (41.78629547035962, 38919.20101318734)
+4010 1 d191223 pairwise_distance1,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4010 <class 'models.AlloModel'> (20.382593463720696, 32941.03500944744)
+4010 1 d191223 pairwise_distance1,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4010 <class 'models.EgoModel'> (35.525777221424505, 34156.28778865389)
+4011 2 d191223 pairwise_distance2,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4011 <class 'models.AlloModel'> (21.868767022897373, 15838.640433859531)
+4011 <class 'models.EgoModel'> (None, None)
+4012 3 d191223 pairwise_distance2,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4012 <class 'models.AlloModel'> (19.167420767882504, 13990.081129154953)
+4012 3 d191223 pairwise_distance2,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4012 <class 'models.EgoModel'> (39.72249627254678, 14165.432017912462)
+4013 4 d191223 pairwise_distance3,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4013 <class 'models.AlloModel'> (22.078821774952303, 14507.381193080644)
+4013 <class 'models.EgoModel'> (None, None)
+4014 5 d191223 place_distance1_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4014 <class 'models.AlloModel'> (19.598135835464745, 6572.825683800743)
+4014 5 d191223 place_distance1_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4014 <class 'models.EgoModel'> (22.1408931896367, 4718.316955864541)
+4015 6 d191223 place_distance2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4015 <class 'models.AlloModel'> (18.230224934029593, 2686.76900212966)
+4015 <class 'models.EgoModel'> (None, None)
+4016 7 d191223 place_distance3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4016 <class 'models.AlloModel'> (19.40946749609202, 2526.2957103122953)
+4016 7 d191223 place_distance3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4016 <class 'models.EgoModel'> (20.999926168835827, 1842.8994502367273)
+4017 8 d191223 place_distance4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4017 <class 'models.AlloModel'> (15.100016497668094, 2897.160488644467)
+4017 8 d191223 place_distance4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4017 <class 'models.EgoModel'> (21.209896331121627, 1967.046471640527)
+4018 9 d191223 randomly_firing_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4018 <class 'models.AlloModel'> (25.31932475810754, 137936.39466029292)
+4018 9 d191223 randomly_firing_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4018 <class 'models.EgoModel'> (44.75054240762256, 137945.462867238)
+4019 10 d191223 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+4019 <class 'models.AlloModel'> (28.03155145206256, 83598.53373493212)
+4019 10 d191223 A_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+4019 <class 'models.EgoModel'> (41.752102712125634, 88695.4023188235)
+5000 <class 'models.AlloModel'> (None, None)
+5000 <class 'models.EgoModel'> (None, None)
+5001 4 d191224 ego_cell1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5001 <class 'models.AlloModel'> (14.871589785560104, 912.9094425432531)
+5001 4 d191224 ego_cell1.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5001 <class 'models.EgoModel'> (14.029155909983842, 557.8727154768818)
+5002 5 d191224 ego_cell2.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5002 <class 'models.AlloModel'> (12.148401588396041, 772.7887930249274)
+5002 5 d191224 ego_cell2.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5002 <class 'models.EgoModel'> (12.017336803952844, 530.9462452001378)
+5003 6 d191224 ego_cell3.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5003 <class 'models.AlloModel'> (69.25653743404426, 228.19730174887906)
+5003 6 d191224 ego_cell3.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5003 <class 'models.EgoModel'> (18.734633845378568, 120.7625336073192)
+5004 7 d191224 ego_cell4.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5004 <class 'models.AlloModel'> (11.337218149221371, 1049.064670124354)
+5004 7 d191224 ego_cell4.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5004 <class 'models.EgoModel'> (9.914330611775085, 707.1945563470857)
+5005 8 d191224 ego_cell_1_2.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5005 <class 'models.AlloModel'> (17.00925929810512, 758.3103528530667)
+5005 8 d191224 ego_cell_1_2.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5005 <class 'models.EgoModel'> (10.40747277379046, 492.6326451585147)
+5006 9 d191224 HD_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5006 <class 'models.AlloModel'> (24.767692606550554, 12229.574793258056)
+5006 9 d191224 HD_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5006 <class 'models.EgoModel'> (28.313767032561373, 12404.429730349537)
+5007 10 d191224 HD_place_cell_pos1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5007 <class 'models.AlloModel'> (18.857163448174106, 23763.70169721171)
+5007 <class 'models.EgoModel'> (None, None)
+5008 11 d191224 pairwise_distance1,2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5008 <class 'models.AlloModel'> (20.97297349444125, 6401.362207058307)
+5008 11 d191224 pairwise_distance1,2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5008 <class 'models.EgoModel'> (28.43458152267067, 6777.031593136913)
+5009 12 d191224 pairwise_distance1,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5009 <class 'models.AlloModel'> (15.257827680250557, 5692.029434358851)
+5009 12 d191224 pairwise_distance1,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5009 <class 'models.EgoModel'> (24.085009872989758, 5770.628441043082)
+5010 13 d191224 pairwise_distance1,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5010 <class 'models.AlloModel'> (19.60728172322797, 5632.997287997201)
+5010 13 d191224 pairwise_distance1,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5010 <class 'models.EgoModel'> (25.16375503182644, 5948.720365997959)
+5011 14 d191224 pairwise_distance2,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5011 <class 'models.AlloModel'> (15.568245281621785, 1338.438785302194)
+5011 14 d191224 pairwise_distance2,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5011 <class 'models.EgoModel'> (17.5528080230431, 1389.693091238804)
+5012 15 d191224 pairwise_distance2,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5012 <class 'models.AlloModel'> (13.21642659356121, 1638.814272878072)
+5012 15 d191224 pairwise_distance2,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5012 <class 'models.EgoModel'> (17.192121850943067, 1661.0738819165317)
+5013 16 d191224 pairwise_distance3,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5013 <class 'models.AlloModel'> (10.931948458876604, 495.09788438494246)
+5013 <class 'models.EgoModel'> (None, None)
+5014 17 d191224 place_distance1_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5014 <class 'models.AlloModel'> (15.944035180345054, 2854.8194167491383)
+5014 17 d191224 place_distance1_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5014 <class 'models.EgoModel'> (16.09711607260806, 2108.6086664398)
+5015 18 d191224 place_distance2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5015 <class 'models.AlloModel'> (19.265470377660222, 3331.9296339400767)
+5015 18 d191224 place_distance2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5015 <class 'models.EgoModel'> (18.213148222725067, 2675.894712680973)
+5016 0 d191224 place_distance3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5016 <class 'models.AlloModel'> (11.35784266682947, 259.7833942682805)
+5016 0 d191224 place_distance3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5016 <class 'models.EgoModel'> (13.357476977572702, 236.56671632981704)
+5017 1 d191224 place_distance4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5017 <class 'models.AlloModel'> (19.0228413118989, 2169.795983551168)
+5017 1 d191224 place_distance4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5017 <class 'models.EgoModel'> (18.39481560030049, 1490.1140757158337)
+5018 2 d191224 randomly_firing_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5018 <class 'models.AlloModel'> (24.89077366701531, 36281.0141136014)
+5018 2 d191224 randomly_firing_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+5018 <class 'models.EgoModel'> (40.10768576699047, 36296.69900661171)
+5019 3 d191224 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+5019 <class 'models.AlloModel'> (26.23200229359645, 27120.736640646373)
+5019 <class 'models.EgoModel'> (None, None)
+6000 15 d191225 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6000 <class 'models.AlloModel'> (20.553986946903024, 18815.397938985563)
+6000 15 d191225 A_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6000 <class 'models.EgoModel'> (33.29683840742655, 24271.450077015827)
+6001 16 d191225 ego_cell1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6001 <class 'models.AlloModel'> (11.967090185113193, 647.5049459295528)
+6001 <class 'models.EgoModel'> (None, None)
+6002 17 d191225 ego_cell2.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6002 <class 'models.AlloModel'> (12.612580588093351, 1059.443860157466)
+6002 17 d191225 ego_cell2.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6002 <class 'models.EgoModel'> (11.889228701704837, 762.0453027101057)
+6003 <class 'models.AlloModel'> (None, None)
+6003 <class 'models.EgoModel'> (None, None)
+6004 0 d191225 ego_cell4.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6004 <class 'models.AlloModel'> (15.971121607056375, 631.9688571839171)
+6004 0 d191225 ego_cell4.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6004 <class 'models.EgoModel'> (12.89812546599967, 421.7085274094039)
+6005 1 d191225 ego_cell_1_2.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6005 <class 'models.AlloModel'> (12.625652248687175, 993.0415448754995)
+6005 1 d191225 ego_cell_1_2.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6005 <class 'models.EgoModel'> (13.860680821557821, 727.6766624552951)
+6006 2 d191225 HD_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6006 <class 'models.AlloModel'> (15.75285522996819, 12224.025330685752)
+6006 2 d191225 HD_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6006 <class 'models.EgoModel'> (29.579788630386247, 14265.103329414076)
+6007 3 d191225 HD_place_cell_pos1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6007 <class 'models.AlloModel'> (20.439297324024665, 17650.876674209714)
+6007 3 d191225 HD_place_cell_pos1.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6007 <class 'models.EgoModel'> (30.987737606523297, 22099.871165226203)
+6008 4 d191225 pairwise_distance1,2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6008 <class 'models.AlloModel'> (21.824405792278412, 19210.98847607617)
+6008 4 d191225 pairwise_distance1,2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6008 <class 'models.EgoModel'> (28.384263516927604, 19737.89680566421)
+6009 5 d191225 pairwise_distance1,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6009 <class 'models.AlloModel'> (20.39895571713714, 22278.342621244192)
+6009 5 d191225 pairwise_distance1,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6009 <class 'models.EgoModel'> (35.910055201427895, 22178.02906467658)
+6010 6 d191225 pairwise_distance1,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6010 <class 'models.AlloModel'> (19.123100262728258, 19099.588383787566)
+6010 6 d191225 pairwise_distance1,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6010 <class 'models.EgoModel'> (33.579884148475685, 18635.46640599581)
+6011 7 d191225 pairwise_distance2,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6011 <class 'models.AlloModel'> (22.549976921269263, 3900.2145466004467)
+6011 7 d191225 pairwise_distance2,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6011 <class 'models.EgoModel'> (27.293464178125305, 4088.466612656246)
+6012 8 d191225 pairwise_distance2,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6012 <class 'models.AlloModel'> (19.98668885218649, 6384.389102311923)
+6012 8 d191225 pairwise_distance2,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6012 <class 'models.EgoModel'> (33.19653465931606, 6720.546699433147)
+6013 9 d191225 pairwise_distance3,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6013 <class 'models.AlloModel'> (16.826863747657626, 4259.604603192371)
+6013 9 d191225 pairwise_distance3,4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6013 <class 'models.EgoModel'> (27.393755334353955, 4517.152205186205)
+6014 10 d191225 place_distance1_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6014 <class 'models.AlloModel'> (15.14431664030235, 1100.538913054039)
+6014 10 d191225 place_distance1_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6014 <class 'models.EgoModel'> (18.481577411378908, 972.9494563290448)
+6015 11 d191225 place_distance2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6015 <class 'models.AlloModel'> (14.259231700410055, 951.7946742306393)
+6015 11 d191225 place_distance2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6015 <class 'models.EgoModel'> (15.640530043560943, 867.5342538272895)
+6016 12 d191225 place_distance3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6016 <class 'models.AlloModel'> (18.624037964316187, 298.0574103280416)
+6016 12 d191225 place_distance3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6016 <class 'models.EgoModel'> (12.708037443460512, 240.89741163129787)
+6017 13 d191225 place_distance4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6017 <class 'models.AlloModel'> (3.8644828141371192, 84.34197245961266)
+6017 13 d191225 place_distance4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6017 <class 'models.EgoModel'> (10.54862929288025, 125.9093434621139)
+6018 14 d191225 randomly_firing_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6018 <class 'models.AlloModel'> (24.178608683381754, 54281.83227218465)
+6018 14 d191225 randomly_firing_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6018 <class 'models.EgoModel'> (41.832332241778204, 54284.25772769412)
+6019 15 d191225 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+6019 <class 'models.AlloModel'> (22.144395783077925, 18820.646957932317)
+6019 15 d191225 A_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+6019 <class 'models.EgoModel'> (34.89724766942163, 24282.70898716378)
+7000 8 d191226 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7000 <class 'models.AlloModel'> (28.757095852590282, 94786.89226425355)
+7000 <class 'models.EgoModel'> (None, None)
+7001 9 d191226 ego_cell1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7001 <class 'models.AlloModel'> (15.72389074491457, 1347.5875412614619)
+7001 <class 'models.EgoModel'> (None, None)
+7002 10 d191226 ego_cell2.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7002 <class 'models.AlloModel'> (13.108946547144797, 1465.0668652879099)
+7002 <class 'models.EgoModel'> (None, None)
+7003 11 d191226 ego_cell3.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7003 <class 'models.AlloModel'> (15.356316994845201, 2626.233768899776)
+7003 <class 'models.EgoModel'> (None, None)
+7004 12 d191226 ego_cell4.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7004 <class 'models.AlloModel'> (14.27141204062832, 674.3346440752146)
+7004 <class 'models.EgoModel'> (None, None)
+7005 <class 'models.AlloModel'> (None, None)
+7005 <class 'models.EgoModel'> (None, None)
+7006 14 d191226 HD_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7006 <class 'models.AlloModel'> (23.194758700927196, 48086.66491411416)
+7006 <class 'models.EgoModel'> (None, None)
+7007 15 d191226 HD_place_cell_pos1.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7007 <class 'models.AlloModel'> (27.881289157739957, 82457.87321222802)
+7007 <class 'models.EgoModel'> (None, None)
+7008 16 d191226 pairwise_distance1,2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7008 <class 'models.AlloModel'> (24.282659546930518, 44200.43868943608)
+7008 16 d191226 pairwise_distance1,2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+7008 <class 'models.EgoModel'> (38.7660170448944, 44991.27127015961)
+7009 17 d191226 pairwise_distance1,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7009 <class 'models.AlloModel'> (23.70732969216624, 57593.99570297083)
+7009 17 d191226 pairwise_distance1,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+7009 <class 'models.EgoModel'> (36.693637558644696, 57088.21740199983)
+7010 <class 'models.AlloModel'> (None, None)
+7010 <class 'models.EgoModel'> (None, None)
+7011 0 d191226 pairwise_distance2,3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7011 <class 'models.AlloModel'> (24.32142977512558, 36817.29213808555)
+7011 0 d191226 pairwise_distance2,3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+7011 <class 'models.EgoModel'> (42.846235116820026, 37496.21006977867)
+7012 <class 'models.AlloModel'> (None, None)
+7012 <class 'models.EgoModel'> (None, None)
+7013 2 d191226 pairwise_distance3,4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7013 <class 'models.AlloModel'> (22.286833013269643, 21971.77778763818)
+7013 <class 'models.EgoModel'> (None, None)
+7014 3 d191226 place_distance1_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7014 <class 'models.AlloModel'> (19.365985025020564, 6447.220587775993)
+7014 <class 'models.EgoModel'> (None, None)
+7015 4 d191226 place_distance2_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7015 <class 'models.AlloModel'> (19.1908234703169, 12555.149248192625)
+7015 4 d191226 place_distance2_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+7015 <class 'models.EgoModel'> (25.887855657118052, 9619.156114789463)
+7016 5 d191226 place_distance3_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7016 <class 'models.AlloModel'> (19.784952247991896, 8459.396671754981)
+7016 5 d191226 place_distance3_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+7016 <class 'models.EgoModel'> (22.44334738928592, 6750.490606971749)
+7017 6 d191226 place_distance4_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7017 <class 'models.AlloModel'> (19.96190308161931, 5406.712617233166)
+7017 6 d191226 place_distance4_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+7017 <class 'models.EgoModel'> (20.17610437383064, 4506.326059417796)
+7018 7 d191226 randomly_firing_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7018 <class 'models.AlloModel'> (22.699402016049135, 117228.02991090404)
+7018 <class 'models.EgoModel'> (None, None)
+7019 8 d191226 A_place_cell.csv
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+7019 <class 'models.AlloModel'> (33.44833047580323, 94795.31611875679)
+7019 8 d191226 A_place_cell.csv
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+7019 <class 'models.EgoModel'> (44.99093909996736, 96551.87514728264)
+8000 <class 'models.AlloModel'> (None, None)
+8000 <class 'models.EgoModel'> (None, None)
+8001 <class 'models.AlloModel'> (None, None)
+8001 <class 'models.EgoModel'> (None, None)
+8002 <class 'models.AlloModel'> (None, None)
+8002 <class 'models.EgoModel'> (None, None)
+8003 <class 'models.AlloModel'> (None, None)
+8003 <class 'models.EgoModel'> (None, None)
+8004 <class 'models.AlloModel'> (None, None)
+8004 <class 'models.EgoModel'> (None, None)
+8005 <class 'models.AlloModel'> (None, None)
+8005 <class 'models.EgoModel'> (None, None)
+8006 <class 'models.AlloModel'> (None, None)
+8006 <class 'models.EgoModel'> (None, None)
+8007 <class 'models.AlloModel'> (None, None)
+8007 <class 'models.EgoModel'> (None, None)
+8008 <class 'models.AlloModel'> (None, None)
+8008 <class 'models.EgoModel'> (None, None)
+8009 <class 'models.AlloModel'> (None, None)
+8009 <class 'models.EgoModel'> (None, None)
+8010 <class 'models.AlloModel'> (None, None)
+8010 <class 'models.EgoModel'> (None, None)
+8011 <class 'models.AlloModel'> (None, None)
+8011 <class 'models.EgoModel'> (None, None)
+8012 <class 'models.AlloModel'> (None, None)
+8012 <class 'models.EgoModel'> (None, None)
+8013 <class 'models.AlloModel'> (None, None)
+8013 <class 'models.EgoModel'> (None, None)
+8014 <class 'models.AlloModel'> (None, None)
+8014 <class 'models.EgoModel'> (None, None)
+8015 <class 'models.AlloModel'> (None, None)
+8015 <class 'models.EgoModel'> (None, None)
+8016 <class 'models.AlloModel'> (None, None)
+8016 <class 'models.EgoModel'> (None, None)
+8017 <class 'models.AlloModel'> (None, None)
+8017 <class 'models.EgoModel'> (None, None)
+8018 <class 'models.AlloModel'> (None, None)
+8018 <class 'models.EgoModel'> (None, None)
+8019 <class 'models.AlloModel'> (None, None)
+8019 <class 'models.EgoModel'> (None, None)
+9000 <class 'models.AlloModel'> (None, None)
+9000 <class 'models.EgoModel'> (None, None)
+9001 <class 'models.AlloModel'> (None, None)
+9001 <class 'models.EgoModel'> (None, None)
+9002 <class 'models.AlloModel'> (None, None)
+9002 <class 'models.EgoModel'> (None, None)
+9003 <class 'models.AlloModel'> (None, None)
+9003 <class 'models.EgoModel'> (None, None)
+9004 <class 'models.AlloModel'> (None, None)
+9004 <class 'models.EgoModel'> (None, None)
+9005 <class 'models.AlloModel'> (None, None)
+9005 <class 'models.EgoModel'> (None, None)
+9006 <class 'models.AlloModel'> (None, None)
+9006 <class 'models.EgoModel'> (None, None)
+9007 <class 'models.AlloModel'> (None, None)
+9007 <class 'models.EgoModel'> (None, None)
+9008 <class 'models.AlloModel'> (None, None)
+9008 <class 'models.EgoModel'> (None, None)
+9009 <class 'models.AlloModel'> (None, None)
+9009 <class 'models.EgoModel'> (None, None)
+9010 <class 'models.AlloModel'> (None, None)
+9010 <class 'models.EgoModel'> (None, None)
+9011 <class 'models.AlloModel'> (None, None)
+9011 <class 'models.EgoModel'> (None, None)
+9012 <class 'models.AlloModel'> (None, None)
+9012 <class 'models.EgoModel'> (None, None)
+9013 <class 'models.AlloModel'> (None, None)
+9013 <class 'models.EgoModel'> (None, None)
+9014 <class 'models.AlloModel'> (None, None)
+9014 <class 'models.EgoModel'> (None, None)
+9015 <class 'models.AlloModel'> (None, None)
+9015 <class 'models.EgoModel'> (None, None)
+9016 <class 'models.AlloModel'> (None, None)
+9016 <class 'models.EgoModel'> (None, None)
+9017 <class 'models.AlloModel'> (None, None)
+9017 <class 'models.EgoModel'> (None, None)
+9018 <class 'models.AlloModel'> (None, None)
+9018 <class 'models.EgoModel'> (None, None)
+9019 <class 'models.AlloModel'> (None, None)
+9019 <class 'models.EgoModel'> (None, None)

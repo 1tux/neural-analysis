@@ -19,7 +19,7 @@ import rate_maps
 import model_maps
 import features_lib
 import models_utils
-
+import dic
 
 @dataclasses.dataclass
 class Results:
@@ -47,6 +47,7 @@ def train_model(neuron_id: int, model: models.Model, data: df.DataFrame, shuffle
         cache = {}
 
     modelled_neuron = models.ModelledNeuron(model, neuron_id, shuffle_index)
+
     cache_key = modelled_neuron.get_key()
     if cache_key not in cache:
         # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1337)
@@ -68,6 +69,8 @@ def train_model(neuron_id: int, model: models.Model, data: df.DataFrame, shuffle
         model.y_pred = model.gam_model.predict(X)
         model.evaulate(X, y)
         cache[cache_key] = modelled_neuron
+    else:
+        print("Found in cache!")
     return cache[cache_key]
 
 def calc_maps_and_plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateMap], sub_models: List[models.ModelledNeuron]):
@@ -126,7 +129,7 @@ def pipeline1(neuron_id: int):
     ]
     print("Training and comparing Models....")
     sub_models = [train_model(neuron_id, model, dataprop.data) for model in sub_models]
-    best_model = max(sub_models, key=lambda i:i.model.score)
+    best_model = min(sub_models, key=lambda i:dic.calc_dic(i.model, neuron_id, 10))
     print("Top model:", type(best_model.model).__name__)
 
     # run shuffles

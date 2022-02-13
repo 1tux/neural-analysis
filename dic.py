@@ -8,11 +8,7 @@ from conf import Conf
 import data_manager
 import features_lib
 
-ctr = 0
 def ll_per_sample(m, X, y, sample):
-    global ctr
-    ctr += 1
-    print(ctr)
     m2 = copy.deepcopy(m)
     m2.gam_model.coef_ = sample
     return m2.gam_model.loglikelihood(X, y)
@@ -26,11 +22,10 @@ def calc_dic(model_architect, nid, n_samples=100):
     d = shelve.open(Conf().CACHE_FOLDER + "models")
 
     if k.get_key() not in d:
-        print(f"Error! {nid} {model_architect.__class__} is untrained!")
+        # print(f"Error! {nid} {model_architect.__class__} is untrained!")
         return (None, None)
 
     m = d[k.get_key()].model
-
     d2 = shelve.open(Conf().CACHE_FOLDER + "samples")
 
     to_add = False
@@ -78,7 +73,7 @@ def main(args):
     ]
 
     for m in sub_models:
-        print(calc_dic(m, nid, n_samples))
+        print(nid, m.__class__, calc_dic(m, nid, n_samples))
 
 if __name__ == "__main__":
     if len(sys.argv) == 1: sys.argv.append(72)

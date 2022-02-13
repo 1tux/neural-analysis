@@ -132,7 +132,7 @@ class Loader6(DataLoader):
         neuron_path_ = os.path.join(Conf().INPUT_FOLDER, "simulated", day)
         simulated_list = list(map(os.path.basename, glob.glob(neuron_path_ + "/*")))
 
-        file_name = simulated_list[(nid - 1000) % len(simulated_list)]
+        file_name = simulated_list[(nid % 1000) % len(simulated_list)]
         print(nid, nid % len(simulated_list), day, file_name)
         behavioral_path = os.path.join(Conf().INPUT_FOLDER, fr"b2305_{day}_simplified_behaviour.csv")
         neuron_path = os.path.join(neuron_path_, file_name)
