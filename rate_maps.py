@@ -125,7 +125,7 @@ class RateMap2D(RateMap):
         img = ax.imshow(self.map_.T, cmap='jet', vmin=min_, vmax=max_)
         # ax.set_title(self.feature.name)
         peak_fr = np.nanmax(self.map_)
-        ax.set_title(f"{self.feature.name}\npeak_fr {peak_fr:.3f} Hz")
+        ax.set_title(f"{self.feature.name[:-2]} - pFR {peak_fr:.3f}Hz")
 
 def calculate_1d_ratemap(feature_value, spike_count,\
     frame_rate, bin_size, time_spent_threshold):

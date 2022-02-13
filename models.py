@@ -53,21 +53,6 @@ class Model:
         # self.gam_model.summary()
         # print(self.gam_model.statistics_)
 
-    # TODO: implement DIC / WAIC to account for model's complexity
-    def evaulate(self, X, y):
-        assert self.is_trained
-        self.score = self.gam_model.statistics_['loglikelihood']
-        # cache_key = models_utils.get_key_per_model(self)
-        # if Conf().USE_CACHE:
-        #     cache = shelve.open(Conf().CACHE_FOLDER + "samples")
-        # else:
-        #     cache = {}
-        # if cache_key not in cache:
-        #     cache[cache_key] = None
-        # samples = cache[cache_key]
-
-        # estimate DIC score
-
 
     # retrain sub-models over all the covariets
     # estimate shapley values
@@ -115,10 +100,10 @@ class AlloModel(Model):
         return covariates
 
     def plot(self, n_bats: int, data_fr_map: rate_maps.FiringRate, model_fr_map: model_maps.ModelFiringRate,\
-    data_maps: typing.List[rate_maps.RateMap], model_maps: typing.List[model_maps.ModelMap]):
+    data_maps: typing.List[rate_maps.RateMap], model_maps: typing.List[model_maps.ModelMap], stats: str):
 
         fig = plt.figure()
-        grid = plt.GridSpec(4, n_bats, wspace=0.4, hspace=0.3)
+        grid = plt.GridSpec(5, n_bats, wspace=1, hspace=1)
 
         pos_maps = list(filter(lambda m: m.type_ == features_lib.FeatureType.POS, data_maps))
         model_pos_maps = list(filter(lambda m: m.type_ == features_lib.FeatureType.POS, model_maps))
@@ -153,6 +138,14 @@ class AlloModel(Model):
         fr_axis.set_xlabel("Minutes")
         fr_axis.set_ylabel("Spikes/second")
 
+        stats_axis = fig.add_subplot(grid[4, :n_bats])
+        stat_lines = stats.splitlines()
+        first_half = "\n".join(stat_lines[:(1+len(stat_lines)) // 2])
+        second_half = "\n".join(stat_lines[(1+len(stat_lines)) // 2:])
+        stats_axis.text(0.5, 0, first_half)
+        stats_axis.text(0.8, 0, second_half)
+        stats_axis.axis('off')
+
         plt.show()
 
 class EgoModel(Model):
@@ -172,10 +165,10 @@ class EgoModel(Model):
         return covariates
 
     def plot(self, n_bats: int, data_fr_map: rate_maps.FiringRate, model_fr_map: model_maps.ModelFiringRate,\
-    data_maps: typing.List[rate_maps.RateMap], model_maps: typing.List[model_maps.ModelMap]):
+    data_maps: typing.List[rate_maps.RateMap], model_maps: typing.List[model_maps.ModelMap], stats: str):
 
         fig = plt.figure()
-        grid = plt.GridSpec(3, n_bats-1, wspace=0.4, hspace=0.3)
+        grid = plt.GridSpec(4, n_bats-1, wspace=0.4, hspace=1)
 
         angle_maps = list(filter(lambda m: m.type_ == features_lib.FeatureType.A, data_maps))
         model_angle_maps = list(filter(lambda m: m.type_ == features_lib.FeatureType.A, model_maps))
@@ -209,5 +202,11 @@ class EgoModel(Model):
         fr_axis.set_xlabel("Minutes")
         fr_axis.set_ylabel("Spikes/second")
 
-
+        stats_axis = fig.add_subplot(grid[3, :n_bats])
+        stat_lines = stats.splitlines()
+        first_half = "\n".join(stat_lines[:(1+len(stat_lines)) // 2])
+        second_half = "\n".join(stat_lines[(1+len(stat_lines)) // 2:])
+        stats_axis.text(0.5, 0, first_half)
+        stats_axis.text(0.8, 0, second_half)
+        stats_axis.axis('off')
         plt.show()

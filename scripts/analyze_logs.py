@@ -5,7 +5,7 @@ dic = {}
 d = open("../log3.txt", "r").read().splitlines()
 d2 = d[:]
 for l in range(len(d)):
-    if d[l] == 'File not found':
+    if d[l] in ['File not found', 'Too few spikes']:
         d2[l] = ''
         d2[l-1] = ''
 

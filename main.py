@@ -67,10 +67,15 @@ def train_model(neuron_id: int, model: models.Model, data: df.DataFrame, shuffle
         model.train_model(X_train, y_train)
         print("Predicting...")
         model.y_pred = model.gam_model.predict(X)
-        model.evaulate(X, y)
+        model.score = dic.calc_dic(model, neuron_id, 10)
+
         cache[cache_key] = modelled_neuron
-    else:
-        print("Found in cache!")
+
+    # something to do with shelve caching engine... 
+    # TODO: delete this. it is also important before we want to override cache...   
+    obj = cache[cache_key]
+    obj.model.score = dic.calc_dic(model, neuron_id, 10)
+    cache[cache_key] = obj
     return cache[cache_key]
 
 def calc_maps_and_plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateMap], sub_models: List[models.ModelledNeuron]):
@@ -84,19 +89,31 @@ def calc_maps_and_plot_models(dataprop: data_manager.DataProp, data_maps: List[r
         dev = d2_tweedie_score(fr_map.map_, model_fr_map.y)
         pearson_correlation = pearsonr(fr_map.map_, model_fr_map.y)[0]
 
-        print("Mean Poisson Deviance of the model:", mpd)
-        print("deviance score", dev)
-        print("R", pearson_correlation)
+        # print("Mean Poisson Deviance of the model:", mpd)
+        # print("deviance score", dev)
+        # print("R", pearson_correlation)
         if Conf().TO_PLOT:
-            m.model.plot(dataprop.n_bats, fr_map, model_fr_map, data_maps, my_model_maps)
+            stats_text = "Stats:\n"
+            stats_text += "R: " + str(pearson_correlation) + "\n"
+            stats_text += "pDIC: " + str(m.model.score[0]) + "\n"
+            stats_text += "DIC: " + str(m.model.score[1]) + "\n"
+
+
+            stats_text += "timepoints: " + str(len(dataprop.no_nans_indices)) + "\n"
+            stats_text += "no.spikes: " + str(dataprop.spikes_count.sum()) + "\n"
+            for c in ["loglikelihood", "edof", "AIC", "AICc", "UBRE"]:
+                stats_text += f"{c}: {m.model.gam_model.statistics_[c]}\n"
+            m.model.plot(dataprop.n_bats, fr_map, model_fr_map, data_maps, my_model_maps, stats_text)
             # print(model.gam_model.summary())
             # print(m.model.gam_model.logs_['deviance'])
 
-def print_models_stats(sub_models: List[models.ModelledNeuron]):
+def models_stats_text(sub_models: List[models.ModelledNeuron]):
+    out = ""
     for m in sub_models:
         for c in ["loglikelihood", "edof", "AIC", "AICc", "UBRE"]:
-            print(f"{c}: {m.model.gam_model.statistics_[c]}")
-        print(f"pR^2: {m.model.gam_model.statistics_['pseudo_r2']['explained_deviance']}")
+            out += f"{c}: {m.model.gam_model.statistics_[c]}\n"
+        out += f"pR^2: {m.model.gam_model.statistics_['pseudo_r2']['explained_deviance']}"
+    return out
 
 def pipeline1(neuron_id: int):
     # handles paths, supports raw data, simulated_data, csv, matlab...
@@ -111,6 +128,9 @@ def pipeline1(neuron_id: int):
 
     # remove nans, scaling, feature-engineering
     dataprop = data_manager.DataProp1(data)
+    if dataprop.spikes_count.sum() < 100:
+        print("Too few spikes")
+        return
 
     results = Results()
     results.dataprop = dataprop
@@ -129,7 +149,7 @@ def pipeline1(neuron_id: int):
     ]
     print("Training and comparing Models....")
     sub_models = [train_model(neuron_id, model, dataprop.data) for model in sub_models]
-    best_model = min(sub_models, key=lambda i:dic.calc_dic(i.model, neuron_id, 10))
+    best_model = min(sub_models, key=lambda i:i.model.score[1])
     print("Top model:", type(best_model.model).__name__)
 
     # run shuffles
@@ -140,8 +160,9 @@ def pipeline1(neuron_id: int):
     # results.models_maps = model_maps.build_maps(best_model, results.data_maps)
     # results.model_fr_map = model_maps.ModelFiringRate(dataprop, best_model)
 
+    # print(models_stats_text(sub_models))
     calc_maps_and_plot_models(dataprop, results.data_maps, sub_models)
-    print_models_stats(sub_models)
+    
 
     if 'shap' in dir(results):
         print("SHAP for best model:")

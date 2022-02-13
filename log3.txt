@@ -3530,3 +3530,318 @@ AIC: 57123.544072785655
 AICc: 57123.63438270122
 UBRE: 2.4971080856334145
 pR^2: 0.23922209366509695
+Loading Data [7010]...
+7010 18 d191226 pairwise_distance1,4_cell.csv
+Loaded!
+Building Data Maps...
+Data Maps Built!
+Training and comparing Models....
+Training...
+training AlloModel:['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y', 'BAT_1_F_X', 'BAT_1_F_Y', 'BAT_2_F_X', 'BAT_2_F_Y', 'BAT_3_F_X', 'BAT_3_F_Y', 'BAT_4_F_X', 'BAT_4_F_Y'] in 34.427187 seconds
+Predicting...
+Training...
+training EgoModel:['BAT_1_F_A', 'BAT_1_F_D', 'BAT_2_F_A', 'BAT_2_F_D', 'BAT_3_F_A', 'BAT_3_F_D', 'BAT_4_F_A', 'BAT_4_F_D'] in 5.579952 seconds
+Predicting...
+7010 18 d191226 pairwise_distance1,4_cell.csv
+7010 18 d191226 pairwise_distance1,4_cell.csv
+Top model: EgoModel
+Mean Poisson Deviance of the model: 1.0097218909346344
+deviance score 0.7251034766703738
+R 0.8618045355648393
+Mean Poisson Deviance of the model: 2.2411287139753377
+deviance score 0.4886461753670498
+R 0.7017022059852929
+loglikelihood: -13719.381036034698
+edof: 30.725182440506234
+AIC: 27500.21243695041
+AICc: 27500.24544360599
+UBRE: 2.2540242220282614
+pR^2: 0.42318078819916094
+loglikelihood: -15627.980303703267
+edof: 46.003822895407154
+AIC: 31347.96825319735
+AICc: 31348.04000450357
+UBRE: 2.3153501844795796
+pR^2: 0.2847247488984378
+Loading Data [7011]...
+7011 0 d191226 pairwise_distance2,3_cell.csv
+Loaded!
+Building Data Maps...
+Data Maps Built!
+Training and comparing Models....
+Found in cache!
+Found in cache!
+Top model: AlloModel
+Mean Poisson Deviance of the model: 2.352606599739501
+deviance score 0.6655140249313463
+R 0.8176117871679527
+Mean Poisson Deviance of the model: 2.6006688438499954
+deviance score 0.6174294439039674
+R 0.7933322125080373
+loglikelihood: -18383.208830770956
+edof: 34.03451610909919
+AIC: 36834.48669376011
+AICc: 36834.526831506206
+UBRE: 2.3132997729123224
+pR^2: 0.42582097513781725
+loglikelihood: -18703.75918154828
+edof: 52.50718813914413
+AIC: 37512.53273937485
+AICc: 37512.62549315594
+UBRE: 2.324307115914432
+pR^2: 0.40706339557516413
+Loading Data [7012]...
+7012 1 d191226 pairwise_distance2,4_cell.csv
+Loaded!
+Building Data Maps...
+Data Maps Built!
+Training and comparing Models....
+Training...
+training AlloModel:['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y', 'BAT_1_F_X', 'BAT_1_F_Y', 'BAT_2_F_X', 'BAT_2_F_Y', 'BAT_3_F_X', 'BAT_3_F_Y', 'BAT_4_F_X', 'BAT_4_F_Y'] in 31.490723 seconds
+Predicting...
+Training...
+training EgoModel:['BAT_1_F_A', 'BAT_1_F_D', 'BAT_2_F_A', 'BAT_2_F_D', 'BAT_3_F_A', 'BAT_3_F_D', 'BAT_4_F_A', 'BAT_4_F_D'] in 4.012761 seconds
+Predicting...
+7012 1 d191226 pairwise_distance2,4_cell.csv
+7012 1 d191226 pairwise_distance2,4_cell.csv
+Top model: AlloModel
+Mean Poisson Deviance of the model: 2.058057995209866
+deviance score 0.7781144920559252
+R 0.8875601301840974
+Mean Poisson Deviance of the model: 2.3392669981974312
+deviance score 0.7473226149992909
+R 0.8654962500943023
+loglikelihood: -15872.593092175082
+edof: 32.59605941443455
+AIC: 31810.378303179034
+AICc: 31810.415255626434
+UBRE: 2.2072456412365447
+pR^2: 0.6375824946997054
+loglikelihood: -16945.67478858079
+edof: 51.08351696161176
+AIC: 33993.5166110848
+AICc: 33993.60453679288
+UBRE: 2.242165540094914
+pR^2: 0.5775349379272057
+Loading Data [7013]...
+7013 2 d191226 pairwise_distance3,4_cell.csv
+Loaded!
+Building Data Maps...
+Data Maps Built!
+Training and comparing Models....
+Training...
+training AlloModel:['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y', 'BAT_1_F_X', 'BAT_1_F_Y', 'BAT_2_F_X', 'BAT_2_F_Y', 'BAT_3_F_X', 'BAT_3_F_Y', 'BAT_4_F_X', 'BAT_4_F_Y'] in 38.653204 seconds
+Predicting...
+Training...
+training EgoModel:['BAT_1_F_A', 'BAT_1_F_D', 'BAT_2_F_A', 'BAT_2_F_D', 'BAT_3_F_A', 'BAT_3_F_D', 'BAT_4_F_A', 'BAT_4_F_D'] in 4.765817 seconds
+Predicting...
+7013 2 d191226 pairwise_distance3,4_cell.csv
+Top model: AlloModel
+Mean Poisson Deviance of the model: 1.5785618859240365
+deviance score 0.8017196395033569
+R 0.8969188030152996
+Mean Poisson Deviance of the model: 1.5817986007678353
+deviance score 0.7920759645997244
+R 0.8908582784017952
+loglikelihood: -10961.934916103124
+edof: 31.192339455143156
+AIC: 21986.254511116535
+AICc: 21986.28848216443
+UBRE: 2.177706593096512
+pR^2: 0.5821682504085905
+loglikelihood: -10948.648673730848
+edof: 47.83013211519223
+AIC: 21992.95761169208
+AICc: 21993.0349889535
+UBRE: 2.1780245578053483
+pR^2: 0.583168697157352
+Loading Data [7014]...
+7014 3 d191226 place_distance1_cell.csv
+Loaded!
+Building Data Maps...
+Data Maps Built!
+Training and comparing Models....
+Training...
+did not converge
+training AlloModel:['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y', 'BAT_1_F_X', 'BAT_1_F_Y', 'BAT_2_F_X', 'BAT_2_F_Y', 'BAT_3_F_X', 'BAT_3_F_Y', 'BAT_4_F_X', 'BAT_4_F_Y'] in 40.879396 seconds
+Predicting...
+Training...
+training EgoModel:['BAT_1_F_A', 'BAT_1_F_D', 'BAT_2_F_A', 'BAT_2_F_D', 'BAT_3_F_A', 'BAT_3_F_D', 'BAT_4_F_A', 'BAT_4_F_D'] in 4.808589 seconds
+Predicting...
+7014 3 d191226 place_distance1_cell.csv
+7014 3 d191226 place_distance1_cell.csv
+Top model: AlloModel
+Mean Poisson Deviance of the model: 0.456557107287469
+deviance score 0.7613707591796667
+R 0.8734952363966699
+Mean Poisson Deviance of the model: 0.40633534756204975
+deviance score 0.8145107519133366
+R 0.9134912961182419
+loglikelihood: -3198.827837517653
+edof: 27.25595186069442
+AIC: 6452.167578756695
+AICc: 6452.193858162558
+UBRE: 2.0691108058251286
+pR^2: 0.5070922355540938
+loglikelihood: -2533.3734576582046
+edof: 29.987761565126547
+AIC: 5126.722438446663
+AICc: 5126.753951049923
+UBRE: 2.04808732877409
+pR^2: 0.6605943684626125
+Loading Data [7015]...
+7015 4 d191226 place_distance2_cell.csv
+Loaded!
+Building Data Maps...
+Data Maps Built!
+Training and comparing Models....
+Training...
+training AlloModel:['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y', 'BAT_1_F_X', 'BAT_1_F_Y', 'BAT_2_F_X', 'BAT_2_F_Y', 'BAT_3_F_X', 'BAT_3_F_Y', 'BAT_4_F_X', 'BAT_4_F_Y'] in 34.693440 seconds
+Predicting...
+Training...
+training EgoModel:['BAT_1_F_A', 'BAT_1_F_D', 'BAT_2_F_A', 'BAT_2_F_D', 'BAT_3_F_A', 'BAT_3_F_D', 'BAT_4_F_A', 'BAT_4_F_D'] in 4.434758 seconds
+Predicting...
+Top model: AlloModel
+Mean Poisson Deviance of the model: 1.0181322993048396
+deviance score 0.726577736132447
+R 0.8528913163091252
+Mean Poisson Deviance of the model: 0.8847987268378751
+deviance score 0.811288756208662
+R 0.9101792482552816
+loglikelihood: -6258.522059252672
+edof: 31.094330815788126
+AIC: 12579.232780136921
+AICc: 12579.266547705758
+UBRE: 2.1168394433730984
+pR^2: 0.5643245091350416
+loglikelihood: -4782.414537556527
+edof: 39.36785898939846
+AIC: 9643.564793091851
+AICc: 9643.617890551814
+UBRE: 2.070303757114222
+pR^2: 0.7413163805471823
+Loading Data [7016]...
+7016 5 d191226 place_distance3_cell.csv
+Loaded!
+Building Data Maps...
+Data Maps Built!
+Training and comparing Models....
+Found in cache!
+Found in cache!
+Top model: AlloModel
+Mean Poisson Deviance of the model: 0.7391531688941493
+deviance score 0.5547899127592036
+R 0.7579242182198668
+Mean Poisson Deviance of the model: 0.5938588292656191
+deviance score 0.6660872341200956
+R 0.8466976609109849
+loglikelihood: -4205.336266937964
+edof: 30.09726013158839
+AIC: 8470.867054139104
+AICc: 8470.898786403957
+UBRE: 2.0939745299203136
+pR^2: 0.4186729108023879
+loglikelihood: -3348.76682042813
+edof: 33.53692654650517
+AIC: 6764.60749394927
+AICc: 6764.646514938907
+UBRE: 2.0669098064120375
+pR^2: 0.5894755138098877
+Loading Data [7017]...
+7017 6 d191226 place_distance4_cell.csv
+Loaded!
+Building Data Maps...
+Data Maps Built!
+Training and comparing Models....
+Training...
+did not converge
+training AlloModel:['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y', 'BAT_1_F_X', 'BAT_1_F_Y', 'BAT_2_F_X', 'BAT_2_F_Y', 'BAT_3_F_X', 'BAT_3_F_Y', 'BAT_4_F_X', 'BAT_4_F_Y'] in 40.977362 seconds
+Predicting...
+Training...
+training EgoModel:['BAT_1_F_A', 'BAT_1_F_D', 'BAT_2_F_A', 'BAT_2_F_D', 'BAT_3_F_A', 'BAT_3_F_D', 'BAT_4_F_A', 'BAT_4_F_D'] in 4.844865 seconds
+Predicting...
+7017 6 d191226 place_distance4_cell.csv
+Top model: AlloModel
+Mean Poisson Deviance of the model: 0.3546660449093382
+deviance score 0.6494755303353448
+R 0.8098740746742167
+Mean Poisson Deviance of the model: 0.2953503516326533
+deviance score 0.8039520355250629
+R 0.9045109139297774
+loglikelihood: -2683.6747063958237
+edof: 27.86440932612369
+AIC: 5423.078231443895
+AICc: 5423.105635331141
+UBRE: 2.060807882795348
+pR^2: 0.46780350002110627
+loglikelihood: -2227.8873673368116
+edof: 31.220924020354808
+AIC: 4518.216582714333
+AICc: 4518.250613222775
+UBRE: 2.046474426010146
+pR^2: 0.5971957757873121
+Loading Data [7018]...
+7018 7 d191226 randomly_firing_cell.csv
+Loaded!
+Building Data Maps...
+Data Maps Built!
+Training and comparing Models....
+Training...
+did not converge
+training AlloModel:['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y', 'BAT_1_F_X', 'BAT_1_F_Y', 'BAT_2_F_X', 'BAT_2_F_Y', 'BAT_3_F_X', 'BAT_3_F_Y', 'BAT_4_F_X', 'BAT_4_F_Y'] in 40.913726 seconds
+Predicting...
+Training...
+training EgoModel:['BAT_1_F_A', 'BAT_1_F_D', 'BAT_2_F_A', 'BAT_2_F_D', 'BAT_3_F_A', 'BAT_3_F_D', 'BAT_4_F_A', 'BAT_4_F_D'] in 4.859567 seconds
+Predicting...
+7018 7 d191226 randomly_firing_cell.csv
+7018 7 d191226 randomly_firing_cell.csv
+Top model: AlloModel
+Mean Poisson Deviance of the model: 0.18569174040711037
+deviance score 0.04299870907000547
+R 0.20955721630603055
+Mean Poisson Deviance of the model: 0.18909842230552576
+deviance score 0.02622660850538172
+R 0.19431610786718773
+loglikelihood: -58590.43212250422
+edof: 34.279483759810326
+AIC: 117249.42321252807
+AICc: 117249.46390585286
+UBRE: 3.0071722185264385
+pR^2: 0.0004959073146026949
+loglikelihood: -58581.3415466885
+edof: 57.73389783305714
+AIC: 117278.15088904311
+AICc: 117278.26247550047
+UBRE: 3.0079267418617888
+pR^2: 0.0007829984235492304
+Loading Data [7019]...
+7019 8 d191226 A_place_cell.csv
+Loaded!
+Building Data Maps...
+Data Maps Built!
+Training and comparing Models....
+Training...
+training AlloModel:['BAT_0_F_HD', 'BAT_0_F_X', 'BAT_0_F_Y', 'BAT_1_F_X', 'BAT_1_F_Y', 'BAT_2_F_X', 'BAT_2_F_Y', 'BAT_3_F_X', 'BAT_3_F_Y', 'BAT_4_F_X', 'BAT_4_F_Y'] in 29.630062 seconds
+Predicting...
+Training...
+training EgoModel:['BAT_1_F_A', 'BAT_1_F_D', 'BAT_2_F_A', 'BAT_2_F_D', 'BAT_3_F_A', 'BAT_3_F_D', 'BAT_4_F_A', 'BAT_4_F_D'] in 4.379736 seconds
+Predicting...
+Top model: AlloModel
+Mean Poisson Deviance of the model: 0.38208509022093196
+deviance score 0.8804993002287983
+R 0.9412274192050704
+Mean Poisson Deviance of the model: 0.8319170475064172
+deviance score 0.6844469055766262
+R 0.8286568520889943
+loglikelihood: -47364.53345886387
+edof: 41.3791604689243
+AIC: 94811.8252386656
+AICc: 94811.88369375978
+UBRE: 2.603427418369939
+pR^2: 0.16208688875802757
+loglikelihood: -48227.87874481034
+edof: 55.02853171841248
+AIC: 96565.8145530575
+AICc: 96565.9161743137
+UBRE: 2.6314676587720798
+pR^2: 0.12387708782487183
