@@ -91,13 +91,12 @@ def calc_maps_and_plot_models(dataprop: data_manager.DataProp, data_maps: List[r
 
         # print("Mean Poisson Deviance of the model:", mpd)
         # print("deviance score", dev)
-        # print("R", pearson_correlation)
+        print("R", pearson_correlation)
         if Conf().TO_PLOT:
             stats_text = "Stats:\n"
             stats_text += "R: " + str(pearson_correlation) + "\n"
             stats_text += "pDIC: " + str(m.model.score[0]) + "\n"
             stats_text += "DIC: " + str(m.model.score[1]) + "\n"
-
 
             stats_text += "timepoints: " + str(len(dataprop.no_nans_indices)) + "\n"
             stats_text += "no.spikes: " + str(dataprop.spikes_count.sum()) + "\n"
