@@ -10,6 +10,7 @@ import shelve
 import copy
 import dataclasses
 from scipy.stats import pearsonr
+import math
 
 from conf import Conf
 import data_manager
@@ -50,7 +51,7 @@ def train_model(neuron_id: int, model: models.Model, data: df.DataFrame, shuffle
 
     cache_key = modelled_neuron.get_key()
     if cache_key not in cache:
-        # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1337)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1337)
 
         # print("Splitting...")
         # gen_groups = GroupKFold(n_splits=2).split(X, y, groups)
@@ -61,12 +62,14 @@ def train_model(neuron_id: int, model: models.Model, data: df.DataFrame, shuffle
         #     y_train, y_test = y[train_index], y[test_index]
         # print("Splitted!")
 
-        X_train, y_train = X, y
+        X_train, y_train, X_test, y_test = X, y, X, y
 
         print("Training...")
         model.train_model(X_train, y_train)
         print("Predicting...")
-        model.y_pred = model.gam_model.predict(X)
+        model.y_pred = model.gam_model.predict(X_test)
+        model.X_test = X_test
+        model.y_test = y_test
         model.score = dic.calc_dic(model, neuron_id, 10)
 
         cache[cache_key] = modelled_neuron
@@ -80,20 +83,26 @@ def train_model(neuron_id: int, model: models.Model, data: df.DataFrame, shuffle
 
 def calc_maps_and_plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateMap], sub_models: List[models.ModelledNeuron]):
     for m in sub_models:
-        model_fr_map = model_maps.ModelFiringRate(dataprop, m.model)
+        model_fr_map = model_maps.ModelFiringRate(dataprop, m.model, m.shuffle_index)
         my_model_maps = model_maps.build_maps(m.model, data_maps)
 
-        fr_map = rate_maps.FiringRate(np.roll(dataprop.spikes_count, m.shuffle_index), dataprop.no_nans_indices)
+        fr_map = rate_maps.FiringRate(np.roll(m.model.y_test, m.shuffle_index), m.model.X_test.index)
+        fr_map = rate_maps.FiringRate(np.roll(m.model.y_test, 0), m.model.X_test.index)
+        fr_map = rate_maps.FiringRate(np.roll(m.model.y_test, 0), dataprop.no_nans_indices)
+        print("shuffle_index", m.shuffle_index)
+        fr_map = rate_maps.FiringRate(np.roll(m.model.y_test, 0), np.roll(dataprop.no_nans_indices, m.shuffle_index))
+        
         fr_map.process()
-        mpd = mean_poisson_deviance(fr_map.map_, model_fr_map.y)
-        dev = d2_tweedie_score(fr_map.map_, model_fr_map.y)
+        # mpd = mean_poisson_deviance(fr_map.map_, model_fr_map.y)
+        # dev = d2_tweedie_score(fr_map.map_, model_fr_map.y)
         pearson_correlation = pearsonr(fr_map.map_, model_fr_map.y)[0]
-
+        m.model.R = pearson_correlation
         # print("Mean Poisson Deviance of the model:", mpd)
         # print("deviance score", dev)
-        print("R", pearson_correlation)
+        # print("R", pearson_correlation)
         if Conf().TO_PLOT:
             stats_text = "Stats:\n"
+            
             stats_text += "R: " + str(pearson_correlation) + "\n"
             stats_text += "pDIC: " + str(m.model.score[0]) + "\n"
             stats_text += "DIC: " + str(m.model.score[1]) + "\n"
@@ -152,7 +161,24 @@ def pipeline1(neuron_id: int):
     print("Top model:", type(best_model.model).__name__)
 
     # run shuffles
-    # sub_models.append(train_model(neuron_id, copy.deepcopy(sub_models[-1]), dataprop.data, 10000))
+    N_SHUFFLES = 3
+    MIN_GAP = 10 * 60 * 25
+    start = MIN_GAP
+    end = len(dataprop.no_nans_indices) - MIN_GAP
+    print("SHUFFLES START, END:", start, end)
+    shuffles = []
+
+    for shift in range(start, end, math.ceil((end - start) / N_SHUFFLES)):
+        print(shift)
+        shuffles.append(train_model(neuron_id, copy.deepcopy(best_model.model), dataprop.data, shift))
+
+    bkp = Conf().TO_PLOT
+    Conf().TO_PLOT = True
+    calc_maps_and_plot_models(dataprop, results.data_maps, shuffles)
+    Conf.TO_PLOT = bkp
+
+    for s in shuffles:
+        print("SHUFFLE", s.model.R)
 
     results.models = sub_models
     # results.shap = best_model.shapley()
@@ -161,7 +187,7 @@ def pipeline1(neuron_id: int):
 
     # print(models_stats_text(sub_models))
     calc_maps_and_plot_models(dataprop, results.data_maps, sub_models)
-    
+    print(best_model.model.R)
 
     if 'shap' in dir(results):
         print("SHAP for best model:")

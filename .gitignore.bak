@@ -4,7 +4,6 @@ __pycache__/
 cache/*
 imgs/*
 inputs/*
-logs/*
 
 !cache/
 !inputs/72_b2305_d191220.csv

@@ -80,9 +80,10 @@ class ModelMap2D(ModelMap):
         ax.set_title(f"peak_fr {peak_fr:.3f} Hz")
 
 class ModelFiringRate:
-    def __init__(self, dataprop, model):
-        self.x = dataprop.no_nans_indices
+    def __init__(self, dataprop, model, shuffle_index=0):
         self.model = model
+        self.x = np.roll(dataprop.no_nans_indices, shuffle_index)
+        # self.x = model.X_test.index
         self.process()
 
     def process(self):

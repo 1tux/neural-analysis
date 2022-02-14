@@ -2,7 +2,7 @@ import re
 import pandas as pd
 dic = {}
 
-d = open("../log3.txt", "r").read().splitlines()
+d = open("../logs/log3.txt", "r").read().splitlines()
 d2 = d[:]
 for l in range(len(d)):
     if d[l] in ['File not found', 'Too few spikes']:
@@ -53,7 +53,7 @@ def neuron_to_name(nid):
     return f"d{day}", f"{files[file_id][:-4]}", #_{nid}"
 
 df = pd.DataFrame(columns=['day', 'neuron name', 'model type', 'R', 'pDIC', 'DIC'])
-d4 = open("../dic_log3.txt", "r").read().splitlines()
+d4 = open("../logs/dic_log3.txt", "r").read().splitlines()
 i = 0
 for l in d4:
     if 'None' not in l and 'models' in l:
@@ -69,6 +69,6 @@ for l in d4:
             row = pd.Series([day, neuron_name, model_type , R_per_model, pdic, dic_score], index=df.columns)
             df = df.append(row, ignore_index=True)
         i += 1
-df.to_csv("logs.csv")
+df.to_csv("../logs/logs.csv")
 #print(d3)
 # print(re.findall('(?!(Loading Data \[\d+\]...\\nFile not found).)*', d))
