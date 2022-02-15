@@ -57,7 +57,7 @@ def calc_dic(modelled_neuron, n_samples=100):
 
         lls = list(map(lambda s: ll_per_sample(m, X, y, s), samples))
         if to_add: lls = np.append(lls_, lls)
-        d2[k.get_key()] = (all_samples, lls)
+        d[k.get_key()] = (all_samples, lls)
 
     samples, lls = d[k.get_key()]
     mean_ll = lls[-1]
