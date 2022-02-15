@@ -56,10 +56,27 @@ class DataProp1(DataProp):
         # handle label
         self.spikes_count = self.data[features_lib.get_label_name()]
         self.orig_spikes_count = self.orig_data[features_lib.get_label_name()]
-        # self.firing_rate = calc_firing_rate(self.spikes_count, Conf().TIME_BASED_GROUP_SPLIT)
+        def calc_firing_rate(spikes_count, filter_width) -> np.array:
+            return np.convolve(spikes_count, [1] * filter_width, mode='same') / filter_width 
+        self.orig_firing_rate = calc_firing_rate(self.orig_spikes_count, Conf().TIME_BASED_GROUP_SPLIT)
+        self.firing_rate = self.orig_firing_rate[self.spikes_count.index]
 
         self.covariates = self.data.drop(columns=[features_lib.get_label_name()]).columns.to_list()
         self.features = features_lib.covariates_to_features(self.covariates)
+
+    def split_train_test():
+        X = self.data[self.data.columns.difference(features_lib.get_label_name())]
+        y = self.data[features_lib.get_label_name()]
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.8, random_state=1337)
+
+        # print("Splitting...")
+        # gen_groups = GroupKFold(n_splits=2).split(X, y, groups)
+        # ## gen_groups = TimeSeriesSplit(gap=Conf().TIME_BASED_GROUP_SPLIT, max_train_size=None, n_splits=2, test_size=None).split(X, y, groups)
+        # for g in gen_groups:
+        #     train_index, test_index = g
+        #     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+        #     y_train, y_test = y[train_index], y[test_index]
+        # print("Splitted!")
 
     def prepcocess(self):
         self.remove_nans()

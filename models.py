@@ -146,7 +146,7 @@ class AlloModel(Model):
         stats_axis.text(0.8, 0, second_half)
         stats_axis.axis('off')
 
-        plt.show()
+        # plt.show()
 
 class EgoModel(Model):
     def build_covariates_list(self):
@@ -195,7 +195,6 @@ class EgoModel(Model):
         model_fr_map.plot(fr_axis)
 
         x_ticks = fr_axis.get_xticks().tolist()[:-1]
-        # x_ticks = data_fr_map.x[::len(data_fr_map.x) // 10]
         x_tickslabels = (np.array(x_ticks) // Conf().FRAME_RATE // 60).astype('int') # every 25 minutes?
         fr_axis.set_xticks(x_ticks) # to ignore some weird warning
         fr_axis.set_xticklabels(x_tickslabels)
@@ -209,4 +208,5 @@ class EgoModel(Model):
         stats_axis.text(0.5, 0, first_half)
         stats_axis.text(0.8, 0, second_half)
         stats_axis.axis('off')
-        plt.show()
+
+        # plt.show()

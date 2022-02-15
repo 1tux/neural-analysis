@@ -24,15 +24,6 @@ class ModelMap:
         self.scaled_map = None
         self.feature_type = None
         self.process()
-        # self.scale_map()
-
-    # deprecated, remove!
-    def scale_map(self):
-        rate_map_mean = np.nanmean(self.rate_map.map_)
-        model_map_mean = np.nanmean(self.map_)
-        # print("OLD>", self.feature.name, 1 / model_map_mean * rate_map_mean)
-        self.scaled_map = self.map_ / model_map_mean * rate_map_mean # forces the means to be equal
-        return self.scaled_map
 
     def process(self):
         pass
@@ -54,6 +45,7 @@ class ModelMap2D(ModelMap):
     def process(self):
         data_map_shape = self.rate_map.map_.shape
         data_not_enough_time_spent = self.rate_map.not_enough_time_spent
+        # TODO: change these values based on nets sizes
         Xs = [np.linspace(0, 96, num=data_map_shape[0]).astype('int'), np.linspace(0, 45, num=data_map_shape[1]).astype('int')]
         self.XX = tuple(np.meshgrid(*Xs, indexing='ij'))
         self.map_ = self.model.gam_model.link.mu(self.model.gam_model.partial_dependence(term=self.term_id, X=self.XX, meshgrid=True), dist=None)
@@ -82,7 +74,7 @@ class ModelMap2D(ModelMap):
 class ModelFiringRate:
     def __init__(self, dataprop, model, shuffle_index=0):
         self.model = model
-        self.x = np.roll(dataprop.no_nans_indices, shuffle_index)
+        self.x = (dataprop.no_nans_indices + shuffle_index) % np.max(dataprop.no_nans_indices)
         # self.x = model.X_test.index
         self.process()
 
