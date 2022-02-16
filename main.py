@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from typing import List
 from sklearn.metrics import mean_poisson_deviance, d2_tweedie_score, mean_squared_error
-from sklearn.model_selection import train_test_split, GroupKFold, TimeSeriesSplit
+from sklearn.model_selection import train_test_split, GroupKFold, TimeSeriesSplit, ShuffleSplit
 import functools
 import shelve
 import copy
@@ -32,7 +32,7 @@ class Results:
     def store(self):
         pass
 
-def train_model(neuron_id: int, model: models.Model, data: df.DataFrame, shuffle_index: int = 0) -> ModelledNeuron:
+def train_model(neuron_id: int, model: models.Model, dataprop: data_manager.DataProp, shuffle_index: int = 0) -> ModelledNeuron:
     '''
         splits data using TimeSeriesSplit, chunks are based on autocorrealtion analysis -> to train/test.
         shuffles if neccessary.
@@ -40,6 +40,7 @@ def train_model(neuron_id: int, model: models.Model, data: df.DataFrame, shuffle
         uses cache to save up time.
 
     '''
+    data = dataprop.data
     y = data[features_lib.get_label_name()]
     y = np.roll(y, shuffle_index)
     X = data[model.covariates]
@@ -49,7 +50,9 @@ def train_model(neuron_id: int, model: models.Model, data: df.DataFrame, shuffle
 
     cache_key = modelled_neuron.get_key()
     if cache_key not in cache:
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.8, random_state=1337)
+        train_idx, test_idx = list(ShuffleSplit(n_splits = 1, test_size=0.2, random_state=1337).split(X))[0]
+        X_train, X_test, y_train, y_test = X.loc[train_idx], X.loc[test_idx], y[train_idx], y[test_idx]
+        # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1337)
 
         # print("Splitting...")
         # groups = list(np.array(range(0, len(y))) // Conf().TIME_BASED_GROUP_SPLIT)
@@ -102,6 +105,7 @@ def model_key_to_output_file(m: ModelledNeuron):
 
 def calc_maps_and_plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateMap], sub_models: List[models.ModelledNeuron]):
     for m in sub_models:
+
         model_fr_map = model_maps.ModelFiringRate(dataprop, m.model, m.shuffle_index)
         my_model_maps = model_maps.build_maps(m.model, data_maps)
 
@@ -116,9 +120,8 @@ def calc_maps_and_plot_models(dataprop: data_manager.DataProp, data_maps: List[r
         smooth_fr_no_nans = pd.Series(smooth_fr).loc[dataprop.no_nans_indices]
         smooth_fr_no_nans_shuffled = np.roll(smooth_fr_no_nans, m.shuffle_index)
 
-
-        fr_map = rate_maps.FiringRate(smooth_fr_no_nans_shuffled,\
-         (dataprop.no_nans_indices + m.shuffle_index) % np.max(dataprop.no_nans_indices))
+        shuffle_indices = (dataprop.no_nans_indices + m.shuffle_index) % np.max(dataprop.no_nans_indices)
+        fr_map = rate_maps.FiringRate(smooth_fr_no_nans_shuffled, shuffle_indices)
         
         fr_map.process()
         # mpd = mean_poisson_deviance(fr_map.map_, model_fr_map.y)
@@ -144,9 +147,11 @@ def calc_maps_and_plot_models(dataprop: data_manager.DataProp, data_maps: List[r
 
             stats_text += "timepoints: " + str(len(dataprop.no_nans_indices)) + "\n"
             stats_text += "no.spikes: " + str(dataprop.spikes_count.sum()) + "\n"
+            stats_text += "loglikelihood-per spike: " + str(m.model.gam_model.statistics_["loglikelihood"] / dataprop.spikes_count.sum()) + "\n"
             for c in ["loglikelihood", "edof", "AIC", "AICc", "UBRE"]:
                 stats_text += f"{c}: {m.model.gam_model.statistics_[c]}\n"
             print(stats_text)
+
             m.model.plot(dataprop.n_bats, fr_map, model_fr_map, data_maps, my_model_maps, stats_text)
             # print(model.gam_model.summary())
             # print(m.model.gam_model.logs_['deviance'])
@@ -196,11 +201,11 @@ def pipeline1(neuron_id: int):
     print("Data Maps Built!")
     # setup models with some hyper-params
     sub_models = [
-    models.AlloModel(n_bats=dataprop.n_bats, max_iter=25, fit_intercept=True, lam=1),
-    models.EgoModel(n_bats=dataprop.n_bats, max_iter=25, fit_intercept=True, lam=1),
+    models.AlloModel(n_bats=dataprop.n_bats, max_iter=40, fit_intercept=True),
+    models.EgoModel(n_bats=dataprop.n_bats, max_iter=40, fit_intercept=True),
     ]
     print("Training and comparing Models....")
-    sub_models = [train_model(neuron_id, model, dataprop.data) for model in sub_models]
+    sub_models = [train_model(neuron_id, model, dataprop) for model in sub_models]
     best_model = min(sub_models, key=lambda i:i.model.score[1])
     print("Top model:", type(best_model.model).__name__)
 
@@ -216,7 +221,7 @@ def pipeline1(neuron_id: int):
             if len(shuffles) == Conf().SHUFFLES:
                 break
             print(shift)
-            shuffles.append(train_model(neuron_id, copy.deepcopy(best_model.model), dataprop.data, shift))
+            shuffles.append(train_model(neuron_id, copy.deepcopy(best_model.model), dataprop, shift))
 
         calc_maps_and_plot_models(dataprop, results.data_maps, shuffles)
         for s in shuffles:
