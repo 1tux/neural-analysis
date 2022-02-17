@@ -42,7 +42,7 @@ def train_model(neuron_id: int, model: models.Model, dataprop: data_manager.Data
     '''
     data = dataprop.data
     y = data[features_lib.get_label_name()]
-    y = np.roll(y, shuffle_index)
+    y = np.roll(y, -shuffle_index)
     X = data[model.covariates]
     cache = {} if not Conf().USE_CACHE else shelve.open(Conf().CACHE_FOLDER + "models")
 
@@ -50,7 +50,9 @@ def train_model(neuron_id: int, model: models.Model, dataprop: data_manager.Data
 
     cache_key = modelled_neuron.get_key()
     if cache_key not in cache:
-        train_idx, test_idx = list(ShuffleSplit(n_splits = 1, test_size=0.2, random_state=1337).split(X))[0]
+        train_idx, test_idx = list(ShuffleSplit(n_splits = 1, test_size=0.05, random_state=1337).split(X))[0]
+        groups = list(np.array(range(0, len(y))) // Conf().TIME_BASED_GROUP_SPLIT)
+        train_idx, test_idx = list(GroupKFold(n_splits = 2).split(X, y, groups))[0]
         X_train, X_test, y_train, y_test = X.loc[train_idx], X.loc[test_idx], y[train_idx], y[test_idx]
         # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1337)
 
@@ -64,16 +66,18 @@ def train_model(neuron_id: int, model: models.Model, dataprop: data_manager.Data
         #     y_train, y_test = y[train_index], y[test_index]
         # print("Splitted!")
 
-        X_train, y_train, X_test, y_test = X, y, X, y
+        # X_train, y_train, X_test, y_test = X, y, X, y
 
         print("Training...")
         model.train_model(X_train, y_train)
         print("Predicting...")
+        # X_test = X_train
+        # y_test = y_train
         model.y_pred = model.gam_model.predict(X_test)
         model.X_test = X_test
         model.y_test = y_test
         cache[cache_key] = modelled_neuron
-        model.score = dic.calc_dic(modelled_neuron, n_samples=10)
+        model.score = dic.calc_dic(modelled_neuron, n_samples=0)
 
         cache[cache_key] = modelled_neuron
 
@@ -106,34 +110,31 @@ def model_key_to_output_file(m: ModelledNeuron):
 def calc_maps_and_plot_models(dataprop: data_manager.DataProp, data_maps: List[rate_maps.RateMap], sub_models: List[models.ModelledNeuron]):
     for m in sub_models:
 
-        model_fr_map = model_maps.ModelFiringRate(dataprop, m.model, m.shuffle_index)
+        # train_idx, test_idx = list(ShuffleSplit(n_splits = 1, test_size=0.2, random_state=1337).split(dataprop.data[m.model.covariates]))[0]
+        # test_idx = train_idx
+        test_idx = m.model.X_test.index
+        model_fr_map = model_maps.ModelFiringRate(dataprop, m.model, m.shuffle_index, test_idx)
         my_model_maps = model_maps.build_maps(m.model, data_maps)
-
-        # fr_map = rate_maps.FiringRate(np.roll(m.model.y_test, m.shuffle_index), m.model.X_test.index)
-        # fr_map = rate_maps.FiringRate(np.roll(m.model.y_test, 0), m.model.X_test.index)
-        # fr_map = rate_maps.FiringRate(np.roll(m.model.y_test, 0), dataprop.no_nans_indices)
-        # print("shuffle_index", m.shuffle_index)
 
         filter_width = Conf().TIME_BASED_GROUP_SPLIT
         spikes_count = dataprop.orig_spikes_count
         smooth_fr = np.convolve(spikes_count, [1] * filter_width, mode='same') / filter_width
         smooth_fr_no_nans = pd.Series(smooth_fr).loc[dataprop.no_nans_indices]
-        smooth_fr_no_nans_shuffled = np.roll(smooth_fr_no_nans, m.shuffle_index)
-
-        shuffle_indices = (dataprop.no_nans_indices + m.shuffle_index) % np.max(dataprop.no_nans_indices)
+        print(smooth_fr_no_nans)
+        smooth_fr_no_nans_shuffled = np.roll(smooth_fr_no_nans, -m.shuffle_index)
+        smooth_fr_no_nans_shuffled = smooth_fr_no_nans_shuffled[test_idx]
+        print(smooth_fr_no_nans_shuffled)
+        shuffle_indices = (dataprop.no_nans_indices[test_idx] + m.shuffle_index) % np.max(dataprop.no_nans_indices[test_idx])
         fr_map = rate_maps.FiringRate(smooth_fr_no_nans_shuffled, shuffle_indices)
-        
+
         fr_map.process()
         # mpd = mean_poisson_deviance(fr_map.map_, model_fr_map.y)
         # dev = d2_tweedie_score(fr_map.map_, model_fr_map.y)
-        print(fr_map.y)
-        print(model_fr_map.y)
+        print("data_fr", len(fr_map.y))
+        print("model_fr", len(model_fr_map.y))
         import sys
         pearson_correlation = pearsonr(fr_map.y, model_fr_map.y * sys.float_info.epsilon)[0]
         mse = mean_squared_error(fr_map.y, model_fr_map.y)
-        # plt.title(m.get_key()[-15:])
-        # plt.scatter(fr_map.map_, model_fr_map.y)
-        # plt.show()
         m.model.R = pearson_correlation
         # print("Mean Poisson Deviance of the model:", mpd)
         # print("deviance score", dev)
@@ -201,8 +202,8 @@ def pipeline1(neuron_id: int):
     print("Data Maps Built!")
     # setup models with some hyper-params
     sub_models = [
-    models.AlloModel(n_bats=dataprop.n_bats, max_iter=40, fit_intercept=True),
-    models.EgoModel(n_bats=dataprop.n_bats, max_iter=40, fit_intercept=True),
+    models.AlloModel(n_bats=dataprop.n_bats, max_iter=20, fit_intercept=True),
+    models.EgoModel(n_bats=dataprop.n_bats, max_iter=20, fit_intercept=True),
     ]
     print("Training and comparing Models....")
     sub_models = [train_model(neuron_id, model, dataprop) for model in sub_models]
