@@ -1,8 +1,12 @@
 import re
 import pandas as pd
-dic = {}
 
-d = open("../logs/log3.txt", "r").read().splitlines()
+LOG_PATH = "../logs/log4.txt"
+DIC_LOG_PATH = "../logs/dic_log4.txt"
+dic = {}
+aic = {}
+n_spikes = {}
+d = open(LOG_PATH, "r").read().splitlines()
 d2 = d[:]
 for l in range(len(d)):
     if d[l] in ['File not found', 'Too few spikes']:
@@ -11,19 +15,26 @@ for l in range(len(d)):
 
 d3 = "\n".join(d2).replace("\n\n\n", "\n").splitlines()
 last_nid = None
+import pprint
+pprint.pprint(d)
 for l in range(len(d3)):
     if 'Loading Data' in d3[l]:
         nid = re.findall('([\\d]+)', d3[l])[0]
         last_nid = nid
         # print(nid)
-    if 'R 0.' in d3[l]:
+    if d3[l].startswith("R: 0."):
         # print(d3[l])
         if last_nid in dic:
             dic[last_nid] = (dic[last_nid], d3[l])
         else:
             dic[last_nid] = d3[l]
-
-# print(dic)
+    if 'AIC:' in d3[l]:
+        if last_nid in aic:
+            aic[last_nid] = (aic[last_nid], d3[l])
+        else:
+            aic[last_nid] = d3[l]
+    if 'no.spikes:' in d3[l]:
+        n_spikes[nid] = d3[l]
 
 def neuron_id_to_day(neuron_id):
     if 1 <= neuron_id <= 29: return "d191222"
@@ -52,8 +63,8 @@ def neuron_to_name(nid):
     day = 191220 + (nid // 1000 - 1)
     return f"d{day}", f"{files[file_id][:-4]}", #_{nid}"
 
-df = pd.DataFrame(columns=['day', 'neuron name', 'model type', 'R', 'pDIC', 'DIC'])
-d4 = open("../logs/dic_log3.txt", "r").read().splitlines()
+df = pd.DataFrame(columns=['day', 'neuron name', 'n_spikes', 'model type', 'R', 'pDIC_ps', 'DIC_ps', 'pDIC', 'DIC', 'AIC'])
+d4 = open(DIC_LOG_PATH, "r").read().splitlines()
 i = 0
 for l in d4:
     if 'None' not in l and 'models' in l:
@@ -64,11 +75,14 @@ for l in d4:
             if nid not in dic:
                 break
             R_per_model = dic[nid][i % 2].split(' ')[-1]
-            pdic, dic_score = l.split(' (')[-1][:-1].split(', ')
-            print(neuron_name, model_type , R_per_model, pdic, dic_score)
-            row = pd.Series([day, neuron_name, model_type , R_per_model, pdic, dic_score], index=df.columns)
+            aic_per_model = aic[nid][i % 2].split(' ')[-1]
+            pdic_ps, dic_score_ps = l.split(' (')[-1][:-1].split(', ')
+            n_spikes_val = n_spikes[nid].split(' ')[-1]
+            pdic, dic_score = float(pdic_ps) * int(n_spikes_val), float(dic_score_ps) * int(n_spikes_val)
+            print(neuron_name, model_type, n_spikes_val, R_per_model, pdic_ps, dic_score_ps, aic_per_model)
+            row = pd.Series([day, neuron_name, model_type,n_spikes_val, R_per_model, pdic_ps, dic_score_ps, pdic, dic_score, aic_per_model], index=df.columns)
             df = df.append(row, ignore_index=True)
         i += 1
-df.to_csv("../logs/logs.csv")
+df.to_csv("../logs/logs2.csv")
 #print(d3)
 # print(re.findall('(?!(Loading Data \[\d+\]...\\nFile not found).)*', d))

@@ -16,7 +16,7 @@ def ll_per_sample(m, X, y, sample):
 def llps_per_sample(m, X, y, sample):
     m2 = copy.deepcopy(m)
     m2.gam_model.coef_ = sample
-    return m2.gam_model.loglikelihood(X, y) / np.nansum(y)
+    return m2.gam_model.loglikelihood(X, y) # / np.nansum(y)
 
 
 
@@ -32,7 +32,7 @@ def calc_dic(modelled_neuron, n_samples=100):
 
         TOFIX: currently the function reloads the data.
     '''
-    print(f"clculating DIC using {n_samples} samples")
+    print(f"calculating DIC using {n_samples} samples")
     k = modelled_neuron
     m = modelled_neuron.model
     d = shelve.open(Conf().CACHE_FOLDER + "samples")
@@ -47,7 +47,7 @@ def calc_dic(modelled_neuron, n_samples=100):
 
     # could be we are in cache, but need to sample more values and recalculate the DIC
     if n_samples > 0:
-        data = data_manager.Loader6()(modelled_neuron.neuron_id)
+        data = data_manager.Loader7()(modelled_neuron.neuron_id)
         dataprop = data_manager.DataProp1(data)
 
         covariate_list = sorted(set(m.build_covariates_list()) & set(dataprop.data.columns))
@@ -67,7 +67,7 @@ def calc_dic(modelled_neuron, n_samples=100):
 
     samples, lls = d[k.get_key()]
     mean_ll = lls[-1]
-    pDIC = 2 * mean_ll - 2 * np.mean(lls[::-1]) # effective number of params
+    pDIC = mean_ll - np.mean(lls[::-1]) # effective number of params
     dic = -2 * mean_ll + 2 * pDIC
     return pDIC, dic
 
@@ -81,7 +81,7 @@ def main(args):
     ]
 
     for m in sub_models:
-        print(nid, m.__class__, calc_dic(m, nid, n_samples))
+        print(nid, m.__class__, calc_dic(models.ModelledNeuron(m, nid, 0), n_samples))
 
 if __name__ == "__main__":
     if len(sys.argv) == 1: sys.argv.append(72)

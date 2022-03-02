@@ -22,6 +22,26 @@ def neuron_id_to_day(neuron_id):
     if 191 <= neuron_id <= 207: return "d200101"
     if 208 <= neuron_id <= 216: return "d200102"
     if 217 <= neuron_id <= 227: return "d200108"
+    if 228 <= neuron_id <= 233: return "d190603"
+    if 236 <= neuron_id <= 244: return "d190604"
+    if 246 <= neuron_id <= 252: return "d190610"
+    if 254 <= neuron_id <= 265: return "d190612"
+    if 270 <= neuron_id <= 272: return "d190617"
+    if 274 <= neuron_id <= 280: return "d190924"
+    if 282 <= neuron_id <= 291: return "d190925"
+    if 292 <= neuron_id <= 298: return "d190926"
+    if 300 <= neuron_id <= 339: return "d190928"
+    if 375 <= neuron_id <= 377: return "d200419"
+    if 378 <= neuron_id <= 380: return "d200420"
+    if 381 <= neuron_id <= 386: return "d200421"
+    if 387 <= neuron_id <= 389: return "d200422"
+    if 390 <= neuron_id <= 392: return "d200423"
+    if 393 <= neuron_id <= 394: return "d200425"
+    if 395 <= neuron_id <= 400: return "d200426"
+    if 401 <= neuron_id <= 406: return "d200427"
+    if 407 <= neuron_id <= 415: return "d200428"
+    if 416 <= neuron_id <= 423: return "d200429"
+    if 424 <= neuron_id <= 428: return "d200430"
 
 class DataProp:
     '''
@@ -143,6 +163,35 @@ class Loader6(DataLoader):
     def __call__(self, nid: int) -> pd.DataFrame:
         if nid < 1000:
             return Loader4()(nid)
+
+        day = f"d1912{20 + (nid // 1000 - 1)}"
+        import glob
+        neuron_path_ = os.path.join(Conf().INPUT_FOLDER, "simulated", day)
+        simulated_list = list(map(os.path.basename, glob.glob(neuron_path_ + "/*")))
+
+        file_name = simulated_list[(nid % 1000) % len(simulated_list)]
+        print(nid, nid % len(simulated_list), day, file_name)
+        behavioral_path = os.path.join(Conf().INPUT_FOLDER, fr"b2305_{day}_simplified_behaviour.csv")
+        neuron_path = os.path.join(neuron_path_, file_name)
+
+        df = pd.read_csv(behavioral_path).drop(columns=['Unnamed: 0']) 
+        spikes = pd.read_csv(neuron_path)['0']
+        df['neuron'] = spikes
+        return df
+
+class Loader7(DataLoader):
+    def __call__(self, nid: int) -> pd.DataFrame:
+        if nid < 1000:
+            day = neuron_id_to_day(nid)
+            import glob
+            path = glob.glob(fr"C:\Users\itayy.WISMAIN\git\neural-analysis\inputs\Behavior\all behaviour 20220209\*_{day}_simplified_behaviour.csv")[0]
+            rec_bat = os.path.basename(path).split('_')[0]
+            df = pd.read_csv(path).drop(columns=['Unnamed: 0'])
+            neuron_path = fr"Z:\for_Itay\Cells\20220301 - neurons\{nid}_{rec_bat}_{day}_cell_analysis.mat"
+            d = h5py.File(neuron_path, "r")
+            spikes = np.array(d['cell_analysis']['spikes_per_frame']).T[0]
+            df['neuron'] = spikes
+            return df
 
         day = f"d1912{20 + (nid // 1000 - 1)}"
         import glob

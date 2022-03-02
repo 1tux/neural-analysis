@@ -54,6 +54,9 @@ def train_model(neuron_id: int, model: models.Model, dataprop: data_manager.Data
         groups = list(np.array(range(0, len(y))) // Conf().TIME_BASED_GROUP_SPLIT)
         train_idx, test_idx = list(GroupKFold(n_splits = 2).split(X, y, groups))[0]
         X_train, X_test, y_train, y_test = X.loc[train_idx], X.loc[test_idx], y[train_idx], y[test_idx]
+        # 5 seconds chunks + cross-validation 90/10 of these chunks
+        # take the best model for further analysis...
+        
         # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1337)
 
         # print("Splitting...")
@@ -66,26 +69,23 @@ def train_model(neuron_id: int, model: models.Model, dataprop: data_manager.Data
         #     y_train, y_test = y[train_index], y[test_index]
         # print("Splitted!")
 
-        # X_train, y_train, X_test, y_test = X, y, X, y
+        X_train, y_train, X_test, y_test = X, y, X, y
 
         print("Training...")
         model.train_model(X_train, y_train)
         print("Predicting...")
-        # X_test = X_train
-        # y_test = y_train
         model.y_pred = model.gam_model.predict(X_test)
         model.X_test = X_test
         model.y_test = y_test
         cache[cache_key] = modelled_neuron
-        model.score = dic.calc_dic(modelled_neuron, n_samples=0)
-
-        cache[cache_key] = modelled_neuron
+        # model.score = dic.calc_dic(modelled_neuron, n_samples=1)
+        # cache[cache_key] = modelled_neuron
 
     # something to do with shelve caching engine... 
     # TODO: delete this. it is also important before we want to override cache...   
-    # obj = cache[cache_key]
-    # obj.model.score = dic.calc_dic(model, neuron_id, 10)
-    # cache[cache_key] = obj
+    obj = cache[cache_key]
+    obj.model.score = dic.calc_dic(obj, 10)
+    cache[cache_key] = obj
     return cache[cache_key]
 
 def model_key_to_output_file(m: ModelledNeuron):
@@ -120,20 +120,15 @@ def calc_maps_and_plot_models(dataprop: data_manager.DataProp, data_maps: List[r
         spikes_count = dataprop.orig_spikes_count
         smooth_fr = np.convolve(spikes_count, [1] * filter_width, mode='same') / filter_width
         smooth_fr_no_nans = pd.Series(smooth_fr).loc[dataprop.no_nans_indices]
-        print(smooth_fr_no_nans)
         smooth_fr_no_nans_shuffled = np.roll(smooth_fr_no_nans, -m.shuffle_index)
         smooth_fr_no_nans_shuffled = smooth_fr_no_nans_shuffled[test_idx]
-        print(smooth_fr_no_nans_shuffled)
         shuffle_indices = (dataprop.no_nans_indices[test_idx] + m.shuffle_index) % np.max(dataprop.no_nans_indices[test_idx])
         fr_map = rate_maps.FiringRate(smooth_fr_no_nans_shuffled, shuffle_indices)
 
         fr_map.process()
         # mpd = mean_poisson_deviance(fr_map.map_, model_fr_map.y)
         # dev = d2_tweedie_score(fr_map.map_, model_fr_map.y)
-        print("data_fr", len(fr_map.y))
-        print("model_fr", len(model_fr_map.y))
-        import sys
-        pearson_correlation = pearsonr(fr_map.y, model_fr_map.y * sys.float_info.epsilon)[0]
+        pearson_correlation = pearsonr(fr_map.y, model_fr_map.y)[0]
         mse = mean_squared_error(fr_map.y, model_fr_map.y)
         m.model.R = pearson_correlation
         # print("Mean Poisson Deviance of the model:", mpd)
@@ -180,7 +175,7 @@ def pipeline1(neuron_id: int):
     # handles paths, supports raw data, simulated_data, csv, matlab...
     print(f"Loading Data [{neuron_id}]...")
     try:
-        data = data_manager.Loader6()(neuron_id)
+        data = data_manager.Loader7()(neuron_id)
     except FileNotFoundError:
         print("File not found")
         return
@@ -195,7 +190,6 @@ def pipeline1(neuron_id: int):
 
     results = Results()
     results.dataprop = dataprop
-    # TODO: split firing-rate map, to a differnet function.
     print("Building Data Maps...")
     results.data_maps = rate_maps.build_maps(dataprop)
     results.fr_map = rate_maps.FiringRate(dataprop.spikes_count, dataprop.no_nans_indices)
