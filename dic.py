@@ -16,7 +16,7 @@ def ll_per_sample(m, X, y, sample):
 def llps_per_sample(m, X, y, sample):
     m2 = copy.deepcopy(m)
     m2.gam_model.coef_ = sample
-    return m2.gam_model.loglikelihood(X, y) # / np.nansum(y)
+    return m2.gam_model.loglikelihood(X, y) / np.nansum(y)
 
 
 
@@ -61,7 +61,7 @@ def calc_dic(modelled_neuron, n_samples=100):
         samples = np.append(samples, mean_sample, axis=0) # adding the mean_sample to the end
         all_samples = np.append(all_samples, mean_sample, axis=0) # adding the mean_sample to the end
 
-        lls = list(map(lambda s: llps_per_sample(m, X, y, s), samples))
+        lls = list(map(lambda s: ll_per_sample(m, X, y, s), samples))
         if to_add: lls = np.append(lls_, lls)
         d[k.get_key()] = (all_samples, lls)
 

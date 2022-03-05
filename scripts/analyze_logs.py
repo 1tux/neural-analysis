@@ -1,8 +1,12 @@
 import re
 import pandas as pd
 
-LOG_PATH = "../logs/log4.txt"
-DIC_LOG_PATH = "../logs/dic_log4.txt"
+LOG_PATH = "../logs/sim_logs.txt"
+DIC_LOG_PATH = "../logs/sim_dic.txt"
+
+LOG_PATH = "../logs/log5.txt"
+DIC_LOG_PATH = "../logs/dic_log5.txt"
+
 dic = {}
 aic = {}
 n_spikes = {}
@@ -53,7 +57,7 @@ def neuron_id_to_day(neuron_id):
 def neuron_to_name(nid):
     nid = int(nid)
     if nid < 1000:
-        day = neuron_to_name(nid)
+        day = neuron_id_to_day(nid)
         return day, nid
     file_id = (nid % 1000)
     files = ['A_place_cell.csv', 'ego_cell1.csv', 'ego_cell2.csv', 'ego_cell3.csv', 'ego_cell4.csv', 'ego_cell_1_2.csv', 'HD_place_cell.csv', 'HD_place_cell_pos1.csv', 'pairwise_distance1,2_cell.csv', 'pairwise_distance1,3_cell.csv', 'pairwise_distance1,4_cell.csv', 'pairwise_distance2,3_cell.csv', 'pairwise_distance2,4_cell.csv', 'pairwise_distance3,4_cell.csv', 'place_distance1_cell.csv', 'place_distance2_cell.csv', 'place_distance3_cell.csv', 'place_distance4_cell.csv', 'randomly_firing_cell.csv']
@@ -63,7 +67,7 @@ def neuron_to_name(nid):
     day = 191220 + (nid // 1000 - 1)
     return f"d{day}", f"{files[file_id][:-4]}", #_{nid}"
 
-df = pd.DataFrame(columns=['day', 'neuron name', 'n_spikes', 'model type', 'R', 'pDIC_ps', 'DIC_ps', 'pDIC', 'DIC', 'AIC'])
+df = pd.DataFrame(columns=['day', 'neuron name', 'n_spikes', 'model type', 'R', 'pDIC', 'DIC', 'AIC'])
 d4 = open(DIC_LOG_PATH, "r").read().splitlines()
 i = 0
 for l in d4:
@@ -73,16 +77,33 @@ for l in d4:
         if neuron_name:
             model_type = ["ALLO", "EGO"][i % 2]
             if nid not in dic:
-                break
+                continue
             R_per_model = dic[nid][i % 2].split(' ')[-1]
             aic_per_model = aic[nid][i % 2].split(' ')[-1]
-            pdic_ps, dic_score_ps = l.split(' (')[-1][:-1].split(', ')
+            pdic, dic_score = l.split(' (')[-1][:-1].split(', ')
             n_spikes_val = n_spikes[nid].split(' ')[-1]
-            pdic, dic_score = float(pdic_ps) * int(n_spikes_val), float(dic_score_ps) * int(n_spikes_val)
-            print(neuron_name, model_type, n_spikes_val, R_per_model, pdic_ps, dic_score_ps, aic_per_model)
-            row = pd.Series([day, neuron_name, model_type,n_spikes_val, R_per_model, pdic_ps, dic_score_ps, pdic, dic_score, aic_per_model], index=df.columns)
+            row = pd.Series([day, neuron_name, n_spikes_val, model_type, R_per_model, pdic, dic_score, aic_per_model], index=df.columns)
             df = df.append(row, ignore_index=True)
         i += 1
-df.to_csv("../logs/logs2.csv")
+delta_DIC = df['DIC'][::2].reset_index().astype('float') - df['DIC'][1::2].reset_index().astype('float') 
+df['delta_DIC'] = ((delta_DIC['DIC']).repeat(2).reset_index())['DIC']
+delta_AIC = df['AIC'][::2].reset_index().astype('float') - df['AIC'][1::2].reset_index().astype('float') 
+df['delta_AIC'] = ((delta_AIC['AIC']).repeat(2).reset_index())['AIC']
+
+df.to_csv("../logs/logs5.csv")
 #print(d3)
 # print(re.findall('(?!(Loading Data \[\d+\]...\\nFile not found).)*', d))
+
+# scatter plots
+import matplotlib.pyplot as plt
+import numpy as np
+d_dic = df[::2]['delta_DIC'].reset_index()
+dic_allo = df[::2]['DIC'].astype('float').reset_index()
+plt.scatter(x=np.abs(d_dic['delta_DIC']),y=dic_allo['DIC'])
+plt.xlabel("deltaDIC")
+plt.ylabel("DIC allo")
+plt.show()
+
+plt.hist(np.abs(d_dic['delta_DIC']))
+plt.title("Hist of delta DIC")
+plt.show()

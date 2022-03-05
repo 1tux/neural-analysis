@@ -56,8 +56,8 @@ class Model:
 
     # retrain sub-models over all the covariets
     # estimate shapley values
-    def shapley(self):
-        results = models_utils.train_submodels(self.__class__, self.features, self.data, self.kwargs)
+    def shapley(self, data):
+        results = models_utils.train_submodels(self.__class__, self.features, data, self.kwargs)
         shapley = models_utils.calc_shapley_values(results)
         return shapley
 

@@ -4,6 +4,7 @@ import operator
 import itertools
 import math
 import dataclasses
+import numpy as np
 
 import features_lib
 import pygam
@@ -34,17 +35,19 @@ def powerset(iterable):
     s = list(iterable)
     return list(itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(len(s)+1)))
 
-def train_submodels(model, features, data, kwargs):
+def train_submodels(model, features, train_data, kwargs):
     subsets = powerset(features)
     d = {}
     for subset in subsets:
         if subset != ():
             covariates = features_lib.features_to_covariates(subset)
             new_gam = model(covariates, **kwargs)
-            # TODO: copy hyperparameters from old model!
 
-            new_gam.train_model(data)
-            new_gam.evaulate()
+            # TODO: fix that, such that X and y are the real train data!
+            y = train_data[features_lib.get_label_name()]
+            X = train_data[covariates]
+
+            new_gam.train_model(X, y)
             d[subset] = new_gam.gam_model.statistics_['pseudo_r2']['explained_deviance'] # new_gam.score
     return d
 
