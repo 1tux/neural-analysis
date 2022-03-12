@@ -5,6 +5,9 @@ import itertools
 import math
 import dataclasses
 import numpy as np
+import shelve
+import copy
+from conf import Conf
 
 import features_lib
 import pygam
@@ -36,6 +39,7 @@ def powerset(iterable):
     return list(itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(len(s)+1)))
 
 def train_submodels(model, features, train_data, kwargs):
+    cache = shelve.open(Conf().CACHE_FOLDER + "submodels")
     subsets = powerset(features)
     d = {}
     for subset in subsets:
@@ -49,6 +53,7 @@ def train_submodels(model, features, train_data, kwargs):
 
             new_gam.train_model(X, y)
             d[subset] = new_gam.gam_model.statistics_['pseudo_r2']['explained_deviance'] # new_gam.score
+            cache[str(tuple(sorted(covariates)))] = copy.deepcopy(new_gam)
     return d
 
 def calc_shapley_values(results):

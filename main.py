@@ -11,6 +11,7 @@ import shelve
 import copy
 import dataclasses
 from scipy.stats import pearsonr
+import os
 
 import math
 import matplotlib.pyplot as plt
@@ -203,7 +204,14 @@ def pipeline1(neuron_id: int):
     ]
     print("Training and comparing Models....")
     sub_models = [train_model(neuron_id, model, dataprop) for model in sub_models]
-    best_model = min(sub_models, key=lambda i:i.model.score[1])
+    best_model1 = min(sub_models, key=lambda i:i.model.score[1])
+    best_model2 = min(sub_models, key=lambda i:i.model.gam_model.statistics_['AIC'])
+    if best_model1.model.__class__ == best_model2.model.__class__:
+        best_model = best_model1
+    else:
+        print("CLS:", best_model1.model.__class__,best_model2.model.__class__)
+        best_model = best_model1
+        Conf().RUN_SHAPLEY = False
     print("Top model:", type(best_model.model).__name__)
 
     # run shuffles
@@ -226,13 +234,37 @@ def pipeline1(neuron_id: int):
     # end of running shuffles
 
     results.models = sub_models
-    # results.shap = best_model.model.shapley(dataprop.data)
+    if Conf().RUN_SHAPLEY:
+        # results.shap = best_model.model.shapley(dataprop.data)
+        sub_models_ = []
+        def powerset(iterable):
+            import itertools
+            "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
+            s = list(iterable)
+            return list(itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(len(s)+1)))
+
+        subsets = powerset(best_model.model.features)
+        for subset in subsets:
+            if subset != ():
+                covariates = features_lib.features_to_covariates(subset)
+                sub_models_.append(best_model.model.__class__(covariates=covariates))
+        print("RUNNING:", len(sub_models_), "models")
+        sub_models_ = [train_model(neuron_id, model, dataprop) for model in sub_models_]
+        for model in sub_models_:
+            model.model.n_bats=features_lib.get_n_bats(best_model.model.covariates)
     # results.models_maps = model_maps.build_maps(best_model, results.data_maps)
     # results.model_fr_map = model_maps.ModelFiringRate(dataprop, best_model)
 
     # print(models_stats_text(sub_models))
     calc_maps_and_plot_models(dataprop, results.data_maps, sub_models)
-    print("BEST MODEL R:", best_model.model.R)
+    # calc_maps_and_plot_models(dataprop, results.data_maps, sub_models_)
+    # print("BEST MODEL R:", best_model.model.R)
+
+    if Conf().RUN_SHAPLEY and Conf().FEATURE_SELECTION:
+        reduced_model = min(sub_models_, key=lambda model: model.model.gam_model.statistics_['AIC'])
+        Conf().TO_PLOT=True
+        calc_maps_and_plot_models(dataprop, results.data_maps, [reduced_model])
+        Conf().TO_PLOT=False
 
     if 'shap' in dir(results):
         print("SHAP for best model:")
@@ -240,7 +272,7 @@ def pipeline1(neuron_id: int):
             print(s[0].name, f"{s[1]:.3f}")
 
     dataprop.store()
-    best_model.model.store()
+    # best_model.model.store()
     results.store()
 
     return results
@@ -259,6 +291,11 @@ def main(args):
     if "shuffles" in args:
         n_shuffles = args[args.index("shuffles")+1]
         Conf().SHUFFLES = int(n_shuffles)
+    if "shapley" in args:
+        Conf().RUN_SHAPLEY = True
+    if "cache-path" in args:
+        Conf().CACHE_FOLDER = args[args.index("cache-path")+1] + "/"
+        if not os.path.exists(Conf().CACHE_FOLDER): os.mkdir(Conf().CACHE_FOLDER)
     Conf().nid = int(args[0])
     pipeline1(Conf().nid)
 

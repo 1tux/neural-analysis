@@ -37,6 +37,7 @@ def calc_dic(modelled_neuron, n_samples=100):
     m = modelled_neuron.model
     d = shelve.open(Conf().CACHE_FOLDER + "samples")
 
+    # print(sorted(set(m.covariates)))
     to_add = False
     if k.get_key() in d:
         samples_, lls_ = d[k.get_key()]
@@ -50,9 +51,10 @@ def calc_dic(modelled_neuron, n_samples=100):
         data = data_manager.Loader7()(modelled_neuron.neuron_id)
         dataprop = data_manager.DataProp1(data)
 
-        covariate_list = sorted(set(m.build_covariates_list()) & set(dataprop.data.columns))
+        covariate_list = sorted(set(m.covariates) & set(dataprop.data.columns))
         X = dataprop.data[covariate_list]
         y = dataprop.data[features_lib.get_label_name()]
+        # print(m.gam_model.statistics_)
         samples = m.gam_model.sample(X, y, quantity='coef', n_bootstraps=1, n_draws=n_samples)
 
         all_samples = samples

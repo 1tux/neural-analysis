@@ -10,6 +10,9 @@ def extract_bats_names(df: pd.DataFrame) -> typing.List[str]:
     bats_names = pd.Series(df.columns.str.extract("BAT_(\d)_*", expand=False).unique()).dropna().values
     return bats_names
 
+def get_n_bats(covariates_list):
+    return len(set([i.split('_')[1] for i in covariates_list]))
+
 get_label_name = lambda: "neuron"
 
 class FeatureType(Enum):

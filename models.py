@@ -16,10 +16,12 @@ import rate_maps
 
 
 class Model:
-    def __init__(self, covariates: typing.Optional[list[str]] = None, use_cache:bool=True, n_bats = typing.Optional[int], **kwargs):
+    def __init__(self, covariates: typing.Optional[list[str]] = None, use_cache:bool=True,n_bats: typing.Optional[int] = None, **kwargs):
         # position comprised of two covarietes: x,y
-        self.n_bats = n_bats
-        self.covariates = covariates or self.build_covariates_list()
+        self.n_bats = n_bats or features_lib.get_n_bats(covariates)
+        # print("N_BATS:", self.n_bats)
+        self.covariates = covariates
+        self.covariates = self.build_covariates_list()
         self.features = features_lib.covariates_to_features(self.covariates)
 
         # self.y_test = None
@@ -92,6 +94,8 @@ class AlloModel(Model):
                 'BAT_3_F_X', 'BAT_3_F_Y',
                 'BAT_4_F_X', 'BAT_4_F_Y'
         ]"""
+        if self.covariates:
+            return self.covariates
         covariates = [features_lib.get_feature_name(0, "HD")]
         for i in range(self.n_bats):
             covariates.append(features_lib.get_feature_name(i, "X"))
@@ -124,8 +128,10 @@ class AlloModel(Model):
             model_maps[m].plot(pos_axis)
 
         hd_axis = fig.add_subplot(grid[3, 0])
-        data_maps[hd_maps[0]].plot(hd_axis)
-        model_maps[hd_model_maps[0]].plot(hd_axis)
+        if len(hd_maps):
+            data_maps[hd_maps[0]].plot(hd_axis)
+        if len(hd_model_maps):
+            model_maps[hd_model_maps[0]].plot(hd_axis)
 
         fr_axis = fig.add_subplot(grid[0, :n_bats])
         data_fr_map.plot(fr_axis)
@@ -158,6 +164,8 @@ class EgoModel(Model):
                 'BAT_3_F_D', 'BAT_3_F_A',
                 'BAT_4_F_D', 'BAT_4_F_A'
         ]"""
+        if self.covariates:
+            return self.covariates
         covariates = []
         for i in range(1, self.n_bats):
             covariates.append(features_lib.get_feature_name(i, "A"))

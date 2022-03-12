@@ -50,3 +50,5 @@ Conf().CACHE_FOLDER = "cache/"
 Conf().USE_CACHE = True
 Conf().TO_PLOT = True
 Conf().SHUFFLES = 0 # default number of shuffles
+Conf().RUN_SHAPLEY = False
+Conf().FEATURE_SELECTION = True
