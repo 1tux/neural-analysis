@@ -11,53 +11,53 @@ Interpretability is accomplished via:
 Files and Directories:
 
 .
-├── inputs/
-│   ├── behavior/
-│   │   ├── day_1.csv
-│   │   ├── ...
-│   │   └── day_k.csv
-│   ├── cells/
-│   │   ├── cell_1_day_1.csv
-│   │   ├── ...
-│   │   └── cell_n_day_k.csv
-│   ├── shuffles/
-│   │   ├── cell_1/
-│   │   │   ├── shuffle_0.csv
-│   │   │   ├── ...
-│   │   │   └── shuffle_100.csv
-│   │   ├── ...
-│   │   └── cell_n/
-│   │       └── ...
-│   └── subsets/
-│       ├── day_1/
-│       │   ├── Allo/
-│       │   │   ├── subset_00000000000.csv
-│       │   │   ├── ...
-│       │   │   └── subset_11111111111.csv
-│       │   └── Ego/
-│       │       ├── subset_00000000.csv
-│       │       ├── ...
-│       │       └── subset_11111111.csv
-│       └── day_k/
-│           └── ...
-├── notebooks
-├── scripts
-└── outputs/
-    ├── cell_1/
-    │   ├── Allo/
-    │   │   ├── Shuffles/
-    │   │   │   └── <see "output directory" format>
-    │   │   └── Shapley/
-    │   │       └── <see "output directory" format>
-    │   ├── Ego/
-    │   │   ├── Shuffles/
-    │   │   │   └── <see "output directory" format>
-    │   │   └── Shapley/
-    │   │       └── <see "output directory" format>
-    │   └── MegaPlot
-    ├── ...
-    └── cell_n/
-        └── ...
+<br>├── inputs/
+<br>│   ├── behavior/
+<br>│   │   ├── day_1.csv
+<br>│   │   ├── ...
+<br>│   │   └── day_k.csv
+<br>│   ├── cells/
+<br>│   │   ├── cell_1_day_1.csv
+<br>│   │   ├── ...
+<br>│   │   └── cell_n_day_k.csv
+<br>│   ├── shuffles/
+<br>│   │   ├── cell_1/
+<br>│   │   │   ├── shuffle_0.csv
+<br>│   │   │   ├── ...
+<br>│   │   │   └── shuffle_100.csv
+<br>│   │   ├── ...
+<br>│   │   └── cell_n/
+<br>│   │       └── ...
+<br>│   └── subsets/
+<br>│       ├── day_1/
+<br>│       │   ├── Allo/
+<br>│       │   │   ├── subset_00000000000.csv
+<br>│       │   │   ├── ...
+<br>│       │   │   └── subset_11111111111.csv
+<br>│       │   └── Ego/
+<br>│       │       ├── subset_00000000.csv
+<br>│       │       ├── ...
+<br>│       │       └── subset_11111111.csv
+<br>│       └── day_k/
+<br>│           └── ...
+<br>├── notebooks
+<br>├── scripts
+<br>└── outputs/
+<br>    ├── cell_1/
+<br>    │   ├── Allo/
+<br>    │   │   ├── Shuffles/
+<br>    │   │   │   └── <see "output directory" format>
+<br>    │   │   └── Shapley/
+<br>    │   │       └── <see "output directory" format>
+<br>    │   ├── Ego/
+<br>    │   │   ├── Shuffles/
+<br>    │   │   │   └── <see "output directory" format>
+<br>    │   │   └── Shapley/
+<br>    │   │       └── <see "output directory" format>
+<br>    │   └── MegaPlot
+<br>    ├── ...
+<br>    └── cell_n/
+<br>        └── ...
 
 <!--
 inputs
