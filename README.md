@@ -6,7 +6,8 @@ Interpretability is accomplished via:
 - PDPs
 - Shapley Values
 <br> example: ![An example of PDPs](72_AlloModel_11111111111_0.png)
-<hr> Code-Flow: ![A description of what the code is supposedly doing](CodeFlow.png)
+<br> example: ![An example of PDPs](72_AlloModel_11111111111_0.png)
+<hr> Code-Flow: ![A description of what the code is supposedly doing](CodeFlow.png) 
 <hr> <br>
 Files and Directories:
 
@@ -64,7 +65,7 @@ Files and Directories:
 ```
 
 ```
-<per-gam directory format>:/
+<output directory format>:
   ├── plot.png
   ├── stats.json
   ├── partial-plots.csv
