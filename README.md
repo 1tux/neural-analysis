@@ -39,6 +39,7 @@ Files and Directories:
 │       │       ├── subset_00000000.csv
 │       │       ├── ...
 │       │       └── subset_11111111.csv
+│       ├── ...
 │       └── day_k/
 │           └── ...
 ├── notebooks
@@ -59,6 +60,15 @@ Files and Directories:
     ├── ...
     └── cell_n/
         └── ...
+```
+
+```
+<per-gam directory format>:/
+  ├── img
+  ├── stats
+  ├── partial-plots
+  ├── rate-maps
+  └── model
 ```
 
 <!--
