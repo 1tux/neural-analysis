@@ -1,15 +1,13 @@
 # ignore contents in folders
 *.pyc
 __pycache__/
-outputs/*
-cache/*
-imgs/*
+outputs/**
 inputs/*
-logs/*
+.~*
+notebooks/.*
+.ipynb_checkpoints/*
 
-!cache/
+
 !inputs/72_b2305_d191220.csv
 !inputs/b2305_d191220_simplified_behaviour.csv
-!imgs/
-!logs/
-!outputs/
+!outputs/.gitkeep

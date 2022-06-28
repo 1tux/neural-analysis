@@ -12,28 +12,12 @@ sys.path.append("..")
 from conf import Conf
 from data_manager import neuron_id_to_day, Loader7
 import data_manager
-os.chdir("..")
 
-nid = 72
-day = "191220"
-
-import glob
-cells_list = glob.glob(r"C:\Users\itayy.WISMAIN\git\neural-analysis\inputs\Cells\all cells 20220209\*.mat")
-cells_list_id = [int(os.path.basename(x).split("_")[0]) for x in cells_list]
-cells_list_id = [3, 12, 13, 15, 16, 20, 22, 23, 24, 27, 29, 31, 46, 47, 50, 52, 53, 56, 57,
- 58, 59, 61, 64, 68, 69, 72, 73, 75, 78, 80, 82, 83, 85, 87, 88, 93, 94, 95,
- 96, 97, 98, 99, 101, 102, 103, 104, 133, 134, 144, 145, 146, 147, 148, 149,
- 150, 151, 152, 153, 159, 161, 163, 164, 167, 168, 169, 170, 171, 173, 174,
- 191,  197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 215,
- 218, 220, 225, 226, 227, 378, 379, 380, 381, 382, 383, 384, 385, 386, 387, 388,
- 389, 390, 391, 392, 417, 418, 419, 420, 421, 422, 423, 424, 425, 426, 427,
- 428]
-cells_list_id = [387, 388, 389, 390, 391, 392, 417, 418, 419, 420, 421, 422,
- 423, 424, 425, 426, 427, 428]
-
-cells_list_id = [381]
-
+cells_list_id = list(map(int, open("cells_to_shuffle.txt","rb").readlines()))
 print(f"RUNNING {len(cells_list_id)} CELLS")
+
+import os
+os.chdir("..") # for Loader
 
 for nid in cells_list_id:
 	day = neuron_id_to_day(nid)
