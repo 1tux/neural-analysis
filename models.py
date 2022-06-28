@@ -18,10 +18,14 @@ import rate_maps
 class Model:
     def __init__(self, covariates: typing.Optional[list[str]] = None, use_cache:bool=True,n_bats: typing.Optional[int] = None, **kwargs):
         # position comprised of two covarietes: x,y
-        self.n_bats = n_bats or features_lib.get_n_bats(covariates)
+        if n_bats:
+            self.n_bats = n_bats
+            self.covariates = self.build_covariates_list()
+        else:
+            self.n_bats = features_lib.get_n_bats(covariates)
+            self.covariates = covariates
         # print("N_BATS:", self.n_bats)
-        self.covariates = covariates
-        self.covariates = self.build_covariates_list()
+        # self.covariates = self.build_covariates_list()
         self.features = features_lib.covariates_to_features(self.covariates)
 
         # self.y_test = None
@@ -46,7 +50,9 @@ class Model:
     def train_model(self, X_train: pd.DataFrame, y_train: pd.DataFrame):
         # TODO: try loading from cache before traning...
         start_time = time.time()
+        # print(self.features)
         self.formula = models_utils.build_formula(self.features)
+        # print(self.formula)
         self.gam_model = pygam.PoissonGAM(self.formula, **self.kwargs)
         self.gam_model.fit(X_train, y_train)
 
@@ -94,8 +100,8 @@ class AlloModel(Model):
                 'BAT_3_F_X', 'BAT_3_F_Y',
                 'BAT_4_F_X', 'BAT_4_F_Y'
         ]"""
-        if self.covariates:
-            return self.covariates
+        # if self.covariates:
+        #    return self.covariates
         covariates = [features_lib.get_feature_name(0, "HD")]
         for i in range(self.n_bats):
             covariates.append(features_lib.get_feature_name(i, "X"))
@@ -107,7 +113,7 @@ class AlloModel(Model):
     data_maps: typing.List[rate_maps.RateMap], model_maps: typing.List[model_maps.ModelMap], stats: str):
 
         fig = plt.figure()
-        grid = plt.GridSpec(5, n_bats, wspace=1, hspace=1)
+        grid = plt.GridSpec(6, n_bats, wspace=1, hspace=1)
 
         pos_maps = list(filter(lambda m: m.type_ == features_lib.FeatureType.POS, data_maps))
         model_pos_maps = list(filter(lambda m: m.type_ == features_lib.FeatureType.POS, model_maps))
@@ -120,22 +126,26 @@ class AlloModel(Model):
         # assert len(hd_model_maps) == 1
 
         for i, m in enumerate(pos_maps):
-            pos_axis = fig.add_subplot(grid[1, i])
+            pos_axis = fig.add_subplot(grid[2, i])
             data_maps[m].plot(pos_axis)
 
         for i, m in enumerate(model_pos_maps):
-            pos_axis = fig.add_subplot(grid[2, i])
+            pos_axis = fig.add_subplot(grid[3, i])
             model_maps[m].plot(pos_axis)
 
-        hd_axis = fig.add_subplot(grid[3, 0])
+        hd_axis = fig.add_subplot(grid[4, 0])
         if len(hd_maps):
             data_maps[hd_maps[0]].plot(hd_axis)
         if len(hd_model_maps):
             model_maps[hd_model_maps[0]].plot(hd_axis)
 
         fr_axis = fig.add_subplot(grid[0, :n_bats])
+        fr_axis2 = fig.add_subplot(grid[1, :n_bats])
         data_fr_map.plot(fr_axis)
         model_fr_map.plot(fr_axis)
+
+        data_fr_map.plot2(fr_axis2)
+        model_fr_map.plot2(fr_axis2)
 
         x_ticks = fr_axis.get_xticks().tolist()[:-1]
         x_tickslabels = (np.array(x_ticks) / Conf().FRAME_RATE // 60).astype('int')
@@ -144,7 +154,10 @@ class AlloModel(Model):
         fr_axis.set_xlabel("Minutes")
         fr_axis.set_ylabel("Spikes/second")
 
-        stats_axis = fig.add_subplot(grid[4, :n_bats])
+        fr_axis2.set_xlabel("Minutes")
+        fr_axis2.set_ylabel("Spikes/second")
+
+        stats_axis = fig.add_subplot(grid[5, :n_bats])
         stat_lines = stats.splitlines()
         first_half = "\n".join(stat_lines[:(1+len(stat_lines)) // 2])
         second_half = "\n".join(stat_lines[(1+len(stat_lines)) // 2:])
@@ -164,8 +177,6 @@ class EgoModel(Model):
                 'BAT_3_F_D', 'BAT_3_F_A',
                 'BAT_4_F_D', 'BAT_4_F_A'
         ]"""
-        if self.covariates:
-            return self.covariates
         covariates = []
         for i in range(1, self.n_bats):
             covariates.append(features_lib.get_feature_name(i, "A"))
@@ -176,7 +187,7 @@ class EgoModel(Model):
     data_maps: typing.List[rate_maps.RateMap], model_maps: typing.List[model_maps.ModelMap], stats: str):
 
         fig = plt.figure()
-        grid = plt.GridSpec(4, n_bats-1, wspace=0.4, hspace=1)
+        grid = plt.GridSpec(5, n_bats-1, wspace=0.4, hspace=1)
 
         angle_maps = list(filter(lambda m: m.type_ == features_lib.FeatureType.A, data_maps))
         model_angle_maps = list(filter(lambda m: m.type_ == features_lib.FeatureType.A, model_maps))
@@ -189,27 +200,34 @@ class EgoModel(Model):
         # assert len(distance_model_maps) == n_bats -1, (len(distance_model_maps), n_bats)
 
         for i, (m, m2) in enumerate(zip(angle_maps, model_angle_maps)):
-            angle_axis = fig.add_subplot(grid[1, i])
+            angle_axis = fig.add_subplot(grid[2, i])
             data_maps[m2].plot(angle_axis)
             model_maps[m2].plot(angle_axis)
 
         for i, (m, m2) in enumerate(zip(distance_maps, distance_model_maps)):
-            distance_axis = fig.add_subplot(grid[2, i])
+            distance_axis = fig.add_subplot(grid[3, i])
             data_maps[m2].plot(distance_axis)
             model_maps[m2].plot(distance_axis)
 
         fr_axis = fig.add_subplot(grid[0, :n_bats])
+        fr_axis2 = fig.add_subplot(grid[1, :n_bats])
         data_fr_map.plot(fr_axis)
         model_fr_map.plot(fr_axis)
 
+        data_fr_map.plot2(fr_axis2)
+        model_fr_map.plot2(fr_axis2)
+
         x_ticks = fr_axis.get_xticks().tolist()[:-1]
-        x_tickslabels = (np.array(x_ticks) // Conf().FRAME_RATE // 60).astype('int') # every 25 minutes?
+        x_tickslabels = (np.array(x_ticks) / Conf().FRAME_RATE // 60).astype('int')
         fr_axis.set_xticks(x_ticks) # to ignore some weird warning
         fr_axis.set_xticklabels(x_tickslabels)
         fr_axis.set_xlabel("Minutes")
         fr_axis.set_ylabel("Spikes/second")
 
-        stats_axis = fig.add_subplot(grid[3, :n_bats])
+        fr_axis2.set_xlabel("Minutes")
+        fr_axis2.set_ylabel("Spikes/second")
+
+        stats_axis = fig.add_subplot(grid[4, :n_bats])
         stat_lines = stats.splitlines()
         first_half = "\n".join(stat_lines[:(1+len(stat_lines)) // 2])
         second_half = "\n".join(stat_lines[(1+len(stat_lines)) // 2:])

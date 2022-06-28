@@ -32,22 +32,24 @@ def calc_dic(modelled_neuron, n_samples=100):
 
         TOFIX: currently the function reloads the data.
     '''
-    print(f"calculating DIC using {n_samples} samples")
+    # print(f"calculating DIC using {n_samples} samples")
     k = modelled_neuron
     m = modelled_neuron.model
-    d = shelve.open(Conf().CACHE_FOLDER + "samples")
+    d = {} # shelve.open(Conf().CACHE_FOLDER + "samples")
 
     # print(sorted(set(m.covariates)))
     to_add = False
-    if k.get_key() in d:
+    print("NO CACHE FOR DIC")
+    if False and (k.get_key() in d):
         samples_, lls_ = d[k.get_key()]
         samples_ = samples_[:-1] # not including the mean_sample
         lls_ = lls_[:-1] # not including the mean_sample
         n_samples -= len(samples_)
         to_add = True
 
-    # could be we are in cache, but need to sample more values and recalculate the DIC
+    # coul mod be we are in cache, but need to samplere values and recalculate the DIC
     if n_samples > 0:
+        print("Reloading data!", n_samples, Conf().CACHE_FOLDER + "samples")
         data = data_manager.Loader7()(modelled_neuron.neuron_id)
         dataprop = data_manager.DataProp1(data)
 
@@ -71,6 +73,8 @@ def calc_dic(modelled_neuron, n_samples=100):
     mean_ll = lls[-1]
     pDIC = mean_ll - np.mean(lls[::-1]) # effective number of params
     dic = -2 * mean_ll + 2 * pDIC
+    # dic = -2 * mean_ll + np.log(m.gam_model.statistics_['n_samples']) * pDIC
+    # d.close()
     return pDIC, dic
 
 def main(args):

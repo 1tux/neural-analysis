@@ -67,4 +67,4 @@ def covariates_to_features(covariates):
 def features_to_covariates(features):
     covarites = list(map(lambda f: list(f.covariates), features))
     flat_covarites = [item for sublist in covarites for item in sublist]
-    return flat_covarites
+    return sorted(flat_covarites)

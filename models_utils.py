@@ -13,7 +13,7 @@ import features_lib
 import pygam
 
 def create_pos_smoother(x_idx, y_idx):
-    return pygam.te(x_idx, y_idx, n_splines=[10, 5], constraints='concave')
+    return pygam.te(x_idx, y_idx, n_splines=[10, 5])#, constraints='concave')
 
 def create_distance_smoother(idx):
     return pygam.s(idx, n_splines=10)

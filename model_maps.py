@@ -74,16 +74,21 @@ class ModelMap2D(ModelMap):
 class ModelFiringRate:
     def __init__(self, dataprop, model, shuffle_index, test_idx):
         self.model = model
-        self.x = (dataprop.no_nans_indices[test_idx]  + shuffle_index) % np.max(dataprop.no_nans_indices[test_idx])
+        #self.x = (dataprop.no_nans_indices[test_idx]  + shuffle_index) % np.max(dataprop.no_nans_indices[test_idx])
         # self.x = (pd.Series(self.x).loc[test_idx])#.values
         # print("modelfr", self.x[:10])
-        self.x = (dataprop.no_nans_indices[test_idx] + shuffle_index) % np.max(dataprop.no_nans_indices[test_idx])
+        #self.x = (dataprop.no_nans_indices[test_idx] + shuffle_index) % np.max(dataprop.no_nans_indices[test_idx])
+        self.x = dataprop.no_nans_indices / Conf().FRAME_RATE / 60 # to get minutes
         self.process()
 
     def process(self):
         self.y = self.map_ = self.model.y_pred * Conf().FRAME_RATE
 
     def plot(self, ax):
+        ax.plot(range(len(self.y)), self.y, '.', markersize=1, alpha=0.5, label='test-firing-rates')
+        # ax.plot(self.x, self.y, '.', markersize=1, alpha=0.5, label='test-firing-rates')
+
+    def plot2(self, ax):
         ax.plot(self.x, self.y, '.', markersize=1, alpha=0.5, label='test-firing-rates')
 
 def build_maps(model: models.Model, data_maps: rate_maps.RateMap) -> typing.List[ModelMap]:
@@ -109,8 +114,21 @@ def scale_maps(maps: Dict[ModelMap], intercept=1):
         scale_map(m, maps, intercept)
         maps[key] = m
 
+def remove_outlier(map_x):
+    return map_x[(np.nanquantile(map_x, 0.1) < map_x) & (map_x < np.nanquantile(map_x, 0.9))]
+
+def remove_outlier2(map_x):
+    orig_shape = map_x.shape
+    biggest_value = np.nanquantile(map_x, 0.9)
+    map_x[map_x > biggest_value] = biggest_value
+    return map_x.reshape(orig_shape)
+
 def scale_map(my_map: ModelMap, other_maps: Dict[ModelMap], intercept=1):
-    maps_means = list(map(lambda k: np.nanmean(other_maps[k].map_), other_maps)) + [intercept]
+    
+    # map_x = other_maps[k].map_
+    # map_x = np.nanmean(map_x[(np.nanqunatile(map_x, 0.01) < x)  and (x < np.nanqunatile(map_x, 0.99))])
+
+    maps_means = list(map(lambda k: np.nanmean(remove_outlier(other_maps[k].map_)), other_maps)) + [intercept]
     others_mean = functools.reduce(operator.mul, maps_means)
-    my_map.scaled_map = my_map.map_ * others_mean * Conf().FRAME_RATE
+    my_map.scaled_map = remove_outlier2(my_map.map_) * others_mean * Conf().FRAME_RATE
     # print(my_map.feature.name, others_mean * Conf().FRAME_RATE)

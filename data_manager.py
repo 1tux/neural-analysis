@@ -184,10 +184,10 @@ class Loader7(DataLoader):
         if nid < 1000:
             day = neuron_id_to_day(nid)
             import glob
-            path = glob.glob(fr"C:\Users\itayy.WISMAIN\git\neural-analysis\inputs\Behavior\all behaviour 20220209\*_{day}_simplified_behaviour.csv")[0]
+            path = glob.glob(fr"inputs/Behavior/all behaviour 20220209/*_{day}_simplified_behaviour.csv")[0]
             rec_bat = os.path.basename(path).split('_')[0]
             df = pd.read_csv(path).drop(columns=['Unnamed: 0'])
-            neuron_path = fr"Z:\for_Itay\Cells\20220301 - neurons\{nid}_{rec_bat}_{day}_cell_analysis.mat"
+            neuron_path = fr"inputs/Cells/{nid}_{rec_bat}_{day}_cell_analysis.mat"
             d = h5py.File(neuron_path, "r")
             spikes = np.array(d['cell_analysis']['spikes_per_frame']).T[0]
             df['neuron'] = spikes
@@ -201,6 +201,40 @@ class Loader7(DataLoader):
         file_name = simulated_list[(nid % 1000) % len(simulated_list)]
         print(nid, nid % len(simulated_list), day, file_name)
         behavioral_path = os.path.join(Conf().INPUT_FOLDER, fr"b2305_{day}_simplified_behaviour.csv")
+        neuron_path = os.path.join(neuron_path_, file_name)
+
+        df = pd.read_csv(behavioral_path).drop(columns=['Unnamed: 0']) 
+        spikes = pd.read_csv(neuron_path)['0']
+        df['neuron'] = spikes
+        return df
+
+class Loader8(DataLoader):
+    def __call__(self, nid: int, shuffle_index=0) -> pd.DataFrame:
+
+        if nid < 1000: # actual cell
+            day = neuron_id_to_day(nid)
+            import glob
+            path = glob.glob(fr"inputs/Behavior/all behaviour 20220209/*_{day}_simplified_behaviour.csv")[0]
+            rec_bat = os.path.basename(path).split('_')[0]
+            df = pd.read_csv(path).drop(columns=['Unnamed: 0'])
+            print(shuffle_index)
+            neuron_path = fr"inputs/shuffles/{nid}_{shuffle_index}_{rec_bat}_{day}_cell_analysis.csv"
+            spikes = pd.read_csv(neuron_path)['0']
+            # d = h5py.File(neuron_path, "r")
+            # spikes = np.array(d['cell_analysis']['spikes_per_frame']).T[0]
+            df['neuron'] = spikes.values
+            return df
+
+        # simulated cell
+        day = f"d1912{20 + (nid // 1000 - 1)}"
+        import glob
+        neuron_path_ = os.path.join(Conf().INPUT_FOLDER, "simulated", day)
+        simulated_list = list(map(os.path.basename, glob.glob(neuron_path_ + "/*")))
+
+        file_name = simulated_list[(nid % 1000) % len(simulated_list)]
+        print(nid, nid % len(simulated_list), day, file_name)
+        behavioral_path = os.path.join(Conf().INPUT_FOLDER, fr"b2305_{day}_simplified_behaviour.csv")
+        print(behavioral_path)
         neuron_path = os.path.join(neuron_path_, file_name)
 
         df = pd.read_csv(behavioral_path).drop(columns=['Unnamed: 0']) 

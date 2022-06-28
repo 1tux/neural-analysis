@@ -55,7 +55,14 @@ class FiringRate(RateMap):
         self.map_ = self.y = self.frame_rate * self.smooth_fr
 
     def plot(self, ax):
+        ax.plot(range(len(self.y)), self.y, '.', markersize=1, alpha=0.5, label='test-firing-rates')
+        ax.set_ylim(0)
+        ax.set_xlim(0)
+
+    def plot2(self, ax):
         ax.plot(self.x, self.y, '.', markersize=1, alpha=0.5, label='test-firing-rates')
+        ax.set_ylim(0)
+        ax.set_xlim(0)    
 
 class RateMap1D(RateMap):
     def __init__(self, dataprop, feature: features_lib.Feature):

@@ -12,3 +12,4 @@ logs/*
 !inputs/b2305_d191220_simplified_behaviour.csv
 !imgs/
 !logs/
+!outputs/
