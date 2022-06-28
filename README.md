@@ -6,7 +6,7 @@ Interpretability is accomplished via:
 - PDPs
 - Shapley Values
 <br> example: ![An example of PDPs](72_AlloModel_11111111111_0.png)
-<hr> Code-Flow: ![A description of what the code is (supposedly) doing](CodeFlow.png)
+<hr> Code-Flow: ![A description of what the code is supposedly doing](CodeFlow.png)
 <hr> <br>
 Files and Directories:
 
@@ -29,7 +29,7 @@ Files and Directories:
 │   │   ├── ...
 │   │   └── cell_n/
 │   │       └── ...
-│   └── subsets/
+│   └── subsets/ # These are used for feature-importance (Shapley Values)
 │       ├── day_1/
 │       │   ├── Allo/
 │       │   │   ├── subset_00000000000.csv
@@ -49,14 +49,15 @@ Files and Directories:
     │   ├── Allo/
     │   │   ├── Shuffles/
     │   │   │   └── <see "output directory" format>
-    │   │   └── Shapley/
+    │   │   └── Subsets/
     │   │       └── <see "output directory" format>
     │   ├── Ego/
     │   │   ├── Shuffles/
     │   │   │   └── <see "output directory" format>
-    │   │   └── Shapley/
+    │   │   └── Subsets/
     │   │       └── <see "output directory" format>
-    │   └── MegaPlot
+    │   ├── <see "output directory" format>
+    │   └── MegaPlot.png # the final plot including insights from the model, shuffles, and subsets
     ├── ...
     └── cell_n/
         └── ...
@@ -64,11 +65,11 @@ Files and Directories:
 
 ```
 <per-gam directory format>:/
-  ├── img
-  ├── stats
-  ├── partial-plots
-  ├── rate-maps
-  └── model
+  ├── plot.png
+  ├── stats.json
+  ├── partial-plots.csv
+  ├── rate-maps.csv
+  └── model.pkl # pickle file
 ```
 
 <!--
