@@ -1,6 +1,7 @@
 # ignore contents in folders
 *.pyc
 __pycache__/
+outputs/*
 cache/*
 imgs/*
 inputs/*
