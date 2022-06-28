@@ -10,6 +10,7 @@ Interpretability is accomplished via:
 <hr> <br>
 Files and Directories:
 
+```
 .
 <br>├── inputs/
 <br>│   ├── behavior/
@@ -58,6 +59,7 @@ Files and Directories:
 <br>    ├── ...
 <br>    └── cell_n/
 <br>        └── ...
+```
 
 <!--
 inputs
