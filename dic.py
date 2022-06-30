@@ -50,7 +50,7 @@ def calc_dic(modelled_neuron, n_samples=100):
     # coul mod be we are in cache, but need to samplere values and recalculate the DIC
     if n_samples > 0:
         print("Reloading data!", n_samples, Conf().CACHE_FOLDER + "samples")
-        data = data_manager.Loader7()(modelled_neuron.neuron_id)
+        data = data_manager.Loader9()(modelled_neuron.neuron_id)
         dataprop = data_manager.DataProp1(data)
 
         covariate_list = sorted(set(m.covariates) & set(dataprop.data.columns))

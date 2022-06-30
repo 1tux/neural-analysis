@@ -48,8 +48,8 @@ Conf().CACHE_FOLDER = "outputs/cache/"
 Conf().STATS_PATH = "outputs/stats/"
 
 # DEFAULT ARGS
-Conf().USE_CACHE = True
-Conf().TO_PLOT = True
+Conf().USE_CACHE = False
+Conf().TO_PLOT = False
 Conf().SHUFFLES = 0 # default number of shuffles
 Conf().RUN_SHAPLEY = False
 Conf().FEATURE_SELECTION = True

@@ -1,0 +1,83 @@
+<html>
+<head>
+	<script>
+		const queryString = window.location.search;
+		if (queryString == '') {
+			window.location.href = window.location + "?nid=72&type=Allo";
+		}
+		else {
+		}
+		const urlParams = new URLSearchParams(queryString);
+		const nid = urlParams.get('nid');
+		const type = urlParams.get('type');
+	</script>
+</head>
+<body>
+	<center>
+
+	<h1> Neuron <script> document.write(nid + " - " + type); </script> </h1> 
+	<span style="display: inline-block;">
+		<div id=MainPlot> </div>
+		<div id=ShuffleShapley style="margin-left: 100px"> </div>
+	</span>
+	<hr>
+	<div id=Links></div>
+	</center>
+	<hr>
+	<br>
+	TODO-List:
+	<ul>
+		<li> "open" Firing Rate plot </li>
+		<li> add delta DIC </li>
+		<li> Correlation per PDP and Rate Map distrubtion with p-values </li>
+	</ul>
+
+	<script>
+		main_img = document.createElement("img")
+		main_img.src = 'outputs/imgs/' + nid + '_' + type + '.png';
+		main_img.style.width ='100%';
+		main_img.style.height ='80%';
+		document.querySelector("#MainPlot").appendChild(main_img);
+
+		shuffles_img = document.createElement("img");
+		shuffles_img.src = 'C:\\tmp\\new_shuffles\\' + nid + '.png';
+		shuffles_img.style.width ='33%';
+		shuffles_img.style.height ='33%';
+		document.querySelector("#ShuffleShapley").appendChild(shuffles_img);
+
+		shapley_img = document.createElement("img");
+		shapley_img.src = 'C:\\tmp\\neuron' + nid + '_' + type + '_shapley.png';
+		shapley_img.style.width ='33%';
+		shapley_img.style.height ='33%';
+		document.querySelector("#ShuffleShapley").appendChild(shapley_img);
+
+
+		home = document.createElement("a");
+		home.href = "mega_plot.html";
+		home.text = 'Home | ';
+
+		prev = document.createElement("a");
+		prev.href = 'mega_plot.html?nid=' + (parseInt(nid) - 1) + '&type=' + type;
+		prev.text = 'Prev | ';
+
+		other_type = document.createElement("a");
+		if (type == 'Allo') {
+			other_type.href='mega_plot.html?nid=' + nid + '&type=Ego';
+			other_type.text = 'Ego | ';
+		}
+		else if (type == 'Ego') {
+			other_type.href='mega_plot.html?nid=' + nid + '&type=Allo';
+			other_type.text = 'Allo | ';
+		}
+
+		next = document.createElement("a");
+		next.href = 'mega_plot.html?nid=' + (parseInt(nid) + 1) + '&type=' + type;
+		next.text = 'Next';
+
+		document.querySelector("#Links").appendChild(home);
+		document.querySelector("#Links").appendChild(prev);
+		document.querySelector("#Links").appendChild(other_type);
+		document.querySelector("#Links").appendChild(next);
+	</script>
+</body>
+</html>

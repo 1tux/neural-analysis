@@ -6,6 +6,8 @@ from scipy.ndimage import gaussian_filter1d
 from dataclasses import dataclass
 import os.path
 
+import glob
+
 from conf import Conf
 import features_lib
 
@@ -240,4 +242,21 @@ class Loader8(DataLoader):
         df = pd.read_csv(behavioral_path).drop(columns=['Unnamed: 0']) 
         spikes = pd.read_csv(neuron_path)['0']
         df['neuron'] = spikes
+        return df
+
+class Loader9(DataLoader):
+    def __call__(self, nid: int, shuffle_index=0) -> pd.DataFrame:
+
+        neuron_path = glob.glob(os.path.join("inputs", "cells", f"{nid}*.csv"))[0]
+        neuron_filename = os.path.basename(neuron_path)
+        nid, rec_bat, day = neuron_filename.split("_")
+        nid = int(nid)
+        day = day[:-4] # extenstion removal
+
+        behavioral_path = os.path.join("inputs", "behavior", f"{rec_bat}_{day}.csv")
+        df = pd.read_csv(behavioral_path).drop(columns=['Unnamed: 0'])
+        if shuffle_index:
+            neuron_path = os.path.join("inputs", "shuffles", str(nid), f"{shuffle_index}.csv")
+        spikes = pd.read_csv(neuron_path)['0']
+        df['neuron'] = spikes.values
         return df

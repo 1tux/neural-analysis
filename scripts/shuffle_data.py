@@ -10,13 +10,83 @@ import math
 import os
 sys.path.append("..")
 from conf import Conf
-from data_manager import neuron_id_to_day, Loader7
+from data_manager import neuron_id_to_day, Loader9
 import data_manager
+import glob
+import tqdm
 
-cells_list_id = list(map(int, open("cells_to_shuffle.txt","rb").readlines()))
+os.chdir("..")
+
+ALL_CELLS = glob.glob("inputs/cells/*.csv")
+cells_list_id = set(list(map(int, open("scripts/cells_to_shuffle.txt","rb").readlines()))) # CELLS to run shuffle on
+
+
+def get_spikes_and_behavior(cell_path, batname, day):
+	# loads raw spikes and behavior.
+	# however we need the data after NANs removal!
+	spikes = pd.read_csv(cell_path)['0']
+	behavior = pd.read_csv(f"../inputs/{batname}_{day}.csv")
+	return spikes, behavior
+
+def get_spikes(nid, cell_path):
+	spikes_with_gaps = pd.read_csv(cell_path)['0']
+
+	data = Loader9()(nid)
+	dataprop = data_manager.DataProp1(data) # do NANs removal for us
+	spikes_without_gaps = dataprop.data['neuron']
+	# we don't really need the behavior after NAN removal
+	# behavior = dataprop.data.drop(columns=['neuron'])
+	return spikes_with_gaps, spikes_without_gaps, dataprop.no_nans_indices
+
+def compute_shuffles(spikes_with_gaps, spikes_without_gaps, no_nans_indices):
+	start = Conf().SHUFFLES_MIN_GAP
+	assert len(spikes_without_gaps) > 2 * Conf().SHUFFLES_MIN_GAP
+	end = len(spikes_without_gaps) - Conf().SHUFFLES_MIN_GAP
+	shift_size = math.ceil((end - start) / Conf().SHUFFLES_JMPS)
+
+	shuffles_list = [0] + list(range(start, end, shift_size))
+	result = {}
+	for shift in shuffles_list:
+		shuffled_spikes_without_gaps = np.roll(spikes_without_gaps, shift)
+
+		tmp_with_gaps = pd.Series([0] * len(spikes_with_gaps))
+		tmp_with_gaps.loc[no_nans_indices] = shuffled_spikes_without_gaps
+		shuffled_spikes_with_gaps = tmp_with_gaps
+		result[shift] = shuffled_spikes_with_gaps
+	return result
+
+
+def store_shuffles(shuffles, output_dir):
+	if not os.path.exists(output_dir):
+		os.mkdir(output_dir)
+
+	for shift, shuffle in tqdm.tqdm(shuffles.items()):
+		pd.Series(shuffle).to_csv(os.path.join(output_dir, f"{shift}.csv"), index=False)
+
+ctr = 0
+for filename in ALL_CELLS:
+	nid, batname, day = os.path.basename(filename).split('_')
+	day = day[:-4] # not including .csv
+	nid = int(nid)
+
+	if nid in cells_list_id:
+		print(f"Shuffling neuron {nid} ({ctr+1}/{len(cells_list_id)})")
+		# spikes, behavior = get_spikes_and_behavior(filename, batname, day)
+		# spikes_with_gaps, spikes_without_gaps, no_nans_indices = get_spikes(nid, filename)
+		shuffles = compute_shuffles(*get_spikes(nid, filename))
+		store_shuffles(shuffles, os.path.join("inputs", "shuffles", f"{nid}"))
+		ctr += 1
+
+if ctr != len(cells_list_id):
+	print(f"Did not run all cells! ({ctr}/{len(cells_list_id)})")
+	exit(-1)
+
+exit(0)
+
+
 print(f"RUNNING {len(cells_list_id)} CELLS")
 
-import os
+
 os.chdir("..") # for Loader
 
 for nid in cells_list_id:

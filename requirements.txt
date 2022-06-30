@@ -8,3 +8,4 @@ h5py
 statsmodels
 jupyter
 jupyterlab
+tqdm
