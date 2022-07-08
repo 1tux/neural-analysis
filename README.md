@@ -1,6 +1,6 @@
 # neural-analysis
 
-Using Generealized Additive Models with neuroscience based priors to explore the relation between high-dimensional enviroments (multiple bats) to neural activity.
+Using Generealized Additive Models with neuroscience-based priors to explore the relation between high-dimensional enviroments (multiple bats) to neural activity.
 Interpretability is accomplished via:
 - novel method of dealing with multicollinearity
 - PDPs
